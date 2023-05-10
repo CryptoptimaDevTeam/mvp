@@ -9,6 +9,7 @@ module.exports = {
     extend: {
       colors: {
         mainColor: "#1F4DED",
+        mainUpColor: "#0034EB",
         mainDownColor: "#496CE7",
         borderColor: "rgb(228, 228, 235)",
       },

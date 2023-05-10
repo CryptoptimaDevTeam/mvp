@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
+import { MainButton } from "../atoms/button";
+import { Modal } from "../atoms/modal";
 import { HiArrowNarrowRight } from "react-icons/hi";
 import { AiOutlineClear } from "react-icons/ai";
 import { FaMoon, FaSun } from "react-icons/fa";
@@ -7,15 +9,17 @@ import { FaMoon, FaSun } from "react-icons/fa";
 interface HeaderPropsType {}
 
 type DropdownOpenVar = "none" | "user" | "alert";
+type loginSignupVar = "none" | "login" | "signup";
 
 export const Header: React.FC<HeaderPropsType> = () => {
   const [dropdownOpen, setDropdownOpen] = useState<DropdownOpenVar>("none");
+  const [loginSignup, setLoginSignup] = useState("none");
+  const [userModal, setUserModal] = useState(false);
 
   const navigationClassName: string =
     "block text-sm transition-all duration-300 ease-in-out hover:text-mainDownColor py-5 px-2.5";
   const dropdownClassName: string =
     "border-[1px] border-borderColor rounded-lg overflow-hidden bg-white shadow-[0_5px_20px_0_rgba(11,7,110,.04)] px-5 float-right mr-7 mt-[-5px]";
-
   return (
     <div className="header-componentainer sticky top-0 z-50">
       <header className="header-wrapper flex h-[70px] px-6 justify-between items-center shadow-[0_5px_20px_0_rgba(11,7,110,.04)] bg-white">
@@ -153,10 +157,28 @@ export const Header: React.FC<HeaderPropsType> = () => {
             <div className="welcome-message text-mainColor font-bold pb-5">
               Welcome to Cryptoptima!
             </div>
-            <div className="signin-btn w-full">
-              <button className="bg-mainColor text-white w-full py-2 rounded-lg transition-all hover:scale-[1.03]">
-                Login
-              </button>
+            <div className="login-btn w-full">
+              <MainButton
+                name="Login"
+                hoverScale={true}
+                hoverBg={true}
+                onClick={() => {
+                  setLoginSignup("login");
+                  setUserModal(true);
+                }}
+              />
+            </div>
+            <div className="signup-btn text-sm pt-2.5">
+              No account?{" "}
+              <span
+                className="text-mainColor cursor-pointer hover:text-mainUpColor"
+                onClick={() => {
+                  setLoginSignup("signup");
+                  setUserModal(true);
+                }}
+              >
+                Create one
+              </span>
             </div>
           </div>
           {/* 로그인 상태 */}
@@ -212,6 +234,60 @@ export const Header: React.FC<HeaderPropsType> = () => {
           Sign Out
         </div>
       </div>
+      <Modal isOpen={userModal} setIsOpen={setUserModal}>
+        <div className="user-modal-container flex flex-col gap-2.5 justify-center items-center">
+          <div className="user-modal-comment text-2xl font-semibold">
+            {loginSignup === "login" ? "Welcome Back!" : "Create an Account"}
+          </div>
+          {loginSignup === "login" && (
+            <div className="user-modal-subcomment text-[#72717d] text-sm text-center">
+              Let's go see how much rebation you can get back right now.
+            </div>
+          )}
+          {loginSignup === "signup" && (
+            <div className="user-modal-subcomment text-[#72717d] text-sm text-center">
+              Lowering trading costs is a basic of smart investing.
+              <br />
+              <span className="text-mainColor font-semibold">
+                Rebate the fees
+              </span>{" "}
+              you paid to crypto exchanges with{" "}
+              <span className="text-mainColor font-semibold">cryptoptima</span>!
+            </div>
+          )}
+          <div className="social-login pt-7 pb-5">
+            <ul className="flex gap-10">
+              <li>
+                <Image
+                  className="cursor-pointer"
+                  src="image/logo/logo_facebook.svg"
+                  alt="google"
+                  width={50}
+                  height={50}
+                />
+              </li>
+              <li>
+                <Image
+                  className="cursor-pointer"
+                  src="image/logo/logo_google.svg"
+                  alt="google"
+                  width={50}
+                  height={50}
+                />
+              </li>
+              <li>
+                <Image
+                  className="cursor-pointer"
+                  src="image/logo/logo_twitter.svg"
+                  alt="google"
+                  width={50}
+                  height={50}
+                />
+              </li>
+            </ul>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
