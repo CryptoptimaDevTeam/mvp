@@ -9,25 +9,27 @@ public class ManagerDto {
     static class Create {
         private String accountId;
         private String password;
-        private String managerGrade;
         private String managerName;
+        private String managerGrade;
+        private String managerInfo;
     }
 
     @Getter
     @Builder
     static class Update {
         private String password;
-        private String managerGrade;
         private String managerName;
+        private String managerGrade;
+        private String managerInfo;
     }
 
     @Setter
     @Builder
     static class Response {
-        private String accountId;
-        private String password;
-        private String managerGrade;
+        private Long managerId;
         private String managerName;
+        private String managerGrade;
+        private String managerInfo;
     }
 
 }

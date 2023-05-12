@@ -14,6 +14,7 @@ public class ManagerMapper {
                 .password(managerDto.getPassword())
                 .managerGrade(managerDto.getManagerName())
                 .managerName(managerDto.getManagerName())
+                .managerInfo(managerDto.getManagerInfo())
                 .build();
     }
 
@@ -23,6 +24,16 @@ public class ManagerMapper {
                 .password(managerDto.getPassword())
                 .managerGrade(managerDto.getManagerGrade())
                 .managerName(managerDto.getManagerGrade())
+                .managerInfo(managerDto.getManagerInfo())
+                .build();
+    }
+
+    public ManagerDto.Response managerToManagerResponseDto(Manager manager) {
+        return ManagerDto.Response.builder()
+                .managerId(manager.getManagerId())
+                .managerName(manager.getManagerName())
+                .managerGrade(manager.getManagerGrade())
+                .managerInfo(manager.getManagerInfo())
                 .build();
     }
 }
