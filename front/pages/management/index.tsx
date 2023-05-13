@@ -28,12 +28,9 @@ const ManageLogin = () => {
       </div>
       <div className="login-area w-[400px] pt-[60px]">
         <form className="flex flex-col gap-5">
-          <div className="account-id flex">
-            <label
-              htmlFor="id"
-              className="flex justify-center items-center w-[80px]"
-            >
-              아이디
+          <div className="account-id flex flex-col gap-1">
+            <label htmlFor="id" className="flex items-center">
+              ID
             </label>
             <input
               id="id"
@@ -41,12 +38,9 @@ const ManageLogin = () => {
               type="text"
             ></input>
           </div>
-          <div className="account-pw flex relative">
-            <label
-              htmlFor="pw"
-              className="flex justify-center items-center w-[80px]"
-            >
-              비밀번호
+          <div className="account-pw flex flex-col gap-1 relative">
+            <label htmlFor="pw" className="flex items-center">
+              PASSWORD
             </label>
             <input
               id="pw"
@@ -54,17 +48,21 @@ const ManageLogin = () => {
               type={passwordVisible ? "text" : "password"}
             ></input>
             <div
-              className="pw-visible absolute top-[11px] right-2"
+              className="pw-visible absolute bottom-[8px] right-2"
               onClick={() => {
                 setPasswordVisible(!passwordVisible);
               }}
             >
-              {passwordVisible ? <AiFillEyeInvisible /> : <AiFillEye />}
+              {passwordVisible ? (
+                <AiFillEyeInvisible size={20} />
+              ) : (
+                <AiFillEye size={20} />
+              )}
             </div>
           </div>
           <div className="login-btn flex justify-center items-center pt-5">
             <MainButton
-              name="로그인"
+              name="Login"
               hoverBg={true}
               hoverScale={true}
               style="w-1/2"
