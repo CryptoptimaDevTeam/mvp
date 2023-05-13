@@ -5,6 +5,10 @@ import { Modal } from "../atoms/modal";
 import { HiArrowNarrowRight } from "react-icons/hi";
 import { AiOutlineClear } from "react-icons/ai";
 import { FaMoon, FaSun } from "react-icons/fa";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { headerNavList } from "../../data/headerStatic";
+import path from "path";
 
 interface HeaderPropsType {}
 
@@ -12,49 +16,52 @@ type DropdownOpenVar = "none" | "user" | "alert";
 type loginSignupVar = "none" | "login" | "signup";
 
 export const Header: React.FC<HeaderPropsType> = () => {
+  const router = useRouter();
+  const { pathname } = router;
+
   const [dropdownOpen, setDropdownOpen] = useState<DropdownOpenVar>("none");
   const [loginSignup, setLoginSignup] = useState<loginSignupVar>("none");
   const [userModal, setUserModal] = useState(false);
 
-  const navigationClassName: string =
-    "block text-sm transition-all duration-300 ease-in-out hover:text-mainDownColor py-5 px-2.5";
+  console.log(pathname);
+
+  const navigationClassName: string = `block text-sm transition-all duration-300 ease-in-out hover:text-mainDownColor py-5 px-2.5`;
   const dropdownClassName: string =
     "border-[1px] border-borderColor rounded-lg overflow-hidden bg-white shadow-[0_5px_20px_0_rgba(11,7,110,.04)] px-5 float-right mr-7 mt-[-5px]";
   return (
-    <div className="header-componentainer sticky top-0 z-50">
+    <div className="header-componentainer sticky top-0 z-50 min-w-[1248px]">
       <div className="relative">
         <header className="header-wrapper flex h-[70px] px-6 justify-between items-center shadow-[0_5px_20px_0_rgba(11,7,110,.04)] bg-white">
           <div className="logo-area cursor-pointer">
-            <div className="logo-image w-[150px]">
-              <Image
-                className="logo"
-                src="/image/logo/logo_full_l.svg"
-                alt="logo"
-                width="1613"
-                height="363"
-              />
-            </div>
+            <Link href="/">
+              <div className="logo-image w-[150px]">
+                <Image
+                  className="logo"
+                  src="/image/logo/logo_full_l.svg"
+                  alt="logo"
+                  width="1613"
+                  height="363"
+                />
+              </div>
+            </Link>
           </div>
           <nav className="navigation-area">
             <ul className="navigation-list flex gap-5">
-              <li className="Register-Rebate cursor-pointer">
-                <a className={`${navigationClassName}`}>Register Payback</a>
-              </li>
-              <li className="Exchange-Fee-Calculator cursor-pointer">
-                <a className={`${navigationClassName}`}>Rebation Calculator</a>
-              </li>
-              <li className="How-It-Works cursor-pointer">
-                <a className={`${navigationClassName}`}>How It Works</a>
-              </li>
-              <li className="Crpyto-Screener cursor-pointer">
-                <a className={`${navigationClassName}`}>Crypto Exchange</a>
-              </li>
-              <li className="Crpyto-Screener cursor-pointer">
-                <a className={`${navigationClassName}`}>Screener</a>
-              </li>
-              <li className="Event cursor-pointer">
-                <a className={`${navigationClassName}`}>Event</a>
-              </li>
+              {headerNavList.map((el) => (
+                <li
+                  className={`${el.className} cursor-pointer`}
+                  key={el.className}
+                >
+                  <Link
+                    href={el.link}
+                    className={`${navigationClassName} ${
+                      pathname.includes(el.link) && "text-mainColor"
+                    }`}
+                  >
+                    {el.navName}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </nav>
           <div className="icon-area w-[150px] h-full flex justify-end">

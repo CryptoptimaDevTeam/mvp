@@ -19,3 +19,7 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.swiper-pagination-bullet-active {
+  background-color: #1f4ded !important;
+}
