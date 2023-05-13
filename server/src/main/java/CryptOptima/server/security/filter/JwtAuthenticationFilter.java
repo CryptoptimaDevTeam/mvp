@@ -60,7 +60,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setHeader("Authorization","Bearer" + accessToken);
         response.setHeader("Refresh", refreshToken);
 
-        // TODO
+        // TODO Filter에서 JWT 발급 vs. SuccessHandler에서 JWT 발급
         // this.getSuccessHandler().onAuthenticationSuccess(request,response,authResult);
     }
 
@@ -69,6 +69,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         Map<String,Object> claims = new HashMap<>();
         claims.put("accountId", manager.getAccountId());
         claims.put("password", manager.getPassword());
+//      claims.put("roles",manager.getRoles());
 
         String subject = manager.getAccountId();
         Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes());
