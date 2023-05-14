@@ -39,6 +39,6 @@ jasypt:
       suffix: )
 
 jwt:
-  key: ENC(63bBbY4FiolE7yRcHAkmWgGpkgAQ26SYpcxKvd1FgF7Vp8BHOdR9RQ==)
-  access-token-expiration-minutes: 300
-  refresh-token-expiration-minutes: 3600
+  key: ENC(q1WQtVFbAcxGIK0iKkOSnewowB8QWTKB/4+BHJduEuohwosoASHd1LWHss4WUywH98YoWwIkWgg=)
+  access-token-expiration-minutes: 30
+  refresh-token-expiration-minutes: 120
