@@ -12,7 +12,7 @@ public class ManagerMapper {
         return Manager.builder()
                 .accountId(managerDto.getAccountId())
                 .password(managerDto.getPassword())
-                .managerGrade(managerDto.getManagerName())
+                .managerGrade(managerDto.getManagerGrade())
                 .managerName(managerDto.getManagerName())
                 .managerInfo(managerDto.getManagerInfo())
                 .build();
@@ -23,7 +23,7 @@ public class ManagerMapper {
         return Manager.builder()
                 .password(managerDto.getPassword())
                 .managerGrade(managerDto.getManagerGrade())
-                .managerName(managerDto.getManagerGrade())
+                .managerName(managerDto.getManagerName())
                 .managerInfo(managerDto.getManagerInfo())
                 .build();
     }
