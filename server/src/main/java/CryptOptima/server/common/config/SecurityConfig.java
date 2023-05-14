@@ -1,7 +1,12 @@
 package CryptOptima.server.common.config;
 
+import CryptOptima.server.domain.user.UserService;
+import CryptOptima.server.oauth.handler.OAuth2UserSuccessHandler;
+//import CryptOptima.server.oauth.service.CustomOAuth2UserService;
 import CryptOptima.server.security.filter.JwtAuthenticationFilter;
 import CryptOptima.server.security.filter.JwtVerificationFilter;
+import CryptOptima.server.security.handler.ManagerAccessDeniedHandler;
+import CryptOptima.server.security.handler.ManagerAuthenticationEntryPoint;
 import CryptOptima.server.security.handler.ManagerAuthenticationFailureHandler;
 import CryptOptima.server.security.handler.ManagerAuthenticationSuccessHandler;
 import CryptOptima.server.security.jwt.JwtTokenizer;
@@ -10,9 +15,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -22,24 +27,35 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
 public class SecurityConfig {
 
     private final JwtTokenizer jwtTokenizer;
     private final ManagerAuthorityUtils authorityUtils; // JwtVerificationFilter에서 Authentication 객체를 생성할 때 authorities를 생성하기 위해 필요.
+    private final UserService userService;
+//    private final CustomOAuth2UserService customOAuth2UserService;
 
-    public SecurityConfig(JwtTokenizer jwtTokenizer, ManagerAuthorityUtils authorityUtils) {
+    public SecurityConfig(JwtTokenizer jwtTokenizer, ManagerAuthorityUtils authorityUtils, UserService userService) {
         this.jwtTokenizer = jwtTokenizer;
         this.authorityUtils = authorityUtils;
+        this.userService = userService;
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-                .cors(Customizer.withDefaults())
+                .cors(withDefaults())
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 미사용
+                .and()
                 .formLogin().disable()
                 .httpBasic().disable()
+                .exceptionHandling()
+                .authenticationEntryPoint(new ManagerAuthenticationEntryPoint())
+                .accessDeniedHandler(new ManagerAccessDeniedHandler())
+                .and()
                 .apply(new CustomFilterConfigurer())
                 .and()
 //                .oauth2Login(oauth2 -> oauth2
@@ -47,11 +63,15 @@ public class SecurityConfig {
 //                        .failureHandler())
                 .authorizeHttpRequests(authorize -> authorize
                         .antMatchers(HttpMethod.POST,"/managers/login").permitAll()
-                        .antMatchers(HttpMethod.POST, "/managers/**").hasRole("KING")
+                        .antMatchers(HttpMethod.POST, "/managers/**").permitAll()
                         .antMatchers(HttpMethod.DELETE, "/managers/**").hasRole("KING")
                         .antMatchers(HttpMethod.PATCH, "/managers/**").hasAnyRole("KING","MASTER")
                         .antMatchers(HttpMethod.GET,"/managers").hasAnyRole("KING","MASTER","MANAGER")
-                        .anyRequest().permitAll()
+                        .anyRequest().permitAll())
+                .oauth2Login(oauth2 -> oauth2
+                        .successHandler(new OAuth2UserSuccessHandler(jwtTokenizer,userService))
+//                        .userInfoEndpoint()
+//                        .userService(customOAuth2UserService) 추가 작업 수행용도 (userId 검증)
                 );
 
         return http.build();
