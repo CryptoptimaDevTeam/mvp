@@ -1,13 +1,11 @@
 package CryptOptima.server.domain.manager;
 
-import CryptOptima.server.security.dto.LoginDto;
+import CryptOptima.server.auth.dto.LoginDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.net.http.HttpResponse;
 
 @Controller
 @RequiredArgsConstructor
