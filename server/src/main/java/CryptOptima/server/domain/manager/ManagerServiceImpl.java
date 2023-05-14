@@ -1,6 +1,6 @@
 package CryptOptima.server.domain.manager;
 
-import CryptOptima.server.common.utils.CustomBeanUtils;
+import CryptOptima.server.global.utils.CustomBeanUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -48,7 +48,7 @@ public class ManagerServiceImpl implements ManagerService{
         }
     }
 
-    // MNG_ACCOUNT03 :: 관리자 계정 수정
+    // MNG_ACCOUNT03 :: 관리자 계정 수정, TODO role 수정 시 Authentication에도 수정된 role이 저장되어야 함.
     @Override
     @Transactional
     public void updateManager(ManagerDto.Update managerDto, Long managerId) {
