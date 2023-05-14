@@ -1,4 +1,8 @@
 spring:
+  config:
+    activate:
+      on-profile: local
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/cryptoptima?createDatabaseIfNotExist=true
@@ -9,8 +13,32 @@ spring:
     database: mysql
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         show_sql: true
         format_sql: true
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ENC(m7MAk7Q/on58EdQOScdUWdMQHFZygJqe8Gu9AuUwHQsQn6HEPqwQcCkUJ2Gcft1zdNXAPeuzdoLHArjgEmxFtJiaFJLvdIpK7vTTcWyB1y3YqAwmEOjq6w==)
+            client-secret: ENC(GjfkXPimdb4OQSXpumaUpd/nAapzTOButylcEFMTHZomrnnZdOy1QgOVdpoRBHLW)
+            scope:
+              - email
+              - profile
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    key: {$key}
+    property:
+      prefix: ENC(
+      suffix: )
+
+jwt:
+  key: ENC(63bBbY4FiolE7yRcHAkmWgGpkgAQ26SYpcxKvd1FgF7Vp8BHOdR9RQ==)
+  access-token-expiration-minutes: 300
+  refresh-token-expiration-minutes: 3600
