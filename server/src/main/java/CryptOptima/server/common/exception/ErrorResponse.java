@@ -1,6 +1,7 @@
 package CryptOptima.server.common.exception;
 
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 @Getter
 public class ErrorResponse {
@@ -17,5 +18,8 @@ public class ErrorResponse {
         return new ErrorResponse(exceptionCode.getStatus(), exceptionCode.getMessage());
     }
 
+    public static ErrorResponse of(HttpStatus status) {
+        return new ErrorResponse(status.value(), status.getReasonPhrase());
+    }
     // TODO Controller DTO 유효성 검증 에러 핸들러 추가
 }
