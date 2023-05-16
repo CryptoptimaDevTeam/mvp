@@ -30,7 +30,7 @@ public class ExchangeServiceImpl implements ExchangeService {
         Exchange exchange = exchangeMapper.updateExchangeDtoToExchange(exchangeDto);
         Exchange updatingExchange = beanUtils.copyNonNullProperties(exchange, findExchangeById(exchangeId));
         exchangeRepository.save(updatingExchange);
-        return exchangeMapper.exchangeToExchangeResponseDto(exchange);
+        return exchangeMapper.exchangeToExchangeResponseDto(updatingExchange);
     }
 
     public ExchangeDto.Response getExchangeById(Long exchangeId) {
@@ -54,6 +54,6 @@ public class ExchangeServiceImpl implements ExchangeService {
 
     private Exchange findExchangeById(Long exchangeId) {
         return exchangeRepository.findById(exchangeId)
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.EXCHANGE_NOT_FOUND));
     }
 }
