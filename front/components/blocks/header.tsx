@@ -23,9 +23,10 @@ export const Header: React.FC<HeaderPropsType> = () => {
   const [loginSignup, setLoginSignup] = useState<loginSignupVar>("none");
   const [userModal, setUserModal] = useState(false);
 
-  console.log(pathname);
-
-  const navigationClassName: string = `block text-sm transition-all duration-300 ease-in-out hover:text-mainDownColor py-5 px-2.5`;
+  const navigationClassName: string = `block text-sm transition-all duration-500 ease-in-out hover:text-mainDownColor py-5 px-2.5`;
+  const navigationAfterClassName: string = `after:transition-all after:duration-500 after:absolute 
+  after:bottom-0 after:left-0 after:right-0 after:m-auto after:w-0 after:rounded-xl
+  after:text-transparent after:bg-mainColor after:h-[2px] after:content-['.'] hover:after:w-full`;
   const dropdownClassName: string =
     "border-[1px] border-borderColor rounded-lg overflow-hidden bg-white shadow-[0_5px_20px_0_rgba(11,7,110,.04)] px-5 float-right mr-7 mt-[-5px]";
   return (
@@ -56,7 +57,7 @@ export const Header: React.FC<HeaderPropsType> = () => {
                     href={el.link}
                     className={`${navigationClassName} ${
                       pathname.includes(el.link) && "text-mainColor"
-                    }`}
+                    } relative ${navigationAfterClassName}`}
                   >
                     {el.navName}
                   </Link>

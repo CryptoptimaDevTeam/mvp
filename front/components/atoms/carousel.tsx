@@ -9,7 +9,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 
 // import required modules
-import { Pagination } from "swiper";
+import { Pagination, Autoplay } from "swiper";
 
 interface CarouselPropsType {
   carouselList: Array<CarouselListType>;
@@ -25,7 +25,8 @@ export const Carousel = ({ carouselList }: CarouselPropsType) => {
     <>
       <Swiper
         pagination={{ clickable: true }}
-        modules={[Pagination]}
+        autoplay={{ delay: 3000, disableOnInteraction: true }}
+        modules={[Pagination, Autoplay]}
         className="mySwiper"
         loop={true}
       >
