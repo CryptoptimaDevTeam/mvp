@@ -1,4 +1,4 @@
-package CryptOptima.server.domain.exchange;
+package CryptOptima.server.domain.exchange.entity;
 
 import CryptOptima.server.domain.userexchange.entity.UserExchange;
 import lombok.*;

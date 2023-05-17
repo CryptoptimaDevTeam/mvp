@@ -1,4 +1,6 @@
-package CryptOptima.server.domain.exchange;
+package CryptOptima.server.domain.exchange.service;
+
+import CryptOptima.server.domain.exchange.dto.ExchangeDto;
 
 import java.util.List;
 

@@ -1,5 +1,9 @@
-package CryptOptima.server.domain.exchange;
+package CryptOptima.server.domain.exchange.service;
 
+import CryptOptima.server.domain.exchange.entity.Exchange;
+import CryptOptima.server.domain.exchange.repository.ExchangeRepository;
+import CryptOptima.server.domain.exchange.dto.ExchangeDto;
+import CryptOptima.server.domain.exchange.dto.ExchangeMapper;
 import CryptOptima.server.global.exception.BusinessLogicException;
 import CryptOptima.server.global.exception.ExceptionCode;
 import CryptOptima.server.global.utils.CustomBeanUtils;
