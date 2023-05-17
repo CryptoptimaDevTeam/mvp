@@ -25,6 +25,7 @@ public class UserExchangeDto {
         private Long userId;
         private String userName;
         private Long exchangeId;
+        private String exchangeName;
         private String uid;
     }
 }

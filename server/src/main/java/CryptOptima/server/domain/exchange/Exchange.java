@@ -1,10 +1,13 @@
 package CryptOptima.server.domain.exchange;
 
+import CryptOptima.server.domain.userexchange.entity.UserExchange;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,6 +35,9 @@ public class Exchange {
     @Column(nullable = false)
     @ColumnDefault("0")
     private Float exchangeFeeDiscountRate; // 수수료 할인율
+
+    @OneToMany(mappedBy = "exchange")
+    private List<UserExchange> userExchangeList = new ArrayList<>();
 
 //  private int exchangePaybackAmount;
 //  각 거래소 마다 유저들의 평균치

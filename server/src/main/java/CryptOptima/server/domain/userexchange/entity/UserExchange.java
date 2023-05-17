@@ -1,6 +1,7 @@
 package CryptOptima.server.domain.userexchange.entity;
 
 import CryptOptima.server.domain.BaseTimeEntity;
+import CryptOptima.server.domain.exchange.Exchange;
 import CryptOptima.server.domain.user.User;
 import lombok.*;
 
@@ -27,8 +28,9 @@ public class UserExchange extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private User user;
 
-    @Column(nullable = false)
-    private Long exchangeId;
+    @Setter
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    private Exchange exchange;
 
     // 입금 관리 페이지에서 사용됨 -> uid를 통해 userId를 알아냄, userId에 입금액을 USDT로 환산해 depositRecord를 DB에 저장함.
     @Column(unique = true, nullable = false)

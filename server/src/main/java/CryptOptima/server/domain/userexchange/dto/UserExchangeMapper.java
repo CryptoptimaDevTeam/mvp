@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 public class UserExchangeMapper {
     public UserExchange createUserExchangeDtoToUserExchange(UserExchangeDto.Create userExchangeDto) {
         return UserExchange.builder()
-                .exchangeId(userExchangeDto.getExchangeId())
                 .uid(userExchangeDto.getUid())
                 .build();
     }
@@ -20,7 +19,8 @@ public class UserExchangeMapper {
                 .userExchangeId(userExchange.getUserExchangeId())
                 .userId(userExchange.getUser().getUserId())
                 .userName(userExchange.getUser().getAccountId())
-                .exchangeId(userExchange.getExchangeId())
+                .exchangeId(userExchange.getExchange().getExchangeId())
+                .exchangeName(userExchange.getExchange().getExchangeName())
                 .uid(userExchange.getUid())
                 .build();
     }
