@@ -34,8 +34,11 @@ public class UserExchangeController {
                                            @RequestParam("ltUserExchangeId") Long lastUserExchangeId) {
         List<UserExchangeDto.Response> response;
         if(userId==0 && exchangeId==0) response = userExchangeService.getUserExchanges(size, lastUserExchangeId);
+        else if(userId!=0 && exchangeId==0) response = userExchangeService.getUserExchangesByUserId(size, userId, lastUserExchangeId);
         else if(userId==0 && exchangeId!=0) response = userExchangeService.getUserExchangesByExchangeId(size, exchangeId, lastUserExchangeId);
-        else response = userExchangeService.getUserExchangesByUserId(size, userId, lastUserExchangeId);
+        else {
+            return new ResponseEntity(userExchangeService.getUserExchangeByUserIdAndExchangeId(userId, exchangeId),HttpStatus.OK);
+        }
         return new ResponseEntity(response, HttpStatus.OK);
     }
 

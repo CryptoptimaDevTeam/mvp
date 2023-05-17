@@ -38,11 +38,20 @@ public class QUserExchangeRepository {
     public List<UserExchange> findUserExchangesByExchangeId(int size, Long exchangeId, Long lastUserExchangeId) {
         return jpaQueryFactory
                 .selectFrom(userExchange)
-                .where(ltUserExchangeId(lastUserExchangeId).and(userExchange.exchangeId.eq(exchangeId)))
+                .where(ltUserExchangeId(lastUserExchangeId).and(userExchange.exchange.exchangeId.eq(exchangeId)))
                 .orderBy(userExchange.userExchangeId.desc())
                 .limit(size)
                 .fetch();
     }
+
+    public UserExchange findUserExchangeByUserIdAndExchangeId(Long userId, Long exchangeId) {
+        return jpaQueryFactory
+                .selectFrom(userExchange)
+                .where(userExchange.user.userId.eq(userId).and(userExchange.exchange.exchangeId.eq(exchangeId)))
+                .fetchOne();
+    }
+
+    // TODO JOIN을 이용한 필요 칼럼만 뽑아오기
 
     private BooleanExpression ltUserExchangeId(Long lastUserExchangeId) {
         return lastUserExchangeId==null ? null : userExchange.userExchangeId.lt(lastUserExchangeId);

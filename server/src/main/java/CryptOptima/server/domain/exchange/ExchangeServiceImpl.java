@@ -8,9 +8,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ExchangeServiceImpl implements ExchangeService {
 
@@ -19,6 +21,7 @@ public class ExchangeServiceImpl implements ExchangeService {
     private final CustomBeanUtils<Exchange> beanUtils;
 
     @Override
+    @Transactional
     public ExchangeDto.Response createEcxhange(ExchangeDto.Create exchangeDto) {
         Exchange exchange = exchangeMapper.createExchangeDtoToExchange(exchangeDto);
         exchangeRepository.save(exchange);
@@ -26,6 +29,7 @@ public class ExchangeServiceImpl implements ExchangeService {
     }
 
     @Override
+    @Transactional
     public ExchangeDto.Response updateExchange(ExchangeDto.Update exchangeDto, Long exchangeId) {
         Exchange exchange = exchangeMapper.updateExchangeDtoToExchange(exchangeDto);
         Exchange updatingExchange = beanUtils.copyNonNullProperties(exchange, findExchangeById(exchangeId));
@@ -39,17 +43,17 @@ public class ExchangeServiceImpl implements ExchangeService {
     }
 
     @Override
-    public void deleteExchange(Long exchangeId) {
-        Exchange findExchange = findExchangeById(exchangeId);
-        exchangeRepository.delete(findExchange);
-    }
-
-    @Override // TODO QueryDSL 적용
     public List<ExchangeDto.Response> getExchanges(int page, int size) {
         List<Exchange> exchanges = exchangeRepository.findAll(
                 PageRequest.of(page,size, Sort.by("exchangeId").descending())
         ).getContent();
         return exchangeMapper.exchangesToExchangeResponseDtos(exchanges);
+    }
+
+    @Override
+    public void deleteExchange(Long exchangeId) {
+        Exchange findExchange = findExchangeById(exchangeId);
+        exchangeRepository.delete(findExchange);
     }
 
     private Exchange findExchangeById(Long exchangeId) {
