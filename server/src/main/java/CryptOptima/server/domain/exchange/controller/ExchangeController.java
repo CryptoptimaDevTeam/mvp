@@ -1,5 +1,7 @@
-package CryptOptima.server.domain.exchange;
+package CryptOptima.server.domain.exchange.controller;
 
+import CryptOptima.server.domain.exchange.service.ExchangeService;
+import CryptOptima.server.domain.exchange.dto.ExchangeDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

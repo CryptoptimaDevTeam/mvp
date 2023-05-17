@@ -1,4 +1,4 @@
-package CryptOptima.server.domain.exchange;
+package CryptOptima.server.domain.exchange.dto;
 
 
 import lombok.*;
@@ -8,7 +8,7 @@ public class ExchangeDto {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    static class Create {
+    public static class Create {
         private String exchangeName;
         private int exchangePossibleUserCount;
         private Float exchangePaybackRate;
@@ -18,7 +18,7 @@ public class ExchangeDto {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    static class Update {
+    public static class Update {
         private String exchangeName;
         private int exchangePossibleUserCount;
         private Float exchangePaybackRate;
@@ -27,7 +27,7 @@ public class ExchangeDto {
     @Getter
     @Setter
     @Builder
-    static class Response {
+    public static class Response {
         private Long exchangeId;
         private String exchangeName;
         private int exchangePossibleUserCount;

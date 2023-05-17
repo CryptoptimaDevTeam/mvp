@@ -1,5 +1,6 @@
-package CryptOptima.server.domain.exchange;
+package CryptOptima.server.domain.exchange.dto;
 
+import CryptOptima.server.domain.exchange.entity.Exchange;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.stream.Collectors;
 @Component
 public class ExchangeMapper {
 
-    Exchange createExchangeDtoToExchange(ExchangeDto.Create exchangeDto){
+    public Exchange createExchangeDtoToExchange(ExchangeDto.Create exchangeDto){
         return Exchange.builder()
                 .exchangeName(exchangeDto.getExchangeName())
                 .exchangePossibleUserCount(exchangeDto.getExchangePossibleUserCount())
@@ -17,7 +18,7 @@ public class ExchangeMapper {
                 .build();
     }
 
-    Exchange updateExchangeDtoToExchange(ExchangeDto.Update exchangeDto) {
+    public Exchange updateExchangeDtoToExchange(ExchangeDto.Update exchangeDto) {
         return Exchange.builder()
                 .exchangeName(exchangeDto.getExchangeName())
                 .exchangePossibleUserCount(exchangeDto.getExchangePossibleUserCount())
@@ -26,7 +27,7 @@ public class ExchangeMapper {
                 .build();
     }
 
-    ExchangeDto.Response exchangeToExchangeResponseDto(Exchange exchange) {
+    public ExchangeDto.Response exchangeToExchangeResponseDto(Exchange exchange) {
         return ExchangeDto.Response.builder()
                 .exchangeId(exchange.getExchangeId())
                 .exchangeName(exchange.getExchangeName())
@@ -36,7 +37,7 @@ public class ExchangeMapper {
                 .build();
     }
 
-    List<ExchangeDto.Response> exchangesToExchangeResponseDtos(List<Exchange> exchanges) {
+    public List<ExchangeDto.Response> exchangesToExchangeResponseDtos(List<Exchange> exchanges) {
         return exchanges.stream().map(
                 exchange -> exchangeToExchangeResponseDto(exchange)
         ).collect(Collectors.toList());
