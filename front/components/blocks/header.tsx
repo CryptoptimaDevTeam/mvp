@@ -30,7 +30,7 @@ export const Header: React.FC<HeaderPropsType> = () => {
   const dropdownClassName: string =
     "border-[1px] border-borderColor rounded-lg overflow-hidden bg-white shadow-[0_5px_20px_0_rgba(11,7,110,.04)] px-5 float-right mr-7 mt-[-5px]";
   return (
-    <div className="header-componentainer sticky top-0 z-50">
+    <div className="header-componentainer sticky top-0 z-50 min-w-[1248px]">
       <div className="relative">
         <header className="header-wrapper flex h-[70px] px-6 justify-between items-center shadow-[0_5px_20px_0_rgba(11,7,110,.04)] bg-white">
           <div className="logo-area cursor-pointer">
