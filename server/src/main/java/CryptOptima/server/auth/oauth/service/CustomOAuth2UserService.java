@@ -29,6 +29,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     private final UserAuthorityUtils authorityUtils;
 
     @Override
+    @Transactional
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
         OAuth2UserService<OAuth2UserRequest, OAuth2User> service = new DefaultOAuth2UserService();
@@ -39,15 +40,18 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         String registrationId = userRequest.getClientRegistration().getRegistrationId();    // 소셜 정보를 가져옵니다.
 
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, originAttributes);
+
         User user = saveOrUpdate(attributes);
         String accountId = user.getAccountId();
+        Long userId = user.getUserId();
+
         List<GrantedAuthority> authorities = authorityUtils.createAuthoritiesByGrade("USER");
 
-        return new OAuth2CustomUser(registrationId, originAttributes, authorities, accountId);
+        return new OAuth2CustomUser(registrationId, originAttributes, authorities, accountId, userId);
     }
 
     private User saveOrUpdate(OAuthAttributes authAttributes) {
-        log.info("email = {}", authAttributes.getEmail());
+//        log.info("email = {}", authAttributes.getEmail());
         User user = userRepository.findByAccountId(authAttributes.getEmail())
                 .orElse(authAttributes.toEntity());
         return userRepository.save(user);

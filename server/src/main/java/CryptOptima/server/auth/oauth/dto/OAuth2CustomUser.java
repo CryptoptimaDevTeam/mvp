@@ -16,6 +16,7 @@ public class OAuth2CustomUser implements OAuth2User, Serializable {
     private Map<String, Object> attributes;
     private List<GrantedAuthority> authorities;
     private String accountId;
+    private Long userId;
 
     @Override
     public Map<String, Object> getAttributes() {
@@ -35,4 +36,5 @@ public class OAuth2CustomUser implements OAuth2User, Serializable {
     public String getEmail() {
         return this.accountId;
     }
+    public Long getUserId() { return this.userId; }
 }
