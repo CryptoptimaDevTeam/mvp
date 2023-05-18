@@ -33,26 +33,27 @@ public class OAuth2UserSuccessHandler extends SimpleUrlAuthenticationSuccessHand
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         OAuth2CustomUser oAuth2User = (OAuth2CustomUser) authentication.getPrincipal();
         String accountId = oAuth2User.getEmail();
+        Long userId = oAuth2User.getUserId();
 
-//        saveUser(accountId);
-        redirect(request, response, accountId);
+//      saveUser(accountId);
+        redirect(request, response, accountId, userId);
     }
 
-    private void saveUser(String accountId) {
-        User user = User.builder()
-                .accountId(accountId)
-                .status("ACTIVE")
-                .paybackCumAmount("0")
-                .paybackFinishedAmount("0")
-                .paybackTotalRequestedAmount("0")
-                .build();
-
-        userService.createUser(user);
-    }
+//    private void saveUser(String accountId) {
+//        User user = User.builder()
+//                .accountId(accountId)
+//                .status("ACTIVE")
+//                .paybackCumAmount("0")
+//                .paybackFinishedAmount("0")
+//                .paybackTotalRequestedAmount("0")
+//                .build();
+//
+//        userService.createUser(user);
+//    }
 
     // TODO authorities 추가 가능성
-    private void redirect(HttpServletRequest request, HttpServletResponse response, String accountId) throws IOException {
-        String accessToken = delegateAccessToken(accountId);
+    private void redirect(HttpServletRequest request, HttpServletResponse response, String accountId, Long userId) throws IOException {
+        String accessToken = delegateAccessToken(accountId, userId);
         String refreshToken = delegateRefreshToken(accountId);
 
         String uri = createURI(accessToken, refreshToken).toString();
@@ -60,9 +61,10 @@ public class OAuth2UserSuccessHandler extends SimpleUrlAuthenticationSuccessHand
     }
 
     // TODO authorities 추가 가능성
-    private String delegateAccessToken(String accountId) {
+    private String delegateAccessToken(String accountId, Long userId) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("accountId", accountId);
+        claims.put("userId", userId);
         claims.put("grade","USER");
 
         String subject = accountId;
