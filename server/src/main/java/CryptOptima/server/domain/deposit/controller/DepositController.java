@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 public class DepositController {
@@ -24,14 +26,25 @@ public class DepositController {
      *  userId, exchangeId, startDate & endDate, coinId
      *  TODO startDate, endDate defaultValue 정하기
      */
-    @GetMapping("/server/managers/deposits")
-    public ResponseEntity getDeposits(@RequestParam(required = false, value = "userId") Long userId,
+
+    @GetMapping("/server/users/{user-id}/deposits")
+    public ResponseEntity getUserDeposits(@PathVariable("user-id") Long userId,
                                       @RequestParam(required = false, value = "exchangeId") Long exchangeId,
                                       @RequestParam(required = false, value = "coinId") Long coinId,
-                                      @RequestParam(required = false, value = "startDate") String startDate,
-                                      @RequestParam(required = false, value = "endDate") String endDate) {
+                                      @RequestParam(required = false, value = "startDate", defaultValue = "") String startDate,
+                                      @RequestParam(required = false, value = "endDate", defaultValue = "") String endDate) {
+        List<DepositDto.UserDeposit> response= depositService.getDepositsByUserId(userId, exchangeId, coinId, startDate, endDate);
+        return new ResponseEntity(response,HttpStatus.OK);
+    }
 
-        return new ResponseEntity(HttpStatus.OK);
+    @GetMapping("/server/managers/deposits")
+    public ResponseEntity getMngDeposits(@RequestParam(required = false, value = "userId") Long userId,
+                                      @RequestParam(required = false, value = "exchangeId") Long exchangeId,
+                                      @RequestParam(required = false, value = "coinId") Long coinId,
+                                      @RequestParam(required = false, value = "startDate", defaultValue = "") String startDate,
+                                      @RequestParam(required = false, value = "endDate", defaultValue = "") String endDate) {
+        List<DepositDto.MngDeposit> response= depositService.getDepositsByManger(userId, exchangeId, coinId, startDate, endDate);
+        return new ResponseEntity(response,HttpStatus.OK);
     }
 
     /**
