@@ -42,6 +42,8 @@ public class DepositRecord extends BaseTimeEntity {
     @Column(nullable = false)
     private String usdt; // USDT로 환산한 입금액. KST 09:00를 기준으로 계산한다.
 
+    // TODO 사용자 기준 시각 칼럼 추가하기
+
     public void changeUsdt() {
         BigDecimal coinPrice = new BigDecimal(this.coinPrice);
         BigDecimal depositAmount = new BigDecimal(this.depositAmount);
