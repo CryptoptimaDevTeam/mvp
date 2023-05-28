@@ -11,9 +11,11 @@ import CryptOptima.server.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class WithdrawalServiceImpl implements WithdrawalService{
 
@@ -23,16 +25,19 @@ public class WithdrawalServiceImpl implements WithdrawalService{
     private final QUserRepository qUserRepository;
 
     @Override
+    @Transactional
     public void createWithdrawal(WithdrawalDto.Create withdrawalDto, Long userId) {
         WithdrawalRecord withdrawal = withdrawalMapper.createWithdrawalDtoToWithdrawal(withdrawalDto);
         withdrawal.setUser(qUserRepository.findUserByUserId(userId));
+        withdrawal.isWithdrawalPossible();
+        withdrawal.plusPaybackTotalReqAmount();
         withdrawalRepository.save(withdrawal);
     }
 
     @Override
     public void updateWithdrawalStatus(String withdrawalStatus, Long withdrawalId) {
         WithdrawalRecord withdrawal = findWithdrawalByWithdrawalId(withdrawalId);
-        withdrawal.changeWithdrawalStatus(withdrawalStatus); // dirty-check
+        withdrawal.changeWithdrawalStatus(WithdrawalRecord.Status.valueOf(withdrawalStatus)); // dirty-check
     }
 
     @Override
