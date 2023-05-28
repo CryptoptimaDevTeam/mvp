@@ -50,4 +50,8 @@ public class DepositRecord extends BaseTimeEntity {
 
         this.usdt = (coinPrice.multiply(depositAmount)).toString();
     }
+
+    public void plusPaybackCumAmount() {
+        this.user.plusPaybackCumAmount(this.usdt);
+    }
 }

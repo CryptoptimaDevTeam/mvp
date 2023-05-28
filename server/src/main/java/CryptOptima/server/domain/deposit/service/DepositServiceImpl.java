@@ -30,7 +30,8 @@ public class DepositServiceImpl implements DepositService{
 
         deposit.setUser(userRepository.findUserByUserId(depositDto.getUserId()));
         deposit.setCoinPrice(coinRepository.findCoinPriceByCoinId(depositDto.getCoinId()));
-        deposit.changeUsdt();
+        deposit.changeUsdt();   // 입금액을 USDT로 환산한다.
+        deposit.plusPaybackCumAmount(); // User의 총 누적입금액을 증액한다.
 
         return depositMapper.depositToDepositMngDto(depositRepository.save(deposit));
     }
