@@ -33,7 +33,7 @@ public class WithdrawalRecord extends BaseTimeEntity {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Status withdrawalStatus = Status.REQUESTED; // required pending(txid update) complete cancel fail
+    private Status withdrawalStatus = Status.REQUESTED;
 
     public enum Status {
         REQUESTED, PENDING, COMPLETE, FAILED, CANCELED;
@@ -42,6 +42,11 @@ public class WithdrawalRecord extends BaseTimeEntity {
 //        Status(String message) {
 //            this.message = message;
 //        }
+    }
+
+    @PrePersist
+    public void setWithdrawalStatus() {
+        this.withdrawalStatus = this.withdrawalStatus == null ? Status.REQUESTED : this.withdrawalStatus;
     }
 
     // 출금내역 상태를 변경한다.
