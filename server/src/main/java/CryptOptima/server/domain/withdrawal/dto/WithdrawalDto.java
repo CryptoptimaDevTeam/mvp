@@ -6,6 +6,8 @@ public class WithdrawalDto {
 
     @Getter
     @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class Create {
         private Long exchangeId;
         private String reqAmount; // usdt
@@ -13,12 +15,16 @@ public class WithdrawalDto {
 
     @Getter
     @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class UpdateStatus {
         private String status;
     }
 
     @Getter
     @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class UpdateTxid {
         private String txid;
     }

@@ -22,6 +22,13 @@ public class WithdrawalController {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
+    @PatchMapping("/users/{user-id}/withdrawals/{withdrawal-id}/cancel")
+    public ResponseEntity changeWithdrawalStatus(@PathVariable("user-id")Long userId,
+                                                 @PathVariable("withdrawal-id") Long withdrawalId){
+        withdrawalService.updateWithdrawalStatus("CANCELED", withdrawalId);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     @PatchMapping("/managers/withdrawals/{withdrawal-id}/status")
     public ResponseEntity changeWithdrawalStatus(@PathVariable("withdrawal-id") Long withdrawalId,
                                                  @RequestBody WithdrawalDto.UpdateStatus withdrawalDto){
