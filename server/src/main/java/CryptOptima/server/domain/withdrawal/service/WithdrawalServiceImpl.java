@@ -47,19 +47,30 @@ public class WithdrawalServiceImpl implements WithdrawalService{
     }
 
     // TODO SortType & ASC/DESC 추가하기
-    public List<WithdrawalDto.UserWithdrawal> getUserWithdrawals(Long userId, Long exchangeId/*, String startDate, String endDate*/) {
-        if(exchangeId==null) return qWithdrawalRepository.findUserWithdrawalsByUserIdAndDate(userId/*, startDate, endDate*/);
-        else return qWithdrawalRepository.findUserWithdrawalsByUserIdAndExchangeIdAndDate(userId,exchangeId/*,startDate, endDate*/);
-    }
-
-    public List<WithdrawalDto.MngWithdrawal> getMngWithdrawals(Long userId, Long exchangeId/*, String startDate, String endDate*/) {
-        if(userId==null) {
-            if(exchangeId==null) return qWithdrawalRepository.findMngWithdrawalsByDate(/*startDate, endDate*/);
-            else return qWithdrawalRepository.findMngWithdrawalsByExchangeIdAndDate(exchangeId/*, startDate, endDate*/);
+    public List<WithdrawalDto.UserWithdrawal> getUserWithdrawals(Long userId, Long exchangeId, String status/*, String startDate, String endDate*/) {
+        if(exchangeId==null) {
+            if(status==null) return qWithdrawalRepository.findUserWithdrawalsByUserIdAndDate(userId/*, startDate, endDate*/);
+            else return qWithdrawalRepository.findUserWithdrawalsByUserIdAndStatusAndDate(userId,status/*, startDate, endDate*/);
         }
         else {
-            if(exchangeId==null) return qWithdrawalRepository.findMngWithdrawalsByUserIdAndDate(userId/*, startDate, endDate*/);
-            else return qWithdrawalRepository.findMngWithdrawalsByUserIdAndExchangeIdAndDate(userId,exchangeId/*, startDate, endDate*/);
+            if(status==null) return qWithdrawalRepository.findUserWithdrawalsByUserIdAndExchangeIdAndDate(userId,exchangeId/*, startDate, endDate*/);
+            return qWithdrawalRepository.findUserWithdrawalsByUserIdAndExchangeIdAndStatusAndDate(userId, exchangeId, status/*,startDate, endDate*/);
+        }
+    }
+
+    // userId, exchangeId, status, date를 기준으로 withdrawal을 조회한다.
+    public List<WithdrawalDto.MngWithdrawal> getMngWithdrawals(Long userId, Long exchangeId, String status/*, String startDate, String endDate*/) {
+        if(userId==null) {
+            if(exchangeId==null && status==null) return qWithdrawalRepository.findMngWithdrawalsByDate(/*startDate, endDate*/);
+            else if(exchangeId==null) return qWithdrawalRepository.findMngWithdrawalsByStatusAndDate(status/*, startDate, endDate*/);
+            else if(status==null) return qWithdrawalRepository.findMngWithdrawalsByExchangeIdAndDate(exchangeId/*, startDate, endDate*/);
+            else return qWithdrawalRepository.findMngWithdrawalsByExchangeIdAndStatusAndDate(exchangeId, status/*, startDate, endDate*/);
+        }
+        else {
+            if (exchangeId==null && status==null) return qWithdrawalRepository.findMngWithdrawalsByUserIdAndDate(userId/*, startDate, endDate*/);
+            else if(exchangeId==null) return qWithdrawalRepository.findMngWithdrawalsByUserIdAndStatusAndDate(userId, status/*, startDate, endDate*/);
+            else if(status==null) return qWithdrawalRepository.findMngWithdrawalsByUserIdAndExchangeIdAndDate(userId, exchangeId/*, startDate, endDate*/);
+            else return qWithdrawalRepository.findMngWithdrawalsByUserIdAndExchangeIdAndStatusAndDate(userId,exchangeId,status/*, startDate, endDate*/);
         }
     }
 

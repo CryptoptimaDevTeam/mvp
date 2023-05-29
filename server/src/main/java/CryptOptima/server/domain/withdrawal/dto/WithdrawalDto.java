@@ -1,5 +1,6 @@
 package CryptOptima.server.domain.withdrawal.dto;
 
+import CryptOptima.server.domain.withdrawal.entity.WithdrawalRecord;
 import lombok.*;
 
 public class WithdrawalDto {
@@ -39,7 +40,7 @@ public class WithdrawalDto {
         private Long exchangeId;
         private String reqAmount; // USDT
         private String txid;
-        private String withdrawalStatus;
+        private WithdrawalRecord.Status withdrawalStatus;
         private String createdAt;
     }
 
@@ -55,7 +56,7 @@ public class WithdrawalDto {
         private Long exchangeId;
         private String reqAmount; // USDT
         private String txid;
-        private String withdrawalStatus;
+        private WithdrawalRecord.Status withdrawalStatus;
         private String createdAt;
     }
 }

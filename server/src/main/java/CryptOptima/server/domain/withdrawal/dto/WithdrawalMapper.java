@@ -21,7 +21,7 @@ public class WithdrawalMapper {
                 .exchangeId(withdrawal.getExchangeId())
                 .reqAmount(withdrawal.getUsdt())
                 .txid(withdrawal.getTxid())
-                .withdrawalStatus(withdrawal.getWithdrawalStatus().name())
+                .withdrawalStatus(withdrawal.getWithdrawalStatus())
                 .build();
     }
 
@@ -33,7 +33,7 @@ public class WithdrawalMapper {
                 .exchangeId(withdrawal.getExchangeId())
                 .reqAmount(withdrawal.getUsdt())
                 .txid(withdrawal.getTxid())
-                .withdrawalStatus(withdrawal.getWithdrawalStatus().name())
+                .withdrawalStatus(withdrawal.getWithdrawalStatus())
                 .build();
     }
 
