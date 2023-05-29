@@ -1,7 +1,6 @@
 package CryptOptima.server.auth.oauth.handler;
 
 import CryptOptima.server.auth.jwt.JwtTokenizer;
-import CryptOptima.server.domain.user.User;
 import CryptOptima.server.domain.user.UserService;
 import CryptOptima.server.auth.oauth.dto.OAuth2CustomUser;
 import org.springframework.security.core.Authentication;
@@ -32,69 +31,60 @@ public class OAuth2UserSuccessHandler extends SimpleUrlAuthenticationSuccessHand
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         OAuth2CustomUser oAuth2User = (OAuth2CustomUser) authentication.getPrincipal();
-        String accountId = oAuth2User.getEmail();
+        Map<String, Object> attributes = oAuth2User.getAttributes();
         Long userId = oAuth2User.getUserId();
 
-//      saveUser(accountId);
-        redirect(request, response, accountId, userId);
+        redirect(request, response, userId, attributes);
     }
 
-//    private void saveUser(String accountId) {
-//        User user = User.builder()
-//                .accountId(accountId)
-//                .status("ACTIVE")
-//                .paybackCumAmount("0")
-//                .paybackFinishedAmount("0")
-//                .paybackTotalRequestedAmount("0")
-//                .build();
-//
-//        userService.createUser(user);
-//    }
+    private void redirect(HttpServletRequest request, HttpServletResponse response, Long userId, Map<String, Object> attributes) throws IOException {
+        // attribute 에서 email과 username을 꺼낸다.
+        String email = (String) attributes.get("email");
+        String username = (String) attributes.get("name");
 
-    // TODO authorities 추가 가능성
-    private void redirect(HttpServletRequest request, HttpServletResponse response, String accountId, Long userId) throws IOException {
-        String accessToken = delegateAccessToken(accountId, userId);
-        String refreshToken = delegateRefreshToken(accountId);
+        String accessToken = delegateAccessToken(email, userId);
+        String refreshToken = delegateRefreshToken(email);
 
-        String uri = createURI(accessToken, refreshToken).toString();
+        String uri = createURI(accessToken, refreshToken, userId, username, email).toString();
         getRedirectStrategy().sendRedirect(request, response, uri);
     }
 
-    // TODO authorities 추가 가능성
     private String delegateAccessToken(String accountId, Long userId) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("accountId", accountId);
-        claims.put("userId", userId);
-        claims.put("grade","USER");
+        claims.put("userId", userId); // userId
+        claims.put("accountId", accountId); // email(accountId)
+        claims.put("grade","USER"); // grade
 
-        String subject = accountId;
         Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes());
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
 
-        String accessToken = jwtTokenizer.generateAccessToken(claims, subject, expiration, base64EncodedSecretKey);
+        String accessToken = jwtTokenizer.generateAccessToken(claims, expiration, base64EncodedSecretKey);
 
         return accessToken;
     }
 
     private String delegateRefreshToken(String accountId) {
-        String subject = accountId;
         Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getRefreshTokenExpirationMinutes());
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
 
-        String refreshToken = jwtTokenizer.generateRefreshToken(subject, expiration, base64EncodedSecretKey);
+        String refreshToken = jwtTokenizer.generateRefreshToken(expiration, base64EncodedSecretKey);
         return refreshToken;
     }
 
-    private URI createURI(String accessToken, String refreshToken) {
+    private URI createURI(String accessToken, String refreshToken, Long userId, String email, String userName) {
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
+
         queryParams.add("access_token", accessToken);
         queryParams.add("refresh_token", refreshToken);
+        queryParams.add("user_id", String.valueOf(userId));
+        queryParams.add("username", String.valueOf(userName));
+        queryParams.add("email", String.valueOf(email));
 
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
                 .host("localhost")
-//                .port(80)
+                .port(3000)
                 .path("/oauth")
                 .queryParams(queryParams)
                 .build()

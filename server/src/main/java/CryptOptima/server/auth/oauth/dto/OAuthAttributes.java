@@ -1,6 +1,6 @@
 package CryptOptima.server.auth.oauth.dto;
 
-import CryptOptima.server.domain.user.User;
+import CryptOptima.server.domain.user.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -8,40 +8,42 @@ import lombok.ToString;
 import java.util.Map;
 
 /**
- * SNS로 부터 사용자 정보를 담아오는 객체
+ * SNS 별 공통 attributes를 뽑아낸다. email, username, attributes
  */
 @Getter
 @ToString
 public class OAuthAttributes {
-    private Map<String, Object> attributes;
-    private String nameAttributesKey;
     private String email;
-//  private String ageRange;
-//  private String gender;
+    private String username;
+    private Map<String, Object> attributes;
 
-    @Builder
-    public OAuthAttributes(Map<String, Object> attributes, String nameAttributesKey, String email) {
-        this.attributes = attributes;
-        this.nameAttributesKey = nameAttributesKey;
+    @Builder // 공통 생성자
+    public OAuthAttributes(Map<String, Object> attributes, String username, String email) {
         this.email = email;
+        this.username = username;
+        this.attributes = attributes;
     }
 
+    // SNS 별 생성자
     public static OAuthAttributes of(String sns, Map<String, Object> attributes) {
-        if("google".equals(sns)) return ofGoogle("sub", attributes);
-        return null;
+        if(sns.equals("google")) return ofGoogle(attributes);
+//        else if(sns.equals("twitter")) return ofTwitter(attributes);
+//        else return ofFacebook(attributes);
+        else return null;
     }
 
-    private static OAuthAttributes ofGoogle(String userNameAttributesKey, Map<String, Object> attributes) {
+    private static OAuthAttributes ofGoogle(Map<String, Object> attributes) {
         return OAuthAttributes.builder()
-                .nameAttributesKey(userNameAttributesKey)
-                .attributes(attributes)
                 .email((String) attributes.get("email"))
+                .username((String) attributes.get("name"))
+                .attributes(attributes)
                 .build();
     }
 
     public User toEntity() {
         return User.builder()
                 .accountId(email)
+                .username(username)
                 .status("ACTIVE")
                 .paybackCumAmount("0")
                 .paybackFinishedAmount("0")

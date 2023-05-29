@@ -12,11 +12,20 @@ import java.util.Map;
 @AllArgsConstructor
 public class OAuth2CustomUser implements OAuth2User, Serializable {
 
-    private String registrationId;
     private Map<String, Object> attributes;
     private List<GrantedAuthority> authorities;
     private String accountId;
     private Long userId;
+
+    private OAuth2CustomUser(Long userId, String accountId, List<GrantedAuthority> authorities) {
+        this.userId = userId;
+        this.accountId = accountId;
+        this.authorities = authorities;
+    }
+
+    public static OAuth2CustomUser of(Long userId, String accountId, List<GrantedAuthority> authorities) {
+        return new OAuth2CustomUser(userId, accountId, authorities);
+    }
 
     @Override
     public Map<String, Object> getAttributes() {
@@ -30,11 +39,8 @@ public class OAuth2CustomUser implements OAuth2User, Serializable {
 
     @Override
     public String getName() {
-        return this.registrationId;
-    }
-
-    public String getEmail() {
         return this.accountId;
     }
+
     public Long getUserId() { return this.userId; }
 }
