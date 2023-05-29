@@ -57,7 +57,7 @@ public class QDepositRepository {
                 .from(depositRecord)
                 .where(depositRecord.user.userId.eq(userId)
                         .and(depositRecord.exchangeId.eq(exchangeId))
-//                        .and(dateTimeFormat.between(startDate, endDate))
+//                        .and(dateFormat.between(startDate, endDate))
                 )
                 .fetch();
     }
@@ -70,7 +70,7 @@ public class QDepositRepository {
                 .from(depositRecord)
                 .where(depositRecord.user.userId.eq(userId)
                         .and(depositRecord.coinId.eq(coinId))
-//                        .and(dateTimeFormat.between(startDate, endDate))
+//                        .and(dateFormat.between(startDate, endDate))
                 )
                 .fetch();
     }
@@ -82,7 +82,7 @@ public class QDepositRepository {
                         depositRecord.depositAmount,depositRecord.usdt, dateTimeFormat))
                 .from(depositRecord)
                 .where(depositRecord.user.userId.eq(userId)
-//                        .and(dateTimeFormat.between(startDate, endDate))
+//                        .and(dateFormat.between(startDate, endDate))
                 )
                 .fetch();
     }
@@ -108,7 +108,7 @@ public class QDepositRepository {
                 .from(depositRecord)
                 .where(depositRecord.user.userId.eq(userId)
                         .and(depositRecord.exchangeId.eq(exchangeId))
-//                        .and(dateTimeFormat.between(startDate, endDate))
+//                        .and(dateFormat.between(startDate, endDate))
                 )
                 .fetch();
     }
@@ -121,7 +121,7 @@ public class QDepositRepository {
                 .from(depositRecord)
                 .where(depositRecord.user.userId.eq(userId)
                                 .and(depositRecord.exchangeId.eq(coinId))
-//                        .and(dateTimeFormat.between(startDate, endDate))
+//                        .and(dateFormat.between(startDate, endDate))
                 )
                 .fetch();
     }
@@ -133,7 +133,7 @@ public class QDepositRepository {
                         depositRecord.coinId, depositRecord.coinPrice,depositRecord.depositAmount,depositRecord.usdt, dateTimeFormat))
                 .from(depositRecord)
                 .where(depositRecord.user.userId.eq(userId)
-//                        .and(dateTimeFormat.between(startDate, endDate))
+//                        .and(dateFormat.between(startDate, endDate))
                 )
                 .fetch();
     }
@@ -146,7 +146,7 @@ public class QDepositRepository {
                 .from(depositRecord)
                 .where(depositRecord.exchangeId.eq(exchangeId)
                         .and(depositRecord.coinId.eq(coinId))
-//                        .and(dateTimeFormat.between(startDate, endDate))
+//                        .and(dateFormat.between(startDate, endDate))
                 )
                 .fetch();
     }
@@ -157,7 +157,7 @@ public class QDepositRepository {
                 depositRecord.coinId, depositRecord.coinPrice,depositRecord.depositAmount,depositRecord.usdt, dateTimeFormat))
                 .from(depositRecord)
                 .where(depositRecord.exchangeId.eq(exchangeId)
-//                        .and(dateTimeFormat.between(startDate,endDate))
+//                        .and(dateFormat.between(startDate,endDate))
                 )
                 .fetch();
     }
@@ -169,7 +169,7 @@ public class QDepositRepository {
                         depositRecord.coinId, depositRecord.coinPrice,depositRecord.depositAmount,depositRecord.usdt, dateTimeFormat))
                 .from(depositRecord)
                 .where(depositRecord.coinId.eq(coinId)
-//                        .and(dateTimeFormat.between(startDate,endDate))
+//                        .and(dateFormat.between(startDate,endDate))
                 )
                 .fetch();
     }
@@ -181,7 +181,7 @@ public class QDepositRepository {
                         depositRecord.coinId, depositRecord.coinPrice,depositRecord.depositAmount,depositRecord.usdt, dateTimeFormat))
                 .from(depositRecord)
                 .where(
-//                        dateTimeFormat.between(startDate,endDate))
+//                        dateFormat.between(startDate,endDate))
                 )
                 .fetch();
     }

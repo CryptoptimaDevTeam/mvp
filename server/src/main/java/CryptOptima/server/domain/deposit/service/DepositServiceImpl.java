@@ -37,7 +37,7 @@ public class DepositServiceImpl implements DepositService{
     }
 
     @Override
-    public List<DepositDto.UserDeposit> getDepositsByUserId(Long userId, Long exchangeId, Long coinId, String startDate, String endDate) {
+    public List<DepositDto.UserDeposit> getUserDeposits(Long userId, Long exchangeId, Long coinId, String startDate, String endDate) {
         if(coinId==null && exchangeId==null) return qDepositRepository.findUserDepositsByUserIdAndDate(userId);
         else if(coinId==null) return qDepositRepository.findUserDepositsByUserIdAndExchangeIdAndDate(userId,exchangeId);
         else if(exchangeId==null) return qDepositRepository.findUserDepositsByUserIdAndCoinIdAndDate(userId,coinId);
@@ -45,7 +45,7 @@ public class DepositServiceImpl implements DepositService{
     }
 
     @Override
-    public List<DepositDto.MngDeposit> getDepositsByManger(Long userId, Long exchangeId, Long coinId, String startDate, String endDate) {
+    public List<DepositDto.MngDeposit> getMngDeposits(Long userId, Long exchangeId, Long coinId, String startDate, String endDate) {
         if(userId!=null) {
             if (coinId == null && exchangeId == null) return qDepositRepository.findDepositsByUserIdAndDate(userId);
             else if (coinId == null) return qDepositRepository.findDepositsByUserIdAndExchangeIdAndDate(userId, exchangeId);

@@ -33,7 +33,7 @@ public class DepositController {
                                       @RequestParam(required = false, value = "coinId") Long coinId,
                                       @RequestParam(required = false, value = "startDate", defaultValue = "") String startDate,
                                       @RequestParam(required = false, value = "endDate", defaultValue = "") String endDate) {
-        List<DepositDto.UserDeposit> response= depositService.getDepositsByUserId(userId, exchangeId, coinId, startDate, endDate);
+        List<DepositDto.UserDeposit> response= depositService.getUserDeposits(userId, exchangeId, coinId, startDate, endDate);
         return new ResponseEntity(response,HttpStatus.OK);
     }
 
@@ -43,7 +43,7 @@ public class DepositController {
                                       @RequestParam(required = false, value = "coinId") Long coinId,
                                       @RequestParam(required = false, value = "startDate", defaultValue = "") String startDate,
                                       @RequestParam(required = false, value = "endDate", defaultValue = "") String endDate) {
-        List<DepositDto.MngDeposit> response= depositService.getDepositsByManger(userId, exchangeId, coinId, startDate, endDate);
+        List<DepositDto.MngDeposit> response= depositService.getMngDeposits(userId, exchangeId, coinId, startDate, endDate);
         return new ResponseEntity(response,HttpStatus.OK);
     }
 
