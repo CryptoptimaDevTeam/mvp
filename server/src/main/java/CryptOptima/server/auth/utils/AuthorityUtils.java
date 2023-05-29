@@ -1,4 +1,4 @@
-package CryptOptima.server.auth.oauth.utils;
+package CryptOptima.server.auth.utils;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -7,14 +7,20 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// TODO 추후 user 등급 생성 시 변경 가능.
+// Authentication 객체에 담길 권한을 생성한다.
 @Component
-public class UserAuthorityUtils {
+public class AuthorityUtils {
+    private final List<String> KING_ROLES_STRING = List.of("KING","MASTER","MANAGER");
+    private final List<String> MASTER_ROLES_STRING = List.of("MASTER","MANAGER");
+    private final List<String> MANAGER_ROLES_STRING = List.of("MANAGER");
     private final List<String> USER_ROLES_STRING = List.of("USER");
 
+
     public List<GrantedAuthority> createAuthoritiesByGrade(String grade) {
-        if(grade.equals("USER")) return createAuthorities(USER_ROLES_STRING);
-        else return null;
+        if(grade.equals("KING")) return createAuthorities(KING_ROLES_STRING);
+        else if(grade.equals("MASTER")) return createAuthorities(MASTER_ROLES_STRING);
+        else if(grade.equals("MANAGER")) return createAuthorities(MANAGER_ROLES_STRING);
+        else return createAuthorities(USER_ROLES_STRING);
     }
 
     // DB에 저장된 List<String> roles 를 기반으로 List<GrantedAuthority>를 생성한다.

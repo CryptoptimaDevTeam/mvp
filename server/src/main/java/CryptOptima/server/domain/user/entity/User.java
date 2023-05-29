@@ -38,6 +38,9 @@ public class User extends BaseTimeEntity {
     private String accountId; // 회원 이메일(아이디)
 
     @Column(nullable = false)
+    private String username;
+
+    @Column(nullable = false)
     private String status; // 회원 상태(active, dormant, ban)
 
     @OneToMany(mappedBy = "user")
