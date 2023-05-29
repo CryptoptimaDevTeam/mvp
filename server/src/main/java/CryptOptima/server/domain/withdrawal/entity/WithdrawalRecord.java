@@ -37,11 +37,6 @@ public class WithdrawalRecord extends BaseTimeEntity {
 
     public enum Status {
         REQUESTED, PENDING, COMPLETE, FAILED, CANCELED;
-
-//        private String message;
-//        Status(String message) {
-//            this.message = message;
-//        }
     }
 
     @PrePersist

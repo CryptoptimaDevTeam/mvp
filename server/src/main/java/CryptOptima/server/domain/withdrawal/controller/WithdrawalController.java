@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/server")
@@ -45,5 +47,26 @@ public class WithdrawalController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    // TODO GetMapping 추가
+    @GetMapping("/users/{user-id}/withdrawals")
+    public ResponseEntity getUserWithdrawals(@PathVariable("user-id") Long userId,
+                                             @RequestParam(required = false, value = "exchangeId") Long exchangeId,
+                                             @RequestParam(required = false, value = "status") String status,
+                                             @RequestParam(required = false, value = "startDate", defaultValue = "") String startDate,
+                                             @RequestParam(required = false, value = "endDate", defaultValue = "") String endDate) {
+
+        List<WithdrawalDto.UserWithdrawal> response = withdrawalService.getUserWithdrawals(userId,exchangeId,status/*, startDate, endDate*/);
+        return new ResponseEntity(response, HttpStatus.OK);
+    }
+
+    // TODO sort asc/desc
+    @GetMapping("/managers/withdrawals")
+    public ResponseEntity getMngWithdrawals(@RequestParam(required = false, value = "userId") Long userId,
+                                            @RequestParam(required = false, value = "exchangeId") Long exchangeId,
+                                            @RequestParam(required = false, value = "status") String status,
+                                            @RequestParam(required = false, value = "startDate", defaultValue = "") String startDate,
+                                            @RequestParam(required = false, value = "endDate", defaultValue = "") String endDate) {
+
+        List<WithdrawalDto.MngWithdrawal> response = withdrawalService.getMngWithdrawals(userId, exchangeId, status/*, startDate, endDate*/);
+        return new ResponseEntity(response, HttpStatus.OK);
+    }
 }
