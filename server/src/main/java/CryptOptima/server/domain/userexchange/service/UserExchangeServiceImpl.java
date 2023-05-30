@@ -1,9 +1,9 @@
 package CryptOptima.server.domain.userexchange.service;
 
-import CryptOptima.server.domain.exchange.Exchange;
-import CryptOptima.server.domain.exchange.ExchangeRepository;
-import CryptOptima.server.domain.user.User;
-import CryptOptima.server.domain.user.UserRepository;
+import CryptOptima.server.domain.exchange.entity.Exchange;
+import CryptOptima.server.domain.exchange.repository.ExchangeRepository;
+import CryptOptima.server.domain.user.entity.User;
+import CryptOptima.server.domain.user.repository.UserRepository;
 import CryptOptima.server.domain.userexchange.dto.UserExchangeDto;
 import CryptOptima.server.domain.userexchange.dto.UserExchangeMapper;
 import CryptOptima.server.domain.userexchange.entity.UserExchange;
