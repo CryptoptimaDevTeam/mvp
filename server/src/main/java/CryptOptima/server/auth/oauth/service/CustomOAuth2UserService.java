@@ -1,10 +1,10 @@
 package CryptOptima.server.auth.oauth.service;
 
-import CryptOptima.server.domain.user.User;
+import CryptOptima.server.auth.utils.AuthorityUtils;
+import CryptOptima.server.domain.user.entity.User;
 import CryptOptima.server.domain.user.UserRepository;
 import CryptOptima.server.auth.oauth.dto.OAuth2CustomUser;
 import CryptOptima.server.auth.oauth.dto.OAuthAttributes;
-import CryptOptima.server.auth.oauth.utils.UserAuthorityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
@@ -26,7 +26,7 @@ import java.util.Map;
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final UserRepository userRepository;
-    private final UserAuthorityUtils authorityUtils;
+    private final AuthorityUtils authorityUtils;
 
     @Override
     @Transactional
@@ -35,25 +35,27 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         OAuth2UserService<OAuth2UserRequest, OAuth2User> service = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = service.loadUser(userRequest);
 
-        Map<String, Object> originAttributes = oAuth2User.getAttributes();  // OAuth2User의 attribute
+        Map<String, Object> originAttributes = oAuth2User.getAttributes();  // OAuth2User의 오리지널 attribute
 
-        String registrationId = userRequest.getClientRegistration().getRegistrationId();    // 소셜 정보를 가져옵니다.
+        String registrationId = userRequest.getClientRegistration().getRegistrationId();    // 소셜 정보를 가져온 후
+        OAuthAttributes attributes = OAuthAttributes.of(registrationId, originAttributes);  // sns 별 공통 attribute로 추출한다.
 
-        OAuthAttributes attributes = OAuthAttributes.of(registrationId, originAttributes);
-
-        User user = saveOrUpdate(attributes);
-        String accountId = user.getAccountId();
-        Long userId = user.getUserId();
+        User user = saveOrUpdate(attributes, registrationId);
+        String accountId = user.getAccountId(); // DB에 저장한 객체의 email
+        Long userId = user.getUserId(); // DB에 저장한 객체의 userId(PK)
 
         List<GrantedAuthority> authorities = authorityUtils.createAuthoritiesByGrade("USER");
 
-        return new OAuth2CustomUser(registrationId, originAttributes, authorities, accountId, userId);
+        return new OAuth2CustomUser(originAttributes, authorities, accountId, userId);
     }
 
-    private User saveOrUpdate(OAuthAttributes authAttributes) {
-//        log.info("email = {}", authAttributes.getEmail());
-        User user = userRepository.findByAccountId(authAttributes.getEmail())
-                .orElse(authAttributes.toEntity());
-        return userRepository.save(user);
+    private User saveOrUpdate(OAuthAttributes authAttributes, String registrationId) {
+        User user = authAttributes.toEntity(registrationId); // 새로 생성한 user
+
+        User findUser = userRepository.findByAccountId(authAttributes.getEmail())
+                .orElseGet(() -> userRepository.save(user));   // DB에 없다면 새로 생성한 user를 저장한다.
+
+        findUser.updateUser(user); // 기존 user(findUser)와 새로 생성한 user가 다르다면, 업데이트 한다.
+        return findUser; // orElseGet 구문에 의해 새롭게 생성된 user 이거나, updateUser에 의해 업데이트 된 user 가 된다.
     }
 }

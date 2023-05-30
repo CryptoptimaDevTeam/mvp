@@ -34,6 +34,9 @@ public class User extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userId;
 
+    @Column(nullable = false)
+    private String registrationId;
+
     @Column(nullable = false, unique = true)
     private String accountId; // 회원 이메일(아이디)
 
@@ -109,6 +112,16 @@ public class User extends BaseTimeEntity {
         }
         else return true;
         // 출금가능액 - 총 출금요청액 < 현재 요청액 -> false
+    }
+
+    // 현재는 변동가능 attribute 중 username만 취급한다.
+    private boolean isSame(User user) {
+        return this.username.equals(user.getUsername());
+    }
+
+    // OAuth2 attribute 변동사항 검사를 위한 메서드, loadUser에서 사용 됨.
+    public void updateUser(User user) {
+        if(!isSame(user)) this.username = user.getUsername();
     }
 
     // 사용자의 접속 ip주소 리스트를 넣어두기 -> 추후 사용자 분석 데이터로 활용

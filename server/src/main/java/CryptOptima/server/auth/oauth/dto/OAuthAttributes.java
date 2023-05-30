@@ -40,9 +40,10 @@ public class OAuthAttributes {
                 .build();
     }
 
-    public User toEntity() {
+    public User toEntity(String registrationId) {
         return User.builder()
                 .accountId(email)
+                .registrationId(registrationId)
                 .username(username)
                 .status("ACTIVE")
                 .paybackCumAmount("0")
