@@ -1,5 +1,6 @@
-package CryptOptima.server.domain.user;
+package CryptOptima.server.domain.user.repository;
 
+import CryptOptima.server.domain.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

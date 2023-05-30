@@ -2,7 +2,7 @@ package CryptOptima.server.auth.oauth.service;
 
 import CryptOptima.server.auth.utils.AuthorityUtils;
 import CryptOptima.server.domain.user.entity.User;
-import CryptOptima.server.domain.user.UserRepository;
+import CryptOptima.server.domain.user.repository.UserRepository;
 import CryptOptima.server.auth.oauth.dto.OAuth2CustomUser;
 import CryptOptima.server.auth.oauth.dto.OAuthAttributes;
 import lombok.RequiredArgsConstructor;

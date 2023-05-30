@@ -1,4 +1,4 @@
-package CryptOptima.server.domain.user;
+package CryptOptima.server.domain.user.repository;
 
 import CryptOptima.server.domain.user.entity.User;
 import com.querydsl.jpa.impl.JPAQueryFactory;
