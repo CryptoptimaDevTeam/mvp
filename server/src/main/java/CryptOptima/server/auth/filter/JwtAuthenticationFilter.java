@@ -41,6 +41,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 new UsernamePasswordAuthenticationToken(loginDto.getAccountId(), loginDto.getPassword());
 
         // 1-2. AuthenticationManager에게 전달 & 인증완료된 Authentication 객체 리턴
+        // ManagerDetails(UserDetails) = username + password + authorities 를 리턴함.
         Authentication authResult = authenticationManager.authenticate(authenticationToken); // (= authResult)
         return authResult;
     }
@@ -66,27 +67,24 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     // accessToken 발급을 jwtTokenizer에게 위임.
     private String delegateAccessToken(Manager manager) {
         Map<String,Object> claims = new HashMap<>();
-        claims.put("accountId", manager.getAccountId());
-        claims.put("password", manager.getPassword());
-        claims.put("grade", manager.getManagerGrade());
-//      claims.put("roles",manager.getRoles()); // select문 추가 발생
+        claims.put("managerId",manager.getManagerId()); // managerId
+        claims.put("accountId", manager.getAccountId()); // managerAccountId
+        claims.put("grade", manager.getManagerGrade()); // grade
 
-        String subject = manager.getAccountId();
         Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes());
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
 
-        String accessToken = jwtTokenizer.generateAccessToken(claims,subject,expiration,base64EncodedSecretKey);
+        String accessToken = jwtTokenizer.generateAccessToken(claims,expiration,base64EncodedSecretKey);
 
         return accessToken;
     }
 
     // refreshToken 발급을 jwtTokenizer에게 위임.
     private String delegateRefreshToken(Manager manager) {
-        String subject = manager.getAccountId();
         Date expiration = jwtTokenizer.getTokenExpiration(jwtTokenizer.getRefreshTokenExpirationMinutes());
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
 
-        String refreshToken = jwtTokenizer.generateRefreshToken(subject,expiration,base64EncodedSecretKey);
+        String refreshToken = jwtTokenizer.generateRefreshToken(expiration,base64EncodedSecretKey);
 
         return refreshToken;
     }
