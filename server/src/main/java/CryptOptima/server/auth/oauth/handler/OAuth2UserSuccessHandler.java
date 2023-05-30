@@ -1,7 +1,7 @@
 package CryptOptima.server.auth.oauth.handler;
 
 import CryptOptima.server.auth.jwt.JwtTokenizer;
-import CryptOptima.server.domain.user.UserService;
+import CryptOptima.server.domain.user.service.UserService;
 import CryptOptima.server.auth.oauth.dto.OAuth2CustomUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;

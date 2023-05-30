@@ -1,4 +1,4 @@
-package CryptOptima.server.domain.user;
+package CryptOptima.server.domain.user.dto;
 
 import lombok.*;
 
@@ -17,14 +17,14 @@ public class UserDto {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    static class Update {
+    public static class Update {
         private String status;
     }
 
     @Getter
     @Setter
     @Builder
-    static class Response {
+    public static class Response {
         private long userId;
         private String accountId;
         private String sns;

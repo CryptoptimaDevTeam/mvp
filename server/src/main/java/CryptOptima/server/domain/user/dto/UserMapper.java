@@ -1,5 +1,6 @@
-package CryptOptima.server.domain.user;
+package CryptOptima.server.domain.user.dto;
 
+import CryptOptima.server.domain.user.dto.UserDto;
 import CryptOptima.server.domain.user.entity.User;
 import org.springframework.stereotype.Component;
 
@@ -8,13 +9,13 @@ import java.util.stream.Collectors;
 
 @Component
 public class UserMapper {
-    User updateUserDtoToUser(UserDto.Update userDto) {
+    public User updateUserDtoToUser(UserDto.Update userDto) {
         return User.builder()
                 .status(userDto.getStatus())
                 .build();
     }
 
-    UserDto.Response userToUserResponseDto(User user) {
+    public UserDto.Response userToUserResponseDto(User user) {
         return UserDto.Response.builder()
                 .userId(user.getUserId())
                 .sns(user.getRegistrationId())
@@ -27,7 +28,7 @@ public class UserMapper {
                 .build();
     }
 
-    List<UserDto.Response> usersToUserResponseDtos(List<User> users) {
+    public List<UserDto.Response> usersToUserResponseDtos(List<User> users) {
         return users.stream().map(
                 user -> userToUserResponseDto(user)
         ).collect(Collectors.toList());
