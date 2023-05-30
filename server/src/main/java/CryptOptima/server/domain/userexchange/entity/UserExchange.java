@@ -1,8 +1,8 @@
 package CryptOptima.server.domain.userexchange.entity;
 
 import CryptOptima.server.domain.BaseTimeEntity;
-import CryptOptima.server.domain.exchange.Exchange;
-import CryptOptima.server.domain.user.User;
+import CryptOptima.server.domain.exchange.entity.Exchange;
+import CryptOptima.server.domain.user.entity.User;
 import lombok.*;
 
 import javax.persistence.*;

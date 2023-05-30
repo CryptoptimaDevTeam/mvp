@@ -40,8 +40,9 @@ public class ExchangeController {
     }
 
     @GetMapping
-    ResponseEntity getExchanges(@RequestParam("page") int page, @RequestParam(value ="size") int size) {
-        List<ExchangeDto.Response> response = exchangeService.getExchanges(page, size);
+    ResponseEntity getExchanges(@RequestParam(value = "page", defaultValue = "1") int page,
+                                @RequestParam(value ="size", defaultValue = "20") int size) {
+        List<ExchangeDto.Response> response = exchangeService.getExchanges(page-1, size);
         return new ResponseEntity(response, HttpStatus.OK);
     }
 
