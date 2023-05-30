@@ -1,7 +1,9 @@
 package CryptOptima.server.auth.filter;
 
 import CryptOptima.server.auth.jwt.JwtTokenizer;
-import CryptOptima.server.auth.utils.ManagerAuthorityUtils;
+import CryptOptima.server.auth.managerdetails.ManagerDetails;
+import CryptOptima.server.auth.oauth.dto.OAuth2CustomUser;
+import CryptOptima.server.auth.utils.AuthorityUtils;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,9 +22,9 @@ import java.util.Map;
 
 public class JwtVerificationFilter extends OncePerRequestFilter {
     private final JwtTokenizer jwtTokenizer;
-    private final ManagerAuthorityUtils authorityUtils;
+    private final AuthorityUtils authorityUtils;
 
-    public JwtVerificationFilter(JwtTokenizer jwtTokenizer, ManagerAuthorityUtils authorityUtils) {
+    public JwtVerificationFilter(JwtTokenizer jwtTokenizer, AuthorityUtils authorityUtils) {
         this.jwtTokenizer = jwtTokenizer;
         this.authorityUtils = authorityUtils;
     }
@@ -48,7 +50,10 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String authorization = request.getHeader("Authorization"); // JWT 토큰을 가져온다.
-        return authorization == null || !authorization.startsWith("Bearer"); // 토큰에 문제가 있으면 true를 리턴한다.
+        if(authorization == null || !authorization.startsWith("Bearer")){
+            return true;
+        } // 토큰에 문제가 있으면 true를 리턴한다.
+        return false;
     }
 
     // 3. Signature가 포함된 JWT를 검증(서명을 검증)하고, JWT에 담긴 claims를 가져온다.
@@ -62,9 +67,31 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
     // 4. 서명 검증이 완료된 JWT에서 accountId를 뽑아 SecurityContext에 저장(Authentication을)한다.
     private void setAuthenticationToContext(Map<String, Object> claims) {
-        String accountId = (String) claims.get("accountId"); // Principal 인 accountId 를 얻어옴.
-        List<GrantedAuthority> authorities = authorityUtils.createAuthoritiesByGrade((String) claims.get("grade")); // authorities를 얻어옴.
-        Authentication authentication = new UsernamePasswordAuthenticationToken(accountId, null, authorities);
+
+        Authentication authentication;
+
+        // 1. grade를 꺼낸다.
+        String grade = (String) claims.get("grade");
+
+        // 2. user라면 userId와 accountId, authorities 를 담은 OAuth2CustomUser 객체를 생성한다.
+        if(grade.equals("USER")) {
+            Long userId = Long.valueOf((Integer) claims.get("userId")); // JWT claim에서 숫자를 가져올 때 Integer 타입으로 가져온다.
+            String accountId = (String) claims.get("accountId");
+            List<GrantedAuthority> authorities = authorityUtils.createAuthoritiesByGrade(grade);
+
+            OAuth2CustomUser authUser = OAuth2CustomUser.of(userId, accountId, authorities);
+            authentication = new UsernamePasswordAuthenticationToken(authUser, null, authorities);
+        }
+        // 3. 아니라면 managerId와 accountId, authorities 를 담은 ManagerDetails 객체를 생성한다.
+        else {
+            Long managerId = Long.valueOf((Integer)claims.get("managerId"));
+            String accountId = (String) claims.get("accountId");
+            List<GrantedAuthority> authorities = authorityUtils.createAuthoritiesByGrade(grade);
+
+            ManagerDetails authManager = ManagerDetails.of(managerId, accountId, authorities);
+            authentication = new UsernamePasswordAuthenticationToken(authManager, null, authorities);
+        }
+
         SecurityContextHolder.getContext().setAuthentication(authentication); // SecurityContext에 저장
     }
 }

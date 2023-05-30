@@ -1,8 +1,7 @@
 package CryptOptima.server.global.config;
 
-import CryptOptima.server.domain.user.UserService;
+import CryptOptima.server.domain.user.service.UserService;
 import CryptOptima.server.auth.oauth.handler.OAuth2UserSuccessHandler;
-//import CryptOptima.server.oauth.service.CustomOAuth2UserService;
 import CryptOptima.server.auth.filter.JwtAuthenticationFilter;
 import CryptOptima.server.auth.filter.JwtVerificationFilter;
 import CryptOptima.server.auth.handler.ManagerAccessDeniedHandler;
@@ -10,7 +9,7 @@ import CryptOptima.server.auth.handler.ManagerAuthenticationEntryPoint;
 import CryptOptima.server.auth.handler.ManagerAuthenticationFailureHandler;
 import CryptOptima.server.auth.handler.ManagerAuthenticationSuccessHandler;
 import CryptOptima.server.auth.jwt.JwtTokenizer;
-import CryptOptima.server.auth.utils.ManagerAuthorityUtils;
+import CryptOptima.server.auth.utils.AuthorityUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -33,11 +32,10 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfig {
 
     private final JwtTokenizer jwtTokenizer;
-    private final ManagerAuthorityUtils authorityUtils; // JwtVerificationFilter에서 Authentication 객체를 생성할 때 authorities를 생성하기 위해 필요.
+    private final AuthorityUtils authorityUtils; // JwtVerificationFilter에서 Authentication 객체를 생성할 때 authorities를 생성하기 위해 필요.
     private final UserService userService;
-//    private final CustomOAuth2UserService customOAuth2UserService;
 
-    public SecurityConfig(JwtTokenizer jwtTokenizer, ManagerAuthorityUtils authorityUtils, UserService userService) {
+    public SecurityConfig(JwtTokenizer jwtTokenizer, AuthorityUtils authorityUtils, UserService userService) {
         this.jwtTokenizer = jwtTokenizer;
         this.authorityUtils = authorityUtils;
         this.userService = userService;
@@ -97,7 +95,7 @@ public class SecurityConfig {
 
             // JwtAuthenticationFilter: UsernamePasswordAuthenticationFilter를 확장한 필터로, 로그인 인증 완료 시 JWT를 발급한다.
             JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer);
-            jwtAuthenticationFilter.setFilterProcessesUrl("/managers/login");
+            jwtAuthenticationFilter.setFilterProcessesUrl("/server/managers/login");
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(new ManagerAuthenticationSuccessHandler());
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new ManagerAuthenticationFailureHandler());
 
