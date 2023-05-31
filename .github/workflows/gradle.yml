@@ -1,0 +1,70 @@
+name: Java CI with Gradle
+
+on:
+  push:
+    branches: # 다음 브랜치에 push event 발생 시 배포 자동화
+      - back 
+    paths:    # 다음 패키지 경로에 push event 발생 시 배포 자동화
+      - server/**
+      - .github/**
+  
+permissions:
+  contents: read
+
+env:
+  S3_BUCKET_NAME: cryptoptima-s3-bucket
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./server # run 작업 경로를 server 디렉토리로 설정
+    
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+
+    # jasypt 암호화 패스워드를 secrets에서 가져와 대체함
+    - name: Complete yaml
+      uses: microsoft/variable-substitution@v1
+      with:
+        files: ./server/src/main/resources/application-server.yml
+      env:
+        jasypt.encryptor.key: ${{ secrets.JASYPT_KEY }}
+    
+    - name: Build with Gradle
+      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+      with:
+        arguments: build
+        build-root-directory: ./server
+        
+    # 빌드 후 파일을 압축
+    - name: Make .zip file
+      run: zip -r ./server-deploy.zip .
+      shell: bash
+      
+    # S3와 CodeDeploy 접근 위한 IAM 계정 권한을 확인
+    - name: Configure AWS IAM credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-northeast-2
+      
+    # 압축한 파일을 S3로 전송
+    - name: Upload to S3
+      run: aws s3 cp --region ap-northeast-2 ./server-deploy.zip s3://$S3_BUCKET_NAME/server-deploy.zip
+      
+    # CodeDeploy에게 배포를 명령
+    - name: CodeDeploy
+      run: >
+        aws deploy create-deployment --aplication-name cryptoptima
+        --deployment-config-name CodeDeployDefault.AllAtOnce
+        --deployment-group-name cryptoptima-codedeploy-group
+        --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=server.deploy.zip
