@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/managers")
+@RequestMapping("/server/managers")
 public class ManagerController {
 
     private final ManagerService managerService;

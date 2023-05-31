@@ -1,5 +1,7 @@
 package CryptOptima.server.domain.manager;
 
+import CryptOptima.server.global.exception.BusinessLogicException;
+import CryptOptima.server.global.exception.ExceptionCode;
 import CryptOptima.server.global.utils.CustomBeanUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -7,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -56,9 +57,7 @@ public class ManagerServiceImpl implements ManagerService{
         String encryptedPassword = passwordEncoder.encode(manager.getPassword());
         manager.changePassword(encryptedPassword); // password 암호화 필수
 
-        Optional<Manager> optionalManager = managerRepository.findById(managerId);
-        Manager findManager = optionalManager.orElseThrow(()->new RuntimeException("ManagerNotFound"));
-
+        Manager findManager = findManagerByManagerId(managerId);
         managerRepository.save(beanUtils.copyNonNullProperties(manager, findManager));
     }
 
@@ -66,5 +65,11 @@ public class ManagerServiceImpl implements ManagerService{
     @Override
     public void deleteManager(Long managerId) {
         managerRepository.deleteById(managerId);
+    }
+
+    private Manager findManagerByManagerId(Long manageId) {
+        return managerRepository.findById(manageId).orElseThrow(
+                () -> new BusinessLogicException(ExceptionCode.MANAGER_NOT_FOUND)
+        );
     }
 }

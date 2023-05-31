@@ -23,6 +23,7 @@ public class ManagerDto {
         private String managerInfo;
     }
 
+    @Getter
     @Setter
     @Builder
     static class Response {
