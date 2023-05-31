@@ -6,7 +6,7 @@ import CryptOptima.server.domain.deposit.dto.DepositMapper;
 import CryptOptima.server.domain.deposit.entity.DepositRecord;
 import CryptOptima.server.domain.deposit.repository.DepositRepository;
 import CryptOptima.server.domain.deposit.repository.QDepositRepository;
-import CryptOptima.server.domain.user.QUserRepository;
+import CryptOptima.server.domain.user.repository.QUserRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
