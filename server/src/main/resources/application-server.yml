@@ -1,19 +1,19 @@
 spring:
   config:
     activate:
-      on-profile: local
+      on-profile: server
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/cryptoptima?createDatabaseIfNotExist=true
-    username: root
-    password: 1234
+    url: ENC(1jjseMd2BTxKQczEFR24CRjjKXoinElsFet5bjE7brFehXJRuXK0g7/gPNqGVMyjywZC41D2Du9nbPzTdRUbKC/L0s1EXc1nrvolnDSyIHI=)
+    username: ENC(jQGXW82rCvB/bHond/3xkw==)
+    password: ENC(iQ6hG+xiEn89rSOPMxK3og==)
 
   jpa:
     database: mysql
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         show_sql: true
