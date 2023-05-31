@@ -3,8 +3,6 @@ package CryptOptima.server.domain.withdrawal.entity;
 import CryptOptima.server.domain.BaseTimeEntity;
 import CryptOptima.server.domain.user.entity.User;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 
@@ -44,7 +42,12 @@ public class WithdrawalRecord extends BaseTimeEntity {
         this.withdrawalStatus = this.withdrawalStatus == null ? Status.REQUESTED : this.withdrawalStatus;
     }
 
-    // 출금내역 상태를 변경한다.
+    /**
+     * complete: 총 환급 요청 금액을 차감, 누적 페이백 금액을 증액
+     * failed, canceled: 총 환급요청 금액을 차감
+     * @param newWithdrawalStatus
+     */
+
     public void changeWithdrawalStatus(Status newWithdrawalStatus) {
 
         switch(newWithdrawalStatus) {
@@ -54,7 +57,7 @@ public class WithdrawalRecord extends BaseTimeEntity {
                 this.user.plusPaybackFinishedAmount(this.usdt);
                 break;
 
-            case FAILED, CANCELED:
+            default:
                 this.withdrawalStatus = newWithdrawalStatus;
                 this.user.minusPaybackTotalRequestedAmount(this.usdt);
                 break;
@@ -76,13 +79,4 @@ public class WithdrawalRecord extends BaseTimeEntity {
     public void plusPaybackTotalReqAmount() {
         this.user.plusPaybackTotalRequestedAmount(this.usdt);
     }
-
-
-//    public void minusPaybackTotalReqAmount() {
-//        this.user.minusPaybackTotalRequestedAmount(this.usdt);
-//    }
-
-//    public void plusPaybackFinishedAmount() {
-//        this.user.plusPaybackFinishedAmount(this.usdt);
-//    }
 }
