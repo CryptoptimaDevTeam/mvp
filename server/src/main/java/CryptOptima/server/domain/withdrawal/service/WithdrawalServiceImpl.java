@@ -1,6 +1,6 @@
 package CryptOptima.server.domain.withdrawal.service;
 
-import CryptOptima.server.domain.user.QUserRepository;
+import CryptOptima.server.domain.user.repository.QUserRepository;
 import CryptOptima.server.domain.withdrawal.dto.WithdrawalDto;
 import CryptOptima.server.domain.withdrawal.dto.WithdrawalMapper;
 import CryptOptima.server.domain.withdrawal.entity.WithdrawalRecord;
