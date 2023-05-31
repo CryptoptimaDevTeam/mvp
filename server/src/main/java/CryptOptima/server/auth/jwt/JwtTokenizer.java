@@ -38,7 +38,6 @@ public class JwtTokenizer {
 
     // 2. AccessToken을 발행한다.
     public String generateAccessToken(Map<String, Object> claims,
-                                      String subject,
                                       Date expiration,
                                       String base64EncodedSecretKey) {
 
@@ -46,7 +45,6 @@ public class JwtTokenizer {
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(subject)
                 .setIssuedAt(Calendar.getInstance().getTime())
                 .setExpiration(expiration)
                 .signWith(key)
@@ -54,12 +52,11 @@ public class JwtTokenizer {
     }
 
     // 3. RefreshToken을 발행한다.
-    public String generateRefreshToken(String subject, Date expiration, String base64EncodedSecretKey) {
+    public String generateRefreshToken(Date expiration, String base64EncodedSecretKey) {
 
         Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
 
         return Jwts.builder()
-                .setSubject(subject)
                 .setIssuedAt(Calendar.getInstance().getTime())
                 .setExpiration(expiration)
                 .signWith(key)
