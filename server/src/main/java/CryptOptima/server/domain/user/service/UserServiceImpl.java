@@ -12,9 +12,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
@@ -28,6 +30,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void updateUser(UserDto.Update userDto, Long userId) {
         User user = userMapper.updateUserDtoToUser(userDto);
         User updatingUser = beanUtils.copyNonNullProperties(user,findUserById(userId));
@@ -49,8 +52,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteUser(Long userId) {
-        userRepository.delete(findUserById(userId));
+        User findUser = findUserById(userId);
+        findUser.changeStatus("QUIT");
     }
 
     private User findUserById(Long userId) {

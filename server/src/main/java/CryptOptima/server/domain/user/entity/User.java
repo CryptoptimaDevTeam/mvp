@@ -121,8 +121,12 @@ public class User extends BaseTimeEntity {
 
     // OAuth2 attribute 변동사항 검사를 위한 메서드, loadUser에서 사용 됨.
     public void updateUser(User user) {
+        // 현재는 username에 대해서만 다룬다.
         if(!isSame(user)) this.username = user.getUsername();
     }
 
+    public void changeStatus(String status) {
+        this.status = status;
+    }
     // 사용자의 접속 ip주소 리스트를 넣어두기 -> 추후 사용자 분석 데이터로 활용
 }
