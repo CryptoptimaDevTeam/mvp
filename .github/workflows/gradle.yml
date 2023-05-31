@@ -67,7 +67,7 @@ jobs:
     # CodeDeploy에게 배포를 명령
     - name: CodeDeploy
       run: >
-        aws deploy create-deployment --application-name cryptoptima
+        aws deploy create-deployment --application-name cryptoptima-codedeploy
         --deployment-config-name CodeDeployDefault.AllAtOnce
         --deployment-group-name cryptoptima-codedeploy-group
         --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=server-deploy.zip
