@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
 import NoLayout from "../../../layout/noLayout";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { RegistrationHeader } from "../../../components/blocks/registrationHeader";
 import { ProgressBar } from "../../../components/atoms/progressBar";
 import { MainButton, SubButton } from "../../../components/atoms/button";
@@ -28,8 +28,12 @@ const RegistrationNoAccount = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [modalType, setModalType] = useState<ModalType>("");
 
+  useEffect(() => {
+    setModalType("");
+    setUserUid("");
+  }, [progressStatus]);
+
   const registerUidHandle: SubmitHandler<FormValeType> = (data) => {
-    console.log(data.uid.length);
     if (data.uid.length === 0) {
       setAlertStatus({
         isOpen: true,
@@ -45,6 +49,10 @@ const RegistrationNoAccount = () => {
     }
   };
 
+  const uidRegistrationHandle = () => {
+    // Backend로 사용자 ui를 보내는 코드가 필요함
+  };
+
   const [alertStatus, setAlertStatus] = useState({
     isOpen: false,
     message: "",
@@ -52,7 +60,7 @@ const RegistrationNoAccount = () => {
     top: "",
   });
 
-  const homeSectionStyle: string =
+  const registrationSectionStyle: string =
     "max-w-[1248px] mx-auto py-[100px] flex justify-center items-center";
 
   return (
@@ -68,7 +76,7 @@ const RegistrationNoAccount = () => {
       </div>
       {progressStatus === (1 / 3) * 100 ? (
         <section
-          className={`registration-no-account-section1 ${homeSectionStyle} flex-col pt-[60px]`}
+          className={`registration-no-account-section1 ${registrationSectionStyle} flex-col pt-[60px]`}
         >
           <div className="section-title text-[48px] font-bold text-center max-w-[960px] px-6">
             Create your crypto exchange account using the button below
@@ -96,7 +104,7 @@ const RegistrationNoAccount = () => {
         </section>
       ) : progressStatus === (2 / 3) * 100 ? (
         <section
-          className={`registration-no-account-section2 ${homeSectionStyle} flex-col pt-[60px]`}
+          className={`registration-no-account-section2 ${registrationSectionStyle} flex-col pt-[60px]`}
         >
           <div className="section-title text-[48px] font-bold text-center max-w-[960px] px-6">
             Enter your Exchange UID
@@ -138,7 +146,45 @@ const RegistrationNoAccount = () => {
           </div>
         </section>
       ) : (
-        <section className="no-account-section3">section3</section>
+        <section
+          className={`registration-no-account-section3 ${registrationSectionStyle} flex-col pt-[60px]`}
+        >
+          <div className="section-title text-[48px] font-bold text-center max-w-[960px] px-6">
+            Payback registration request completed!
+          </div>
+          <div className="section-body mt-8 text-[20px] max-w-[886px] text-[#72717d] text-center">
+            It may take{" "}
+            <span className="text-mainColor font-semibold">
+              1-3 business days until the registration is completed
+            </span>
+            .
+            <br />
+            We will notify you of the registration status through our website
+            notification!
+          </div>
+          <div className="completed-btn-wrapper mt-20 flex justify-center items-center gap-5">
+            <MainButton
+              name="Back to Main Page"
+              onClick={() => {
+                router.push("/");
+              }}
+              style="py-[21px] px-[24px]"
+              width="w-[220px]"
+              hoverScale={true}
+              hoverBg={true}
+            />
+            <SubButton
+              name="Go to Trading"
+              onClick={() => {
+                window.open("http://www.naver.com", "_blank");
+                router.push("/");
+              }}
+              style="py-[21px] px-[24px]"
+              width="w-[220px]"
+              hoverScale={true}
+            />
+          </div>
+        </section>
       )}
 
       <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
@@ -174,6 +220,8 @@ const RegistrationNoAccount = () => {
                 setIsModalOpen(false);
                 setModalType("");
                 setProgressStatus((status) => status + progressChange);
+                uidRegistrationHandle();
+                setUserUid("");
               }}
               width="w-[160px]"
               hoverScale={true}
