@@ -40,7 +40,7 @@ module.exports = {
         },
       },
       animation: {
-        dropDown: "dropDown .2s ease",
+        dropDown: "dropDown 0.5s ease",
       },
     },
   },
