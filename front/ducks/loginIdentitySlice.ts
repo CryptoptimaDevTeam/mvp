@@ -1,6 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { removeCookie } from "../module/cookies";
 
+interface Idata {
+  userId: number;
+  username: string;
+}
+
 interface loginIdentity {
   isLogin: boolean;
   userId: number | null;
