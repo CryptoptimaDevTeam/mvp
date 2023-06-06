@@ -1,28 +1,29 @@
 import "../styles/globals.css";
-import { wrapper, persistor, makeStore } from "../ducks/store";
+import { wrapper, persistor } from "../ducks/store";
 import { PersistGate } from "redux-persist/integration/react";
-import { useEffect } from "react";
+import type { ReactElement, ReactNode } from "react";
 import type { NextPage } from "next";
 import type { AppProps } from "next/app";
-import type { ReactElement, ReactNode } from "react";
 import DefaultLayout from "../layout/defaultLayout";
+import { LoadingIndicator } from "../components/atoms/loadingIndicator";
+import { useEffect } from "react";
 import { onSilentRefresh } from "../module/jsonWebToken";
 import { getCookie } from "../module/cookies";
+import { useAppDispatch } from "../ducks/store";
 import { initLoginIdentity } from "../ducks/loginIdentitySlice";
-import { LoadingIndicator } from "../components/atoms/loadingIndicator";
-import { Provider } from "react-redux";
+import useMaintainScroll from "../hooks/useMaintainScroll";
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
+
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
-
-function App({ Component, pageProps }: AppPropsWithLayout) {
+function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout || ((page) => page);
-  const store = makeStore(); // Store를 생성합니다.
-  const dispatch = store.dispatch; // useDispatch 대신 store.dispatch를 사용합니다.
+  const dispatch = useAppDispatch();
+  useMaintainScroll();
 
   useEffect(() => {
     if (getCookie("refreshJwtToken")) {
@@ -33,18 +34,14 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
   }, []);
 
   return (
-    <Provider store={store}>
-      <PersistGate persistor={persistor} loading={<LoadingIndicator />}>
-        {Component.getLayout ? (
-          getLayout(<Component {...pageProps} />)
-        ) : (
-          <DefaultLayout>
-            {getLayout(<Component {...pageProps} />)}
-          </DefaultLayout>
-        )}
-      </PersistGate>
-    </Provider>
+    <PersistGate persistor={persistor} loading={<LoadingIndicator />}>
+      {Component.getLayout ? (
+        getLayout(<Component {...pageProps} />)
+      ) : (
+        <DefaultLayout>{getLayout(<Component {...pageProps} />)}</DefaultLayout>
+      )}
+    </PersistGate>
   );
 }
 
-export default wrapper.withRedux(App);
+export default wrapper.withRedux(MyApp);

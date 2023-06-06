@@ -2,8 +2,14 @@ import Image from "next/image";
 import { MainButton, SubButton } from "../components/atoms/button";
 import { HomeDropdown } from "../components/atoms/dropdown";
 import { questionDropdownData } from "../data/homeStatic";
+import { useRouter } from "next/router";
 
 export default function Home() {
+  const router = useRouter();
+  const goRegistrationPage = () => {
+    router.push("/registration");
+  };
+
   const homeSectionStyle: string =
     "max-w-[1248px] mx-auto py-[100px] flex justify-center items-center";
 
@@ -31,7 +37,7 @@ export default function Home() {
         <div className="register-btn mt-10">
           <MainButton
             name="Rebate crypto trading fees"
-            onClick={() => {}}
+            onClick={goRegistrationPage}
             style="py-[21px] px-[24px] w-[250px]"
             hoverScale={true}
             hoverBg={true}
@@ -57,7 +63,7 @@ export default function Home() {
               {" "}
               <MainButton
                 name="Minimizing transaction fees"
-                onClick={() => {}}
+                onClick={goRegistrationPage}
                 style="py-[15px] px-[18px] w-[220px] text-sm"
                 hoverScale={true}
                 hoverBg={true}
@@ -91,7 +97,7 @@ export default function Home() {
               />
               <MainButton
                 name="Minimizing transaction fees"
-                onClick={() => {}}
+                onClick={goRegistrationPage}
                 style="py-[15px] px-[18px] w-[220px] text-sm"
                 hoverScale={true}
                 hoverBg={true}
@@ -142,7 +148,7 @@ export default function Home() {
             />
             <MainButton
               name="Becominga a smart investor"
-              onClick={() => {}}
+              onClick={goRegistrationPage}
               style="py-[21px] px-[24px]"
               hoverScale={true}
               hoverBg={true}
