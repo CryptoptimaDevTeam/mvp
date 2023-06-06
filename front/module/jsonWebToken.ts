@@ -26,7 +26,7 @@ export const onSilentRefresh = () => {
     })
     .catch((error) => {
       // TODO 추후 Refresh 토큰을 재발급 받는 형태로 수정 요함
-      if (error.response.status === 400) {
+      if (error.response?.status === 400) {
         const data: onSilentRefreshType = {
           refreshToken: getCookie("refreshJwtToken"),
           isRefresh: true,

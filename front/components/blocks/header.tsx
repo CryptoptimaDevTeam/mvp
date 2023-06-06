@@ -281,7 +281,7 @@ export const Header: React.FC<HeaderPropsType> = () => {
                   <Image
                     className="cursor-pointer"
                     src="image/logo/logo_facebook.svg"
-                    alt="google"
+                    alt="facebook"
                     width={50}
                     height={50}
                   />
@@ -303,7 +303,7 @@ export const Header: React.FC<HeaderPropsType> = () => {
                   <Image
                     className="cursor-pointer"
                     src="image/logo/logo_twitter.svg"
-                    alt="google"
+                    alt="twitter"
                     width={50}
                     height={50}
                   />
