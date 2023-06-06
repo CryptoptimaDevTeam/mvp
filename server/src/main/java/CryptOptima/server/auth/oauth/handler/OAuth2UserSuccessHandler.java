@@ -45,7 +45,7 @@ public class OAuth2UserSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         String accessToken = delegateAccessToken(email, userId);
         String refreshToken = delegateRefreshToken(email);
 
-        String uri = createURI(accessToken, refreshToken, userId, username, email).toString();
+        String uri = createURI(accessToken, refreshToken, userId, email, username).toString();
         getRedirectStrategy().sendRedirect(request, response, uri);
     }
 
@@ -71,14 +71,14 @@ public class OAuth2UserSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         return refreshToken;
     }
 
-    private URI createURI(String accessToken, String refreshToken, Long userId, String email, String userName) {
+    private URI createURI(String accessToken, String refreshToken, Long userId, String email, String username) {
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
 
         queryParams.add("access_token", accessToken);
         queryParams.add("refresh_token", refreshToken);
         queryParams.add("user_id", String.valueOf(userId));
-        queryParams.add("username", String.valueOf(userName));
         queryParams.add("email", String.valueOf(email));
+        queryParams.add("username", String.valueOf(username));
 
         return UriComponentsBuilder
                 .newInstance()
