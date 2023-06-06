@@ -1,0 +1,34 @@
+name: Cryptoptima Front-end CI
+on:
+  push:
+    branches:
+      - front
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout source code.
+        uses: actions/checkout@v2
+      - name: Check Node v
+        run: node -v
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+      - name: Build
+        run: yarn build
+      - name: zip create
+        run: zip -qq -r ./client-deploy.zip .
+        shell: bash
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+      - name: Upload to S3
+        run: aws s3 cp --region ap-northeast-2 ./client-deploy.zip s3://$S3_BUCKET_NAME/client-deploy.zip
+      - name: Deploy
+        run: aws deploy create-deployment
+          --application-name cryptoptima-codedeploy
+          --deployment-config-name CodeDeployDefault.AllAtOnce
+          --deployment-group-name cryptoptima-codedeploy-group
+          --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=client-deploy.zip
