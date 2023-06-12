@@ -26,6 +26,7 @@ spring:
           google:
             client-id: ENC(m7MAk7Q/on58EdQOScdUWdMQHFZygJqe8Gu9AuUwHQsQn6HEPqwQcCkUJ2Gcft1zdNXAPeuzdoLHArjgEmxFtJiaFJLvdIpK7vTTcWyB1y3YqAwmEOjq6w==)
             client-secret: ENC(GjfkXPimdb4OQSXpumaUpd/nAapzTOButylcEFMTHZomrnnZdOy1QgOVdpoRBHLW)
+            redirect-uri: https://cryptoptima.io/login/oauth2/code/google
             scope:
               - email
               - profile
