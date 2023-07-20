@@ -1,14 +1,16 @@
-package CryptOptima.server.auth.managerdetails;
+package CryptOptima.server.security.managerdetails;
 
-import CryptOptima.server.auth.utils.AuthorityUtils;
 import CryptOptima.server.domain.manager.Manager;
 import CryptOptima.server.domain.manager.ManagerRepository;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class ManagerDetailsService implements UserDetailsService {
@@ -19,16 +21,18 @@ public class ManagerDetailsService implements UserDetailsService {
         this.managerRepository = managerRepository;
     }
 
-    /**
-     * @param accountId the username identifying the user whose data is required.
-     * @return
-     * @throws UsernameNotFoundException
-     */
     @Override
     public UserDetails loadUserByUsername(String accountId) throws UsernameNotFoundException {
-        Optional<Manager> optionalManager = managerRepository.findManagerByAccountId(accountId);
-        Manager findManager = optionalManager.orElseThrow(() -> new UsernameNotFoundException("해당 Id를 갖는 매니저가 존재하지 않습니다."));
 
-        return new ManagerDetails(findManager);
+        Manager findManager = managerRepository.findManagerByAccountId(accountId)
+                .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+
+        List<GrantedAuthority> roles = new ArrayList<>();
+        roles.add(new SimpleGrantedAuthority("ROLE_USER"));
+        roles.add(new SimpleGrantedAuthority("ROLE_MANAGER"));
+
+        ManagerDetails managerDetails = new ManagerDetails(findManager, roles);
+
+        return managerDetails;
     }
 }

@@ -1,4 +1,4 @@
-package CryptOptima.server.auth.dto;
+package CryptOptima.server.security.dto;
 
 import lombok.Getter;
 
