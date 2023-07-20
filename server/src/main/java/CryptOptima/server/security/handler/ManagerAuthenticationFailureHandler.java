@@ -2,9 +2,8 @@ package CryptOptima.server.security.handler;
 
 import CryptOptima.server.global.exception.ErrorResponse;
 import CryptOptima.server.global.exception.ExceptionCode;
-import com.google.gson.Gson;
+import CryptOptima.server.global.utils.ErrorResponder;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -17,20 +16,15 @@ import java.io.IOException;
 @Slf4j
 @Component
 public class ManagerAuthenticationFailureHandler implements AuthenticationFailureHandler {
+
+    ErrorResponder errorResponder = new ErrorResponder();
+
     @Override
     public void onAuthenticationFailure(HttpServletRequest request,
                                         HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
-        sendErrorResponse(response);
+
+        errorResponder.sendErrorResponse(response, ErrorResponse.of(ExceptionCode.AUTHENTICATION_FAILED));
     }
-    private void sendErrorResponse(HttpServletResponse response) throws IOException {
-        Gson gson = new Gson();
 
-        ErrorResponse errorResponse = ErrorResponse.of(ExceptionCode.AUTHENTICATION_FAILED);
-
-        response.setStatus(ExceptionCode.AUTHENTICATION_FAILED.getStatus());
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-
-        response.getWriter().write(gson.toJson(errorResponse, ErrorResponse.class));
-    }
 }

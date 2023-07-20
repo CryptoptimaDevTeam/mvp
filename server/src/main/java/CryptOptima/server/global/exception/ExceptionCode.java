@@ -9,12 +9,15 @@ public enum ExceptionCode {
     EXCHANGE_NOT_FOUND(404,"Exchange does not exists."),
     COIN_NOT_FOUND(404, "Coin does not exists."),
     WITHDRAWAL_NOT_FOUND(404,"Withdrawal does not exists."),
-    EXCEEDED_THE_WITHDRAWAL_LIMIT(400,"The withdrawal request exceeds the available amount."),
-    ACCESS_TOKEN_NOT_VALID(400, "Access token is not valid"),
-    REFRESH_TOKEN_NOT_VALID(400, "Refresh token is not valid"),
+    EXCEEDED_WITHDRAWAL_LIMIT(400,"The withdrawal request exceeds the available amount."),
+    ACCESS_TOKEN_NOT_VALID(401, "Access token is not valid"),
+    REFRESH_TOKEN_NOT_VALID(401, "Refresh token is not valid"),
     UNAUTHORIZED_USER(403, "Unauthorized user"),
     INVALID_APPROACH(403, "Invalid approach"),
-    AUTHENTICATION_FAILED(404, "Id/Password does not match");
+    AUTHENTICATION_FAILED(404, "Id/Password does not match"),
+    EXCEEDED_BROWSER_REGISTER(400, "Browser registration exceeds available registration."),
+    REFRESH_TOKEN_NOT_EXISTS(403, "Refresh token does not exists"),
+    ACCESS_TOKEN_EXISTS(403,"Access token exists");
 
     @Getter
     private int status;

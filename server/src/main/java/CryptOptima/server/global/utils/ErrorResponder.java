@@ -8,16 +8,14 @@ import org.springframework.http.MediaType;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * ErrorResponse를 출력 스트림으로 생성한다.
- */
+// controller 범위 밖 filter chain에서 발생하는 exception에 대해 적용
 public class ErrorResponder {
-    public static void sendErrorResponse(HttpServletResponse response, HttpStatus status) throws IOException {
+    public static void sendErrorResponse(HttpServletResponse response, ErrorResponse errorResponse) throws IOException {
         Gson gson = new Gson();
-        ErrorResponse errorResponse = ErrorResponse.of(status);
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setStatus(status.value());
+        response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+
         response.getWriter().write(gson.toJson(errorResponse, ErrorResponse.class));
     }
 }
