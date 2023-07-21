@@ -1,5 +1,6 @@
 package CryptOptima.server.security.handler;
 
+import CryptOptima.server.security.jwt.JwtTokenizer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -18,6 +19,12 @@ public class ManagerAuthenticationSuccessHandler extends SimpleUrlAuthentication
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
-        // todo JWT 액세스, 리프레시 토큰 발급
+
+        String accessToken = JwtTokenizer.generateAccessToken(authentication.getPrincipal());
+        String refreshToken = JwtTokenizer.generateRefreshToken();
+
+        // TODO redis에 RT저장 (accountId : RT)
+        response.setHeader("Authorization", "Bearer" + accessToken);
+        response.addHeader("Refresh", refreshToken);
     }
 }
