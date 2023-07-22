@@ -11,20 +11,20 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/server/exchanges")
+@RequestMapping("/server")
 public class ExchangeController {
 
     private final ExchangeService exchangeService;
 
     // 1. 거래소 등록
-    @PostMapping
+    @PostMapping("/managers/exchanges")
     ResponseEntity createExchange(@RequestBody ExchangeDto.Create exchangeDto) {
         ExchangeDto.Response response = exchangeService.createEcxhange(exchangeDto);
         return new ResponseEntity(response, HttpStatus.CREATED);
     }
 
     // 2. 거래소 정보 수정
-    @PatchMapping("/{exchange-id}")
+    @PatchMapping("/managers/exchanges/{exchange-id}")
     ResponseEntity updateExchange(@PathVariable("exchange-id") Long exchangeId,
                                   @RequestBody ExchangeDto.Update exchangeDto) {
         ExchangeDto.Response response = exchangeService.updateExchange(exchangeDto,exchangeId);
@@ -33,13 +33,13 @@ public class ExchangeController {
 
 
     // 3. 거래소 조회
-    @GetMapping("/{exchange-id}")
+    @GetMapping("/public/exchanges/{exchange-id}")
     ResponseEntity getExchange(@PathVariable("exchange-id") Long exchangeId) {
         ExchangeDto.Response response = exchangeService.getExchangeById(exchangeId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping("/public/exchanges")
     ResponseEntity getExchanges(@RequestParam(value = "page", defaultValue = "1") int page,
                                 @RequestParam(value ="size", defaultValue = "20") int size) {
         List<ExchangeDto.Response> response = exchangeService.getExchanges(page-1, size);
@@ -47,7 +47,7 @@ public class ExchangeController {
     }
 
     // 4. 거래소 삭제
-    @DeleteMapping("/{exchange-id}")
+    @DeleteMapping("/managers/exchanges/{exchange-id}")
     ResponseEntity deleteExchanges(@PathVariable("exchange-id") Long exchangeId) {
         exchangeService.deleteExchange(exchangeId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);

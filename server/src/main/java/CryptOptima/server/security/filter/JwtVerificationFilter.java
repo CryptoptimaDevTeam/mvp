@@ -53,6 +53,8 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
             SecurityContextHolder.getContext().setAuthentication(upat);
 
+            filterChain.doFilter(request, response); // 반드시 다음 필터로 요청을 넘길 것
+
         } catch(ExpiredJwtException ej) {
             ErrorResponder.sendErrorResponse(response, ErrorResponse.of(ExceptionCode.ACCESS_TOKEN_EXPIRED));
         } catch (Exception e) {
@@ -63,7 +65,15 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String url = request.getRequestURI();
-        return url.contains("/public");
-        // TODO "/public" url 사용할 엔드포인트 구분
+        List<String> urls = List.of(
+                "/server/users/login",
+                "/server/managers/login",
+                "/server/public"
+        );
+
+        for(String s : urls) {
+            if(url.contains(s)) return true;
+        }
+        return false;
     }
 }
