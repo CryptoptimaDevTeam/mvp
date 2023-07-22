@@ -36,13 +36,18 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .httpBasic().disable()
+                .formLogin().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .formLogin().disable()
+                .antMatcher("/server/**")
+                .authorizeRequests()
+                    .antMatchers("/server/users/**").hasRole("USER")
+                    .antMatchers("/server/managers/**").hasRole("MANAGER")
+                .anyRequest().permitAll()
+                .and()
                 .addFilterBefore(managerAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterAfter(jwtVerificationFilter, UsernamePasswordAuthenticationFilter.class)
-                .authorizeRequests().anyRequest().permitAll();
-        // TODO 인가 : 특정 url 접근 권한 부여하기
+                .addFilterBefore(jwtVerificationFilter, UsernamePasswordAuthenticationFilter.class);
+        // "/server/users/**"와 "/server/managers/**"를 제외한 모든 "/server/**" url에 대해 접근 허용
 
         return http.build();
     }
