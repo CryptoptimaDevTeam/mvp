@@ -1,5 +1,6 @@
 package CryptOptima.server.security.configs;
 
+import CryptOptima.server.security.filter.JwtVerificationFilter;
 import CryptOptima.server.security.filter.ManagerAuthenticationFilter;
 import CryptOptima.server.security.handler.ManagerAuthenticationFailureHandler;
 import CryptOptima.server.security.handler.ManagerAuthenticationSuccessHandler;
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -27,15 +29,20 @@ public class SecurityConfig {
 
     // spring security 초기화 시 AuthenticationManager를 초기화 하는 configuration 설정 클래스
     private final AuthenticationConfiguration authenticationConfiguration;
+    private final JwtVerificationFilter jwtVerificationFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
                 .httpBasic().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .formLogin().disable()
                 .addFilterBefore(managerAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(jwtVerificationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests().anyRequest().permitAll();
+        // TODO 인가 : 특정 url 접근 권한 부여하기
 
         return http.build();
     }
@@ -73,6 +80,7 @@ public class SecurityConfig {
 
         return filter;
     }
+
 
 //    @Bean
 //    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
