@@ -46,13 +46,16 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private String status; // 회원 상태(active, dormant, ban)
 
+    @Column(nullable = false)
+    private String locale;
+
     @OneToMany(mappedBy = "user")
     private List<UserExchange> userExchangeList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DepositRecord> depositRecords = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<WithdrawalRecord> withdrawalRecords = new ArrayList<>();
 
     // USDT를 기준으로 한 누적입금액
@@ -108,7 +111,7 @@ public class User extends BaseTimeEntity {
         BigDecimal withdrawalAmount = new BigDecimal(amount);
 
         if(withdrawalPossibleAmount.subtract(totalReqAmount).compareTo(withdrawalAmount)==-1) {
-            throw new BusinessLogicException(ExceptionCode.EXCEEDED_THE_WITHDRAWAL_LIMIT);
+            throw new BusinessLogicException(ExceptionCode.EXCEEDED_WITHDRAWAL_LIMIT);
         }
         else return true;
         // 출금가능액 - 총 출금요청액 < 현재 요청액 -> false

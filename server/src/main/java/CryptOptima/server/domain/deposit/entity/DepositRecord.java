@@ -22,12 +22,13 @@ public class DepositRecord extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long depositRecordId;
 
+    @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Column(nullable = false)
     private Long exchangeId;
-
-    @Setter
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private User user; // TODO uid를 통해 user를 찾아내는 작업 필요
 
     @Column(nullable = false)
     private Long coinId; // 입금 코인 단위
@@ -41,6 +42,12 @@ public class DepositRecord extends BaseTimeEntity {
 
     @Column(nullable = false)
     private String usdt; // USDT로 환산한 입금액. KST 09:00를 기준으로 계산한다.
+
+    @Column(nullable = false)
+    private String paybackCumAmount; // 당시 누적입금액
+
+    @Column(nullable = false)
+    private String paybackFinishedAmount; // 당시 누적환급액
 
     // TODO 사용자 기준 시각 칼럼 추가하기
 
