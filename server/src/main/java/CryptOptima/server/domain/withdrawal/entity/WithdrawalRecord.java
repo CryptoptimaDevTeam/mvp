@@ -17,7 +17,8 @@ public class WithdrawalRecord extends BaseTimeEntity {
     private Long withdrawalRecordId;
 
     @Setter
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Column(nullable = false)
@@ -32,6 +33,12 @@ public class WithdrawalRecord extends BaseTimeEntity {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Status withdrawalStatus = Status.REQUESTED;
+
+    @Column(nullable = false)
+    private String paybackCumAmount; // 당시 누적입금액
+
+    @Column(nullable = false)
+    private String paybackFinishedAmount; // 당시 누적환급액
 
     public enum Status {
         REQUESTED, PENDING, COMPLETE, FAILED, CANCELED;
