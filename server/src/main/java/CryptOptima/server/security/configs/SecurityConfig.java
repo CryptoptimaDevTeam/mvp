@@ -4,6 +4,7 @@ import CryptOptima.server.security.filter.JwtVerificationFilter;
 import CryptOptima.server.security.filter.ManagerAuthenticationFilter;
 import CryptOptima.server.security.handler.ManagerAuthenticationFailureHandler;
 import CryptOptima.server.security.handler.ManagerAuthenticationSuccessHandler;
+import CryptOptima.server.security.handler.OAuth2AuthenticationSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -30,6 +31,7 @@ public class SecurityConfig {
     // spring security 초기화 시 AuthenticationManager를 초기화 하는 configuration 설정 클래스
     private final AuthenticationConfiguration authenticationConfiguration;
     private final JwtVerificationFilter jwtVerificationFilter;
+    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -39,15 +41,16 @@ public class SecurityConfig {
                 .formLogin().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .antMatcher("/server/**")
-                .authorizeRequests()
-                    .antMatchers("/server/users/**").hasRole("USER")
-                    .antMatchers("/server/managers/**").hasRole("MANAGER")
-                .anyRequest().permitAll()
-                .and()
                 .addFilterBefore(managerAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(jwtVerificationFilter, UsernamePasswordAuthenticationFilter.class);
-        // "/server/users/**"와 "/server/managers/**"를 제외한 모든 "/server/**" url에 대해 접근 허용
+                .addFilterBefore(jwtVerificationFilter, UsernamePasswordAuthenticationFilter.class)
+                .oauth2Login().successHandler(oAuth2AuthenticationSuccessHandler);
+//                .and()
+//                .antMatcher("/server/**")
+//                .authorizeRequests()
+//                    .antMatchers("/server/users/**").hasRole("USER")
+//                    .antMatchers("/server/managers/**").hasRole("MANAGER")
+//                .anyRequest().authenticated();
+//         TODO oauth2Login() 적용 시 antMatcher 인식불가 해결
 
         return http.build();
     }
