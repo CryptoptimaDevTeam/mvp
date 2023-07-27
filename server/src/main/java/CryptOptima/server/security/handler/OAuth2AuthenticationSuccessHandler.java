@@ -4,6 +4,7 @@ import CryptOptima.server.domain.user.entity.User;
 import CryptOptima.server.domain.user.repository.UserRepository;
 import CryptOptima.server.global.exception.BusinessLogicException;
 import CryptOptima.server.global.exception.ExceptionCode;
+import CryptOptima.server.security.jwt.JwtService;
 import CryptOptima.server.security.jwt.JwtTokenizer;
 import CryptOptima.server.security.utils.OAuth2AttributeUtils;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ import java.util.Map;
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final UserRepository userRepository;
+    private final JwtService jwtService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -47,13 +49,16 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             );
         }
 
-        // JWT AT/RT를 발급한다.
+        // AT, RT를 발급한다.
         String accessToken = JwtTokenizer.generateAccessToken(user);
-        String refreshToken = JwtTokenizer.generateRefreshToken();
+        String refreshToken = JwtTokenizer.generateRefreshToken(user);
+
+        // redis에 RT 저장
+        jwtService.login((String) attributes.get("email"), refreshToken);
 
         String uri = UriComponentsBuilder.fromUriString("/users/login")
-                .queryParam("access",accessToken)
-                .queryParam("refresh",refreshToken)
+                .queryParam("access", "Bearer" + accessToken)
+                .queryParam("refresh", refreshToken)
                 .build()
                 .toUriString();
 

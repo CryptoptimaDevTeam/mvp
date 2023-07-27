@@ -41,5 +41,5 @@ jasypt:
 
 jwt:
   key: ENC(q1WQtVFbAcxGIK0iKkOSnewowB8QWTKB/4+BHJduEuohwosoASHd1LWHss4WUywH98YoWwIkWgg=)
-  access-token-expiration-minutes: 30
-  refresh-token-expiration-minutes: 120
+  accessTokenExpirationMinutes: 1
+  refreshTokenExpirationMinutes: 2
