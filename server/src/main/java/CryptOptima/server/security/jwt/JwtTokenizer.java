@@ -28,12 +28,12 @@ public class JwtTokenizer {
         JwtTokenizer.secretKey = key;
     }
 
-    @Value("${jwt.access-token-expiration-minutes}")
+    @Value("${jwt.accessTokenExpirationMinutes}")
     private void setAccessTokenExpirationMinutes(String accessTokenExpirationMinutes) {
         JwtTokenizer.accessTokenExpirationMinutes = Integer.parseInt(accessTokenExpirationMinutes);
     }
 
-    @Value("${jwt.refresh-token-expiration-minutes}")
+    @Value("${jwt.refreshTokenExpirationMinutes}")
     private void setRefreshTokenExpirationMinutes(String refreshTokenExpirationMinutes) {
         JwtTokenizer.refreshTokenExpirationMinutes = Integer.parseInt(refreshTokenExpirationMinutes);
     }
@@ -52,8 +52,9 @@ public class JwtTokenizer {
     }
 
     // 2. RefreshToken을 발행한다.
-    public static String generateRefreshToken() {
+    public static <T> String generateRefreshToken(T user) {
         return Jwts.builder()
+                .setSubject(getSubject(user))
                 .setExpiration(getTokenExpiration(JwtTokenizer.refreshTokenExpirationMinutes))
                 .signWith(getSecretKey())
                 .compact();
@@ -89,5 +90,14 @@ public class JwtTokenizer {
         }
 
         return claims;
+    }
+
+    // 6. refreshToken의 subject를 지정한다.
+    private static <T> String getSubject(T user) {
+        if (user instanceof User) {
+            return "USER";
+        } else {
+            return "MANAGER";
+        }
     }
 }

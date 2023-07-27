@@ -18,7 +18,8 @@ public enum ExceptionCode {
     EXCEEDED_BROWSER_REGISTER(400, "Browser registration exceeds available registration."),
     REFRESH_TOKEN_NOT_EXISTS(403, "Refresh token does not exists"),
     ACCESS_TOKEN_EXISTS(403,"Access token exists"),
-    ACCESS_TOKEN_EXPIRED(403, "Access token expired");
+    ACCESS_TOKEN_EXPIRED(403, "Access token expired"),
+    DUPLICATED_LOGIN(400,"Already logged in");
 
     @Getter
     private int status;
