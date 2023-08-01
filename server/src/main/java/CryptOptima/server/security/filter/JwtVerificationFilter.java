@@ -8,6 +8,7 @@ import CryptOptima.server.global.exception.BusinessLogicException;
 import CryptOptima.server.global.exception.ErrorResponse;
 import CryptOptima.server.global.exception.ExceptionCode;
 import CryptOptima.server.global.utils.ErrorResponder;
+import CryptOptima.server.security.jwt.JwtService;
 import CryptOptima.server.security.jwt.JwtTokenizer;
 import CryptOptima.server.security.utils.CustomAuthorityUtils;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -33,6 +34,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
     private final ManagerRepository managerRepository;
     private final UserRepository userRepository;
+    private final JwtService jwtService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -40,7 +42,10 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         // TODO RT 만료시간이 2주 이내로 남은경우 재발급.
 
         try {
+
             String accessToken = request.getHeader("Authorization").substring(6);
+            jwtService.access(accessToken);
+
             Map<String, Object> claims = JwtTokenizer.parseClaims(accessToken).getBody();
 
             Authentication upat = createSuccessfulAuthentication(claims);
