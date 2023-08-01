@@ -2,7 +2,6 @@ package CryptOptima.server.global.utils;
 
 import CryptOptima.server.global.exception.ErrorResponse;
 import com.google.gson.Gson;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import javax.servlet.http.HttpServletResponse;
@@ -14,7 +13,7 @@ public class ErrorResponder {
         Gson gson = new Gson();
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        response.setStatus(errorResponse.getStatus());
 
         response.getWriter().write(gson.toJson(errorResponse, ErrorResponse.class));
     }

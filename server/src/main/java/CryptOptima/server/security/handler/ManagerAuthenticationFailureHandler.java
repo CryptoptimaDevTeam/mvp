@@ -17,14 +17,11 @@ import java.io.IOException;
 @Component
 public class ManagerAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
-    ErrorResponder errorResponder = new ErrorResponder();
-
     @Override
     public void onAuthenticationFailure(HttpServletRequest request,
                                         HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
 
-        errorResponder.sendErrorResponse(response, ErrorResponse.of(ExceptionCode.AUTHENTICATION_FAILED));
+        ErrorResponder.sendErrorResponse(response, ErrorResponse.of(ExceptionCode.AUTHENTICATION_FAILED));
     }
-
 }
