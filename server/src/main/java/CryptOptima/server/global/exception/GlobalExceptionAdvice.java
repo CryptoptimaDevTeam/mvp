@@ -18,6 +18,6 @@ public class GlobalExceptionAdvice {
     @ExceptionHandler(Exception.class)
     public ResponseEntity handleException(Exception e) {
         final ErrorResponse response = ErrorResponse.of(e);
-        return new ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity(response, HttpStatus.valueOf(response.getStatus()));
     }
 }
