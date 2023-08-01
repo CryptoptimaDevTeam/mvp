@@ -60,6 +60,7 @@ public class JwtServiceImpl implements JwtService{
         // 1. refreshToken 조회
         String findRefreshToken = valueOperations.get(accountId);
         if(findRefreshToken == null) throw new BusinessLogicException(ExceptionCode.REFRESH_TOKEN_NOT_EXISTS);
+        if(!findRefreshToken.equals(refreshToken)) throw new BusinessLogicException(ExceptionCode.REFRESH_TOKEN_NOT_VALID);
 
         // 2. AT 발급
         Claims claims = JwtTokenizer.parseClaims(refreshToken).getBody();
