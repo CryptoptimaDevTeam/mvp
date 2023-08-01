@@ -2,7 +2,6 @@ package CryptOptima.server.security.filter;
 
 import CryptOptima.server.security.dto.LoginDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,8 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-
-@RequiredArgsConstructor
 public class ManagerAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override

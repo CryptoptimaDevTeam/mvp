@@ -13,8 +13,6 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -28,8 +26,9 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    // spring security 초기화 시 AuthenticationManager를 초기화 하는 configuration 설정 클래스
     private final AuthenticationConfiguration authenticationConfiguration;
+    private final ManagerAuthenticationSuccessHandler successHandler;
+    private final ManagerAuthenticationFailureHandler failureHandler;
     private final JwtVerificationFilter jwtVerificationFilter;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
@@ -55,15 +54,10 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean("passwordEncoder")
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
-
     @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
+    public WebSecurityCustomizer webSecurityCustomizer() { // 정적 리소스 보안 필터 해제
         return (web) -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
-    } // 정적 리소스 보안 필터 해제
+    }
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
@@ -80,19 +74,11 @@ public class SecurityConfig {
     public ManagerAuthenticationFilter managerAuthenticationFilter() throws Exception {
         ManagerAuthenticationFilter filter = new ManagerAuthenticationFilter();
 
-        // authenticationManager는 authenticate(UPAT) 메서드를 실행하는 클래스 내에서 참조할 수 있어야 한다.
         filter.setAuthenticationManager(authenticationConfiguration.getAuthenticationManager());
+        filter.setAuthenticationSuccessHandler(successHandler);
+        filter.setAuthenticationFailureHandler(failureHandler);
         filter.setFilterProcessesUrl("/server/managers/login");
-        filter.setAuthenticationSuccessHandler(new ManagerAuthenticationSuccessHandler());
-        filter.setAuthenticationFailureHandler(new ManagerAuthenticationFailureHandler());
 
         return filter;
     }
-
-
-//    @Bean
-//    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-//        return authenticationConfiguration.getAuthenticationManager();
-//    }
-
 }
