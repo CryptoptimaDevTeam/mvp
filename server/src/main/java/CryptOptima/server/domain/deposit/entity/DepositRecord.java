@@ -50,6 +50,9 @@ public class DepositRecord extends BaseTimeEntity implements AlertEvent {
     @Column(nullable = false)
     private String paybackFinishedAmount; // 당시 누적환급액
 
+    @Column(nullable = false)
+    private String paybackTotalRequestedAmount; // 당시 누적 출금요청액
+
     // TODO 사용자 기준 시각 칼럼 추가하기
 
     public void changeUsdt() {
@@ -63,5 +66,6 @@ public class DepositRecord extends BaseTimeEntity implements AlertEvent {
         this.user.plusPaybackCumAmount(this.usdt);
         this.paybackCumAmount = this.user.getPaybackCumAmount();
         this.paybackFinishedAmount = this.user.getPaybackFinishedAmount();
+        this.paybackTotalRequestedAmount = this.user.getPaybackTotalRequestedAmount();
     }
 }
