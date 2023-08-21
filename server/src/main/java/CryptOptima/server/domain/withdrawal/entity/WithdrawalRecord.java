@@ -41,6 +41,9 @@ public class WithdrawalRecord extends BaseTimeEntity implements AlertEvent {
     @Column(nullable = false)
     private String paybackFinishedAmount; // 당시 누적환급액
 
+    @Column(nullable = false)
+    private String paybackTotalRequestedAmount; // 당시 누적 출금요청액
+
     public enum Status {
         REQUESTED, PENDING, COMPLETE, FAILED, CANCELED;
     }
@@ -66,6 +69,7 @@ public class WithdrawalRecord extends BaseTimeEntity implements AlertEvent {
 
                 this.paybackCumAmount = this.user.getPaybackCumAmount();
                 this.paybackFinishedAmount = this.user.getPaybackFinishedAmount();
+                this.paybackTotalRequestedAmount = this.user.getPaybackTotalRequestedAmount();
                 break;
 
             default:
@@ -74,6 +78,7 @@ public class WithdrawalRecord extends BaseTimeEntity implements AlertEvent {
 
                 this.paybackCumAmount = this.user.getPaybackCumAmount();
                 this.paybackFinishedAmount = this.user.getPaybackFinishedAmount();
+                this.paybackTotalRequestedAmount = this.user.getPaybackTotalRequestedAmount();
                 break;
         }
     }
@@ -94,5 +99,6 @@ public class WithdrawalRecord extends BaseTimeEntity implements AlertEvent {
         this.user.plusPaybackTotalRequestedAmount(this.usdt);
         this.paybackCumAmount = this.user.getPaybackCumAmount();
         this.paybackFinishedAmount = this.user.getPaybackFinishedAmount();
+        this.paybackTotalRequestedAmount = this.user.getPaybackTotalRequestedAmount();
     }
 }
