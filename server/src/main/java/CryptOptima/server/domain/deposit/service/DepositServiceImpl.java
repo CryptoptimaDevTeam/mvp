@@ -8,7 +8,9 @@ import CryptOptima.server.domain.deposit.repository.DepositRepository;
 import CryptOptima.server.domain.deposit.repository.QDepositRepository;
 import CryptOptima.server.domain.user.repository.QUserRepository;
 
+import CryptOptima.server.global.event.PushAlertEvent;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DepositServiceImpl implements DepositService{
 
+    private final ApplicationEventPublisher eventPublisher;
     private final DepositMapper depositMapper;
     private final DepositRepository depositRepository;
     private final QDepositRepository qDepositRepository;
@@ -33,7 +36,12 @@ public class DepositServiceImpl implements DepositService{
         deposit.changeUsdt();   // 입금액을 USDT로 환산한다.
         deposit.plusPaybackCumAmount(); // User의 총 누적입금액을 증액한다.
 
-        return depositMapper.depositToDepositMngDto(depositRepository.save(deposit));
+        DepositRecord savedDepositRecord = depositRepository.save(deposit);
+
+        eventPublisher.publishEvent(new PushAlertEvent(savedDepositRecord.getUser().getUserId(),
+                PushAlertEvent.Type.DEPOSIT,savedDepositRecord));
+
+        return depositMapper.depositToDepositMngDto(savedDepositRecord);
     }
 
     @Override

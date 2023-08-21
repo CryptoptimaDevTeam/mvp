@@ -1,22 +1,27 @@
-package CryptOptima.server.domain.alert;
+package CryptOptima.server.domain.alert.entity;
 
 import CryptOptima.server.domain.BaseTimeEntity;
+import CryptOptima.server.domain.user.entity.User;
+import lombok.*;
 
 import javax.persistence.*;
 
-/**
- * Alert
- * 알림 엔티티
- */
-
 @Entity
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Alert extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long alertId;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Column(nullable = false)
-    private Long userId; // TODO 탈퇴한 회원id로 alert를 삭제한다.
+    private String alertTitle;
 
     @Column(nullable = false)
     private String alertContent;
@@ -26,7 +31,6 @@ public class Alert extends BaseTimeEntity {
     @Column(nullable = false)
     private boolean alertStatus;
 
-    // TODO (일반적으로 0,1으로 표기하는지 or Enum으로 표기하는지 알아보기)
     // 알림을 읽은 상태로 변경한다
     public void readAlertStatus() {
         this.alertStatus = true;
@@ -34,6 +38,10 @@ public class Alert extends BaseTimeEntity {
 
     public void unreadAlertStatus() {
         this.alertStatus = false;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     // 알림을 삭제한다
