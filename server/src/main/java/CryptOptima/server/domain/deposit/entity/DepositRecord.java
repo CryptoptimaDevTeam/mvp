@@ -2,6 +2,7 @@ package CryptOptima.server.domain.deposit.entity;
 
 import CryptOptima.server.domain.BaseTimeEntity;
 import CryptOptima.server.domain.user.entity.User;
+import CryptOptima.server.global.event.AlertEvent;
 import lombok.*;
 
 import javax.persistence.*;
@@ -17,7 +18,7 @@ import java.math.BigDecimal;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DepositRecord extends BaseTimeEntity {
+public class DepositRecord extends BaseTimeEntity implements AlertEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long depositRecordId;
@@ -60,5 +61,7 @@ public class DepositRecord extends BaseTimeEntity {
 
     public void plusPaybackCumAmount() {
         this.user.plusPaybackCumAmount(this.usdt);
+        this.paybackCumAmount = this.user.getPaybackCumAmount();
+        this.paybackFinishedAmount = this.user.getPaybackFinishedAmount();
     }
 }

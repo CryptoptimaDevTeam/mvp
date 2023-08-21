@@ -2,6 +2,7 @@ package CryptOptima.server.domain.withdrawal.entity;
 
 import CryptOptima.server.domain.BaseTimeEntity;
 import CryptOptima.server.domain.user.entity.User;
+import CryptOptima.server.global.event.AlertEvent;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class WithdrawalRecord extends BaseTimeEntity {
+public class WithdrawalRecord extends BaseTimeEntity implements AlertEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long withdrawalRecordId;
@@ -21,14 +22,14 @@ public class WithdrawalRecord extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(nullable = false)
+    @Column(nullable = false) // TODO exchange 연관관계 맺기
     private Long exchangeId;
 
     @Column(nullable = false)
     private String usdt;
 
     @Column
-    private String txid; // TODO null 처리하기 & 송금 후 업데이트하기
+    private String txid;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -62,11 +63,17 @@ public class WithdrawalRecord extends BaseTimeEntity {
                 this.withdrawalStatus = newWithdrawalStatus;
                 this.user.minusPaybackTotalRequestedAmount(this.usdt);
                 this.user.plusPaybackFinishedAmount(this.usdt);
+
+                this.paybackCumAmount = this.user.getPaybackCumAmount();
+                this.paybackFinishedAmount = this.user.getPaybackFinishedAmount();
                 break;
 
             default:
                 this.withdrawalStatus = newWithdrawalStatus;
                 this.user.minusPaybackTotalRequestedAmount(this.usdt);
+
+                this.paybackCumAmount = this.user.getPaybackCumAmount();
+                this.paybackFinishedAmount = this.user.getPaybackFinishedAmount();
                 break;
         }
     }
@@ -83,7 +90,9 @@ public class WithdrawalRecord extends BaseTimeEntity {
         this.user.isWithdrawalPossible(this.usdt);
     }
 
-    public void plusPaybackTotalReqAmount() {
+    public void plusPaybackTotalReqAmount() { // create 시 호출됨.
         this.user.plusPaybackTotalRequestedAmount(this.usdt);
+        this.paybackCumAmount = this.user.getPaybackCumAmount();
+        this.paybackFinishedAmount = this.user.getPaybackFinishedAmount();
     }
 }
