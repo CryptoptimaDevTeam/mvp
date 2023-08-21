@@ -6,9 +6,11 @@ import CryptOptima.server.domain.withdrawal.dto.WithdrawalMapper;
 import CryptOptima.server.domain.withdrawal.entity.WithdrawalRecord;
 import CryptOptima.server.domain.withdrawal.repository.QWithdrawalRepository;
 import CryptOptima.server.domain.withdrawal.repository.WithdrawalRepository;
+import CryptOptima.server.global.event.PushAlertEvent;
 import CryptOptima.server.global.exception.BusinessLogicException;
 import CryptOptima.server.global.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -19,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WithdrawalServiceImpl implements WithdrawalService{
 
+    private final ApplicationEventPublisher eventPublisher;
     private final WithdrawalMapper withdrawalMapper;
     private final WithdrawalRepository withdrawalRepository;
     private final QWithdrawalRepository qWithdrawalRepository;
@@ -28,10 +31,14 @@ public class WithdrawalServiceImpl implements WithdrawalService{
     @Transactional
     public void createWithdrawal(WithdrawalDto.Create withdrawalDto, Long userId) {
         WithdrawalRecord withdrawal = withdrawalMapper.createWithdrawalDtoToWithdrawal(withdrawalDto);
+
         withdrawal.setUser(qUserRepository.findUserByUserId(userId));
         withdrawal.isWithdrawalPossible();
         withdrawal.plusPaybackTotalReqAmount();
-        withdrawalRepository.save(withdrawal);
+
+        WithdrawalRecord savedWithdrawalRecord = withdrawalRepository.save(withdrawal);
+        eventPublisher.publishEvent(new PushAlertEvent(userId, PushAlertEvent.Type.WITHDRAWAL, savedWithdrawalRecord));
+
     }
 
     @Override
