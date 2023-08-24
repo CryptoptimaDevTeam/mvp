@@ -31,6 +31,10 @@ spring:
               - email
               - profile
 
+  redis:
+    host: localhost
+    port: 6379  #default
+
 jasypt:
   encryptor:
     bean: jasyptStringEncryptor
