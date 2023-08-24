@@ -12,7 +12,7 @@ public class GlobalExceptionAdvice {
     @ExceptionHandler(BusinessLogicException.class)
     public ResponseEntity handleException(BusinessLogicException e) {
         final ErrorResponse response = ErrorResponse.of(e.getExceptionCode());
-        return new ResponseEntity(response, HttpStatus.valueOf(e.getExceptionCode().getStatus()));
+        return new ResponseEntity(response, HttpStatus.valueOf(response.getStatus()));
     }
 
     @ExceptionHandler(Exception.class)
