@@ -42,9 +42,9 @@ public class SecurityConfig {
                 .and()
                 .addFilterBefore(managerAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtVerificationFilter, UsernamePasswordAuthenticationFilter.class)
-                .oauth2Login().successHandler(oAuth2AuthenticationSuccessHandler);
-//                .and()
-//                .antMatcher("/server/**")
+                .oauth2Login().successHandler(oAuth2AuthenticationSuccessHandler)
+                .and()
+                .authorizeHttpRequests().anyRequest().permitAll();
 //                .authorizeRequests()
 //                    .antMatchers("/server/users/**").hasRole("USER")
 //                    .antMatchers("/server/managers/**").hasRole("MANAGER")
