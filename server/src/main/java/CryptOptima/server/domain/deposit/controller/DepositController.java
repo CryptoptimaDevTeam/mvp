@@ -51,7 +51,7 @@ public class DepositController {
      *  MNG_DEPOSIT03 :: 페이백 입금 등록
      */
     @PostMapping("/server/managers/deposits")
-    public ResponseEntity createDeposits(@RequestBody DepositDto.Create depositDto) {
+    public ResponseEntity createDeposit(@RequestBody DepositDto.Create depositDto) {
         DepositDto.MngDeposit response = depositService.createDeposit(depositDto);
         return new ResponseEntity(response, HttpStatus.CREATED);
     }
