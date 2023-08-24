@@ -6,6 +6,8 @@ public class CoinDto {
 
     @Getter
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Create {
         private String coinName;
         private String price;

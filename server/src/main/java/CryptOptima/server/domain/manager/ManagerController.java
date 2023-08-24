@@ -18,7 +18,7 @@ public class ManagerController {
 
     // MNG_ACCOUNT01 :: 관리자 계정 로그인
     @PostMapping("/login")
-    public ResponseEntity loginManager(@Valid @RequestBody LoginDto loginDto) {
+    public ResponseEntity loginManager(@RequestBody LoginDto loginDto) {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
@@ -44,9 +44,9 @@ public class ManagerController {
     }
 
     // MNG_ACCOUNT05 :: 관리자 전체 조회
-    @GetMapping
-    public ResponseEntity getManagers() {
-        return new ResponseEntity(managerService.getManagers(), HttpStatus.OK);
-    }
+//    @GetMapping
+//    public ResponseEntity getManagers() {
+//        return new ResponseEntity(managerService.getManagers(), HttpStatus.OK);
+//    }
 
 }

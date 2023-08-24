@@ -6,6 +6,8 @@ public class DepositDto {
 
     @Getter
     @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class Create {
         private Long exchangeId;
         private Long userId;
