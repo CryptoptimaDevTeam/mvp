@@ -6,6 +6,8 @@ on:
     paths:
       - front/**
       - .github/**
+env:
+  S3_BUCKET_NAME: cryptoptima-s3-bucket
 jobs:
   build:
     runs-on: ubuntu-latest
