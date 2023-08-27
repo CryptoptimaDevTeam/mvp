@@ -335,12 +335,20 @@ export const ExchangeCardHorizontal = (props: exchangeListType) => {
             Regular
           </div>
           <div className="spot-area flex-[1_1_0%] flex flex-col">
-            <div className="flex items-center flex-[1_1_0%]">Maker Fees</div>
-            <div className="flex items-center flex-[1_1_0%]">Taker Fees</div>
+            <div className="flex items-center flex-[1_1_0%] justify-center">
+              {`${props.normalSpotLimit}%`}
+            </div>
+            <div className="flex items-center flex-[1_1_0%] justify-center">
+              {`${props.normalSpotMarket}%`}
+            </div>
           </div>
           <div className="futures-area flex-[1_1_0%] flex flex-col">
-            <div className="flex items-center flex-[1_1_0%]">Maker Fees</div>
-            <div className="flex items-center flex-[1_1_0%]">Taker Fees</div>
+            <div className="flex items-center flex-[1_1_0%] justify-center">
+              {`${props.normalDerivativesLimit}%`}
+            </div>
+            <div className="flex items-center flex-[1_1_0%] justify-center">
+              {`${props.normalDerivativesMarket}%`}
+            </div>
           </div>
         </div>
 
@@ -350,18 +358,18 @@ export const ExchangeCardHorizontal = (props: exchangeListType) => {
           </div>
           <div className="spot-area flex-[1_1_0%] flex flex-col">
             <div className="flex justify-center items-center flex-[1_1_0%]">
-              Maker Fees
+              {`${props.referralSpotLimit}%`}
             </div>
             <div className="flex justify-center items-center flex-[1_1_0%]">
-              Taker Fees
+              {`${props.referralSpotMarket}%`}
             </div>
           </div>
           <div className="futures-area flex-[1_1_0%] flex flex-col">
             <div className="flex justify-center items-center flex-[1_1_0%]">
-              Maker Fees
+              {`${props.referralDerivativesLimit}%`}
             </div>
             <div className="flex justify-center items-center flex-[1_1_0%]">
-              Taker Fees
+              {`${props.referralDerivativesMarket}%`}
             </div>
           </div>
         </div>
@@ -376,19 +384,19 @@ export const ExchangeCardHorizontal = (props: exchangeListType) => {
             />
           </div>
           <div className="spot-area flex-[1_1_0%] flex flex-col">
-            <div className="flex justify-center items-center flex-[1_1_0%]">
-              Maker Fees
+            <div className="flex justify-center items-center flex-[1_1_0%] font-semibold">
+              {`${props.cryptoptimaSpotLimit}%`}
             </div>
-            <div className="flex justify-center items-center flex-[1_1_0%]">
-              Taker Fees
+            <div className="flex justify-center items-center flex-[1_1_0%] font-semibold">
+              {`${props.cryptoptimaSpotMarket}%`}
             </div>
           </div>
           <div className="futures-area flex-[1_1_0%] flex flex-col">
-            <div className="flex justify-center items-center flex-[1_1_0%]">
-              Maker Fees
+            <div className="flex justify-center items-center flex-[1_1_0%] font-semibold">
+              {`${props.cryptoptimaDerivativesLimit}%`}
             </div>
-            <div className="flex justify-center items-center flex-[1_1_0%]">
-              Taker Fees
+            <div className="flex justify-center items-center flex-[1_1_0%] font-semibold">
+              {`${props.cryptoptimaDerivativesMarket}%`}
             </div>
           </div>
         </div>
@@ -483,7 +491,7 @@ interface RegistrationModalPropsType {
   setRegistrationModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const RegistrationModal = ({
+export const RegistrationModal = ({
   exchangeName,
   registrationModal,
   setRegistrationModal,
