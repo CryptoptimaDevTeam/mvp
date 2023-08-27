@@ -1,12 +1,12 @@
 import { ReactElement } from 'react';
 import NoLayout from '../layout/noLayout';
 import Main from './main';
-import PreResister from './pre-resister';
+import PreRegister from './pre-register';
 
 export default function Home() {
   return (
     <div>
-      <PreResister />
+      <PreRegister />
       {/* <Main /> */}
     </div>
   );
