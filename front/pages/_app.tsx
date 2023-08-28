@@ -1,17 +1,17 @@
-import "../styles/globals.css";
-import { wrapper, persistor } from "../ducks/store";
-import { PersistGate } from "redux-persist/integration/react";
-import type { ReactElement, ReactNode } from "react";
-import type { NextPage } from "next";
-import type { AppProps } from "next/app";
-import DefaultLayout from "../layout/defaultLayout";
-import { LoadingIndicator } from "../components/atoms/loadingIndicator";
-import { useEffect } from "react";
-import { onSilentRefresh } from "../module/jsonWebToken";
-import { getCookie } from "../module/cookies";
-import { useAppDispatch } from "../ducks/store";
-import { initLoginIdentity } from "../ducks/loginIdentitySlice";
-import useMaintainScroll from "../hooks/useMaintainScroll";
+import '../styles/globals.css';
+import { wrapper, persistor } from '../ducks/store';
+import { PersistGate } from 'redux-persist/integration/react';
+import type { ReactElement, ReactNode } from 'react';
+import type { NextPage } from 'next';
+import type { AppProps } from 'next/app';
+import DefaultLayout from '../layout/defaultLayout';
+import { LoadingIndicator } from '../components/atoms/loadingIndicator';
+import { useEffect } from 'react';
+import { onSilentRefresh } from '../module/jsonWebToken';
+import { getCookie } from '../module/cookies';
+import { useAppDispatch } from '../ducks/store';
+import { initLoginIdentity } from '../ducks/loginIdentitySlice';
+import useMaintainScroll from '../hooks/useMaintainScroll';
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -26,7 +26,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   useMaintainScroll();
 
   useEffect(() => {
-    if (getCookie("refreshJwtToken")) {
+    if (getCookie('refreshJwtToken')) {
       onSilentRefresh();
     } else {
       dispatch(initLoginIdentity());
@@ -34,7 +34,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   }, []);
 
   return (
-    <PersistGate persistor={persistor} loading={<LoadingIndicator />}>
+    <PersistGate persistor={persistor}>
       {Component.getLayout ? (
         getLayout(<Component {...pageProps} />)
       ) : (
