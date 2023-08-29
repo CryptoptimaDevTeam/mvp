@@ -22,10 +22,10 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-
 import Image from 'next/image';
 import { MainButton, SubButton } from '../../components/atoms/button';
 import { LoadingIndicator } from '../../components/atoms/loadingIndicator';
+import { postPreRegister } from '../../module/preRegister';
 
 const PreRegister = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -260,7 +260,7 @@ const SecondLandingPage = ({ setCurrentPage }: LandingPageProps) => {
                   <input
                     type='checkbox'
                     id='etc'
-                    onClick={() => {
+                    onChange={() => {
                       if (paybackFactor.exchange === 'others') {
                         setPaybackFactor((paybackFactor) => {
                           return { ...paybackFactor, exchange: '' };
@@ -347,7 +347,9 @@ const SecondLandingPage = ({ setCurrentPage }: LandingPageProps) => {
                     }}
                   >
                     {frequencyList.map((el, idx) => (
-                      <option value={idx + 1}>{el}</option>
+                      <option key={el} value={idx + 1}>
+                        {el}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -468,6 +470,8 @@ const ThirdLandingPage = ({ setCurrentPage }: LandingPageProps) => {
   const { register, handleSubmit } = useForm<preRegisterFormType>();
   const onSubmitHandle = (data: preRegisterFormType) => {
     console.log(data);
+    postPreRegister(data);
+    // setCurrentPage(4)
   };
 
   const homeSectionStyle: string =
@@ -509,10 +513,11 @@ const ThirdLandingPage = ({ setCurrentPage }: LandingPageProps) => {
               </label>
               <select
                 id='exchange'
+                defaultValue='none'
                 className='border-[1px] border-borderColor rounded w-[200px] h-[50px] p-2.5'
                 {...register('exchange')}
               >
-                <option disabled selected>
+                <option value='none' disabled>
                   Choose an exchange
                 </option>
                 <option value='binance'>Binance</option>
@@ -564,9 +569,6 @@ const ThirdLandingPage = ({ setCurrentPage }: LandingPageProps) => {
               <MainButton
                 name='Apply for pre-registration'
                 type='submit'
-                onClick={() => {
-                  setCurrentPage(4);
-                }}
                 width='w-[240px]'
                 style='py-[21px] px-[24px] font-medium'
                 hoverBg={true}

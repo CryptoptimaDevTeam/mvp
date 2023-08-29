@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface ButtonPropsType {
-  onClick: () => void;
+  onClick?: () => void;
   hoverScale?: boolean;
   hoverBg?: boolean;
   name: string;
@@ -22,7 +22,7 @@ export const MainButton: React.FC<ButtonPropsType> = (props) => {
       } ${props.hoverScale && 'hover:scale-[1.03]'} ${
         props.hoverBg && 'hover:bg-mainUpColor'
       }`}
-      onClick={() => props.onClick()}
+      onClick={() => props.onClick && props.onClick()}
       disabled={props.disabled}
       type={props.type || 'button'}
     >
@@ -41,7 +41,7 @@ export const SubButton: React.FC<ButtonPropsType> = (props) => {
       } ${props.hoverScale && 'hover:scale-[1.03]'} ${
         props.hoverBg && 'hover:bg-mainUpColor'
       }`}
-      onClick={() => props.onClick()}
+      onClick={() => props.onClick && props.onClick()}
       disabled={props.disabled}
       type={props.type || 'button'}
     >
@@ -58,7 +58,7 @@ export const NormalButton: React.FC<ButtonPropsType> = (props) => {
       } py-2 transition-all ${props.style ? props.style : ''} ${
         props.className ? props.className : ''
       } ${props.hoverScale && 'hover:scale-[1.03]'}`}
-      onClick={() => props.onClick()}
+      onClick={() => props.onClick && props.onClick()}
       disabled={props.disabled}
       type={props.type || 'button'}
     >
