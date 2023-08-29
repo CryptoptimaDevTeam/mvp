@@ -13,7 +13,7 @@ type loginSignupVar = "none" | "login" | "signup";
 
 export const Header: React.FC<HeaderPropsType> = () => {
   const [dropdownOpen, setDropdownOpen] = useState<DropdownOpenVar>("none");
-  const [loginSignup, setLoginSignup] = useState<loginSignupVar>("none");
+  const [loginSignup, setLoginSignup] = useState("none");
   const [userModal, setUserModal] = useState(false);
 
   const navigationClassName: string =

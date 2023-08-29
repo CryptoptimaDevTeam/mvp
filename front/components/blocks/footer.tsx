@@ -47,7 +47,7 @@ export const Footer: React.FC<FoooterPropsType> = () => {
             </div>
           </div>
           <div className="footer-sns">
-            <ul className="sns-list flex gap-5 pt-5">
+            <ul className="sns-list flex gap-2 pt-5">
               <li>
                 <a className="cursor-pointer">
                   <Image
