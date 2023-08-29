@@ -19,8 +19,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "pages/exchange/[exchangeName].tsx",
-    "pages/pre-register"
+    "pages/exchange/[exchangeName].tsx"
   ],
   "exclude": ["node_modules"]
 }
