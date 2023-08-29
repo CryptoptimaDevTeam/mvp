@@ -3,17 +3,9 @@ on:
   push:
     branches:
       - front
-    paths:
-      - front/**
-      - .github/**
 jobs:
   build:
-    runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: ./front
-
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout source code.
         uses: actions/checkout@v3
@@ -21,10 +13,8 @@ jobs:
         run: node -v
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
-        working-directory: ./front
       - name: Build
         run: yarn build
-        working-directory: ./front
       - name: zip create
         run: zip -qq -r ./client-deploy.zip .
         shell: bash
