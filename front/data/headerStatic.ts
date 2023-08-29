@@ -7,7 +7,12 @@ export const headerNavList: Array<headerNavListType> = [
   {
     className: "Register-Rebate",
     link: "/registration",
-    navName: "Payback Registration",
+    navName: "Register Payback",
+  },
+  {
+    className: "Exchange-Fee-Calculator",
+    link: "/calculator",
+    navName: "Rebation Calculator",
   },
   {
     className: "How-It-Works",
@@ -18,11 +23,6 @@ export const headerNavList: Array<headerNavListType> = [
     className: "Crpyto-Exchange",
     link: "/exchange",
     navName: "Crypto Exchange",
-  },
-  {
-    className: "Exchange-Fee-Calculator",
-    link: "/calculator",
-    navName: "Rebation Calculator",
   },
   {
     className: "Crpyto-Screener",

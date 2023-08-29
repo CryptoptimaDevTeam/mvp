@@ -13,8 +13,6 @@ module.exports = {
         mainUpColor: "#0034EB",
         mainDownColor: "#496CE7",
         borderColor: "rgb(228, 228, 235)",
-        textGrayColor: "#72717d",
-        redColor: "#D8494A",
       },
       transitionProperty: {},
       keyframes: {
