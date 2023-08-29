@@ -366,7 +366,7 @@ export const ExchangeCardHorizontal = (props: exchangeListType) => {
           </div>
         </div>
 
-        <div className="Cryptoptima-area flex flex-col px-2.5 border-[2px] my-[-4px] border-mainColor rounded">
+        <div className="Cryptoptima-area flex flex-col px-2.5 border-[2px] border-mainColor rounded">
           <div className="flex-[0.5_1_0%] flex items-center justify-center">
             <Image
               src="/image/logo/logo_full_l.svg"

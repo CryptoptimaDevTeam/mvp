@@ -8,7 +8,6 @@ import { FaMoon, FaSun } from "react-icons/fa";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { headerNavList } from "../../data/headerStatic";
-import { useAppSelector } from "../../ducks/store";
 
 interface HeaderPropsType {}
 
@@ -18,7 +17,6 @@ type loginSignupVar = "none" | "login" | "signup";
 export const Header: React.FC<HeaderPropsType> = () => {
   const router = useRouter();
   const { pathname } = router;
-  const { isLogin, username } = useAppSelector((state) => state.loginIdentity);
 
   const [dropdownOpen, setDropdownOpen] = useState<DropdownOpenVar>("none");
   const [loginSignup, setLoginSignup] = useState<loginSignupVar>("none");
@@ -165,57 +163,54 @@ export const Header: React.FC<HeaderPropsType> = () => {
           }}
         >
           <div className="status-section py-5 border-borderColor border-b-[1px]">
-            {isLogin ? (
-              <div className="user-info flex">
-                <div className="user-name text-lg font-bold">{username}</div>
+            {/* 비로그인 상태 */}
+            <div className="flex flex-col items-center justify-center">
+              <div className="welcome-message text-mainColor font-bold pb-5">
+                Welcome to Cryptoptima!
               </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center">
-                <div className="welcome-message text-mainColor font-bold pb-5">
-                  Welcome to Cryptoptima!
-                </div>
-                <div className="login-btn w-full">
-                  <MainButton
-                    name="Login"
-                    hoverScale={true}
-                    hoverBg={true}
-                    onClick={() => {
-                      setLoginSignup("login");
-                      setUserModal(true);
-                    }}
-                  />
-                </div>
-                <div className="signup-btn text-sm pt-2.5">
-                  No account?{" "}
-                  <span
-                    className="text-mainColor cursor-pointer hover:text-mainUpColor"
-                    onClick={() => {
-                      setLoginSignup("signup");
-                      setUserModal(true);
-                    }}
-                  >
-                    Create one
-                  </span>
-                </div>
+              <div className="login-btn w-full">
+                <MainButton
+                  name="Login"
+                  hoverScale={true}
+                  hoverBg={true}
+                  onClick={() => {
+                    setLoginSignup("login");
+                    setUserModal(true);
+                  }}
+                />
               </div>
-            )}
-          </div>
-          {isLogin && (
-            <div className="mypage-related-wrapper py-2.5 border-borderColor border-b-[1px] hidden">
-              <ul className="mypage-related-list cursor-pointer">
-                <li className="mypage-btn py-2.5 text-[15px] hover:text-mainDownColor">
-                  My page
-                </li>
-                <li className="rebate-record py-2.5 text-[15px] hover:text-mainDownColor">
-                  Rebate Record
-                </li>
-                <li className="withdrawl-request py-2.5 text-[15px] hover:text-mainDownColor">
-                  Withdrawl Request
-                </li>
-              </ul>
+              <div className="signup-btn text-sm pt-2.5">
+                No account?{" "}
+                <span
+                  className="text-mainColor cursor-pointer hover:text-mainUpColor"
+                  onClick={() => {
+                    setLoginSignup("signup");
+                    setUserModal(true);
+                  }}
+                >
+                  Create one
+                </span>
+              </div>
             </div>
-          )}
-
+            {/* 로그인 상태 */}
+            <div className="user-info flex hidden">
+              <div className="user-name text-lg font-bold">{"Kopa_Trader"}</div>
+            </div>
+          </div>
+          {/* 로그인 상태 */}
+          <div className="mypage-related-wrapper py-2.5 border-borderColor border-b-[1px] hidden">
+            <ul className="mypage-related-list cursor-pointer">
+              <li className="mypage-btn py-2.5 text-[15px] hover:text-mainDownColor">
+                My page
+              </li>
+              <li className="rebate-record py-2.5 text-[15px] hover:text-mainDownColor">
+                Rebate Record
+              </li>
+              <li className="withdrawl-request py-2.5 text-[15px] hover:text-mainDownColor">
+                Withdrawl Request
+              </li>
+            </ul>
+          </div>
           {/* 공통 */}
           <div className="environment-setting py-2.5">
             <ul className="environment-setting-list">
@@ -245,11 +240,10 @@ export const Header: React.FC<HeaderPropsType> = () => {
               </li>
             </ul>
           </div>
-          {isLogin && (
-            <div className="signout-btn py-5 text-[15px] border-borderColor border-t-[1px] cursor-pointer hover:text-mainDownColor hidden">
-              Sign Out
-            </div>
-          )}
+          {/* 로그인 상태 */}
+          <div className="signout-btn py-5 text-[15px] border-borderColor border-t-[1px] cursor-pointer hover:text-mainDownColor hidden">
+            Sign Out
+          </div>
         </div>
         <Modal isOpen={userModal} setIsOpen={setUserModal}>
           <div className="user-modal-container flex flex-col gap-2.5 justify-center items-center">
@@ -287,17 +281,13 @@ export const Header: React.FC<HeaderPropsType> = () => {
                   />
                 </li>
                 <li>
-                  <Link
-                    href={`${process.env.NEXT_PUBLIC_SERVER_URL}/oauth2/authorization/google`}
-                  >
-                    <Image
-                      className="cursor-pointer"
-                      src="image/logo/logo_google.svg"
-                      alt="google"
-                      width={50}
-                      height={50}
-                    />
-                  </Link>
+                  <Image
+                    className="cursor-pointer"
+                    src="image/logo/logo_google.svg"
+                    alt="google"
+                    width={50}
+                    height={50}
+                  />
                 </li>
                 <li>
                   <Image
