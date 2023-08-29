@@ -8,8 +8,7 @@ import { FaMoon, FaSun } from "react-icons/fa";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { headerNavList } from "../../data/headerStatic";
-import { useAppSelector, useAppDispatch } from "../../ducks/store";
-import { initLoginIdentity } from "../../ducks/loginIdentitySlice";
+import { useAppSelector } from "../../ducks/store";
 
 interface HeaderPropsType {}
 
@@ -18,7 +17,6 @@ type loginSignupVar = "none" | "login" | "signup";
 
 export const Header: React.FC<HeaderPropsType> = () => {
   const router = useRouter();
-  const dispatch = useAppDispatch();
   const { pathname } = router;
   const { isLogin, username } = useAppSelector((state) => state.loginIdentity);
 
@@ -248,12 +246,7 @@ export const Header: React.FC<HeaderPropsType> = () => {
             </ul>
           </div>
           {isLogin && (
-            <div
-              className="signout-btn py-5 text-[15px] border-borderColor border-t-[1px] cursor-pointer hover:text-mainDownColor"
-              onClick={() => {
-                dispatch(initLoginIdentity());
-              }}
-            >
+            <div className="signout-btn py-5 text-[15px] border-borderColor border-t-[1px] cursor-pointer hover:text-mainDownColor hidden">
               Sign Out
             </div>
           )}
