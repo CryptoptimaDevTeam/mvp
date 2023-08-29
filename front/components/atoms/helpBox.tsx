@@ -7,7 +7,7 @@ interface HelpBoxDivPropsType {
   bottom?: string;
   right?: string;
   left?: string;
-  upsidedown?: "true" | "false";
+  upsideDown?: boolean;
 }
 
 const HelpBoxDiv = styled.div<HelpBoxDivPropsType>`
@@ -26,8 +26,7 @@ const HelpBoxDiv = styled.div<HelpBoxDivPropsType>`
     bottom: ${(props) => props.bottom || ""};
     right: ${(props) => props.right || ""};
     left: ${(props) => props.left || ""};
-    transform: ${(props) =>
-      props.upsidedown === "true" ? "rotate(180deg)" : ""};
+    transform: ${(props) => (props.upsideDown ? "rotate(180deg)" : "")};
   }
 `;
 
@@ -38,7 +37,7 @@ interface HelpBoxProps {
   bottom?: string;
   left?: string;
   right?: string;
-  upsideDown?: "true" | "false";
+  upsideDown?: boolean;
 }
 
 export const HelpBox = ({
@@ -59,9 +58,13 @@ export const HelpBox = ({
       bottom={bottom}
       right={right}
       left={left}
-      upsidedown={upsideDown}
+      upsideDown={upsideDown}
     >
-      <div className={`helpbox-wrapper flex items-center gap-2 `}>
+      <div
+        className={`helpbox-wrapper flex items-center gap-2 transition-all duration-[200ms] ${
+          isOpen ? "opacity-100	" : "opacity-0"
+        }`}
+      >
         <div className="help-icon">
           <FiHelpCircle color="#72717d" />
         </div>
