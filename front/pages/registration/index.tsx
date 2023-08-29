@@ -4,15 +4,11 @@ import { Carousel } from "../../components/atoms/carousel";
 import { carouselList, exchangeList } from "../../data/registrationStatic";
 import { ExchangeCardVertical } from "../../components/blocks/card";
 import { exchangeFeeData } from "../../data/homeStatic";
-import { RegistrationModal } from "../../components/blocks/card";
 
 type comparisonMode = "Spot" | "Derivatives";
 
 export default function RegistrationMain() {
-  const [comparisonMode, setComparisonMode] =
-    useState<comparisonMode>("Derivatives");
-  const [selectedExchange, setSelectedExchange] = useState<string>("none");
-  const [registrationModal, setRegistrationModal] = useState<boolean>(false);
+  const [comparisonMode, setComparisonMode] = useState<comparisonMode>("Spot");
 
   const rgmainSectionStyle: string =
     "max-w-[1248px] mx-auto flex justify-center items-center";
@@ -42,11 +38,6 @@ export default function RegistrationMain() {
       >
         <div className="section-title text-[32px] font-bold text-center">
           Exchange Trading Fee Comparison
-        </div>
-        <div className="mt-8 text-[20px] max-w-[960px] text-[#72717d] text-center mx-auto">
-          Prevent money from flowing out of your account by trading with the
-          lowest fees, in addition to the bonus provided upon sign-up through
-          referrals!
         </div>
         <div className="fee-comparison-table-wrapper pt-[80px]">
           <div className="fee-comparison-table-header w-full flex justify-between items-center">
@@ -121,10 +112,6 @@ export default function RegistrationMain() {
                 <div
                   className="grid grid-cols-4 border-b-[1px] border-borderColor py-5 hover:bg-[#f5f5f5] cursor-pointer"
                   key={el.exchangeName}
-                  onClick={() => {
-                    setSelectedExchange(el.exchangeName);
-                    setRegistrationModal(true);
-                  }}
                 >
                   <div className={`${comparisonTableCommonStyle}`}>
                     <div>
@@ -185,11 +172,6 @@ export default function RegistrationMain() {
               ))}
             </div>
           </div>
-          <RegistrationModal
-            registrationModal={registrationModal}
-            setRegistrationModal={setRegistrationModal}
-            exchangeName={selectedExchange}
-          />
         </div>
       </section>
     </div>
