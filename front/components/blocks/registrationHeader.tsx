@@ -22,14 +22,10 @@ export const RegistrationHeader = ({
         <div className="header-left flex justify-start items-center flex-[1_1_0%]">
           <div
             className={`${
-              progressStatus === progressChange || progressStatus === 100
-                ? "invisible"
-                : ""
+              progressStatus === progressChange ? "invisible" : ""
             } go-back-btn px-[15px] py-[5px] rounded-[10px] transition-all duration-300 hover:bg-[#f5f5f5] cursor-pointer`}
             onClick={() => {
-              setProgressStatus((status) =>
-                status <= progressChange ? status : status - progressChange
-              );
+              setProgressStatus((status) => status - progressChange);
             }}
           >
             <BsArrowLeft size={24} />
