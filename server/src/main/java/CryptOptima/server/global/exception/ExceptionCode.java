@@ -19,7 +19,9 @@ public enum ExceptionCode {
     REFRESH_TOKEN_NOT_EXISTS(403, "Refresh token does not exists"),
     ACCESS_TOKEN_EXISTS(403,"Access token exists"),
     ACCESS_TOKEN_EXPIRED(403, "Access token expired"),
-    DUPLICATED_LOGIN(400,"Already logged in");
+    DUPLICATED_LOGIN(400,"Already logged in"),
+    JSON_MAPPING_ERROR(500,"Json mapping error occurs"),
+    HEADER_IS_MISSING(404,"X-FORWARDED-FOR header is missing");
 
     @Getter
     private int status;

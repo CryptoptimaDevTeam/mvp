@@ -47,3 +47,7 @@ jwt:
   key: ENC(q1WQtVFbAcxGIK0iKkOSnewowB8QWTKB/4+BHJduEuohwosoASHd1LWHss4WUywH98YoWwIkWgg=)
   accessTokenExpirationMinutes: 1440
   refreshTokenExpirationMinutes: 129600
+
+env:
+  ip:
+    token: be1662914887a8
