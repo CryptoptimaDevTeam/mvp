@@ -84,7 +84,7 @@ export default function Home() {
             </div>
             <div className="register-btn flex justify-start items-center mt-10 gap-5">
               <SubButton
-                name="Checking expected payback"
+                name="Share this with your friends"
                 onClick={() => {}}
                 style="py-[15px] px-[18px] w-[220px] text-sm"
                 hoverScale={true}
@@ -133,17 +133,17 @@ export default function Home() {
             build an optimal trading environment. The more participants we have,
             the more we can negotiate with exchanges to lower fees.
           </div>
-          <div className="register-btn mt-10 flex gap-10 w-[600px]">
+          <div className="register-btn mt-10 flex gap-10">
             <SubButton
-              name="Sharing this with your friends"
+              name="Share this with your friends"
               onClick={() => {}}
-              style="py-[21px] px-[24px]"
+              style="py-[21px] px-[24px] w-[250px]"
               hoverScale={true}
             />
             <MainButton
-              name="Becominga a smart investor"
+              name="Become a smart investor"
               onClick={() => {}}
-              style="py-[21px] px-[24px]"
+              style="py-[21px] px-[24px] w-[250px]"
               hoverScale={true}
               hoverBg={true}
             />

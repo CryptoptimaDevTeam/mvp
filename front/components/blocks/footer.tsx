@@ -43,7 +43,7 @@ export const Footer: React.FC<FoooterPropsType> = () => {
             </div>
             <div className="footer-contact">cryptoptima.official@gmail.com</div>
             <div className="footer-copyright">
-              © 2022 Cryptoptima All rights reserved
+              © 2023 Cryptoptima All rights reserved
             </div>
           </div>
           <div className="footer-sns">
