@@ -8,6 +8,7 @@ import { FaMoon, FaSun } from "react-icons/fa";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { headerNavList } from "../../data/headerStatic";
+import path from "path";
 
 interface HeaderPropsType {}
 
