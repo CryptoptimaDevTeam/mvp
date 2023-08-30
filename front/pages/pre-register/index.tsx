@@ -378,7 +378,7 @@ const SecondLandingPage = ({ setCurrentPage }: LandingPageProps) => {
       )}
 
       {currentSubPage === 2 && (
-        <section className='w-full h-full flex flex-col justify-center items-center gap-10'>
+        <section className='w-full h-full flex flex-col justify-center items-center gap-10 px-5'>
           <div className='w-full h-full text-[24px] lg:text-[32px] text-center font-bold'>
             Calculating the estimated payback amount through AI.
           </div>
@@ -496,7 +496,7 @@ const ThirdLandingPage = ({ setCurrentPage }: LandingPageProps) => {
             Get back your crypto trading fees with Cryptoptima's Payback Service
           </div>
           <div className='text-[12px] lg:text-[16px] text-mainColor font-semibold pt-2.5 text-center'>
-            maximum trading fee discounts + up to 99% referral bonus payback
+            maximum fee discounts + up to 99% referral bonus payback
           </div>
         </div>
         <div className='section-form'>
