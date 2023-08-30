@@ -1,4 +1,5 @@
 import '../styles/globals.css';
+require('dotenv').config();
 import { wrapper, persistor } from '../ducks/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import type { ReactElement, ReactNode } from 'react';
