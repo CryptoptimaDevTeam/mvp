@@ -13,7 +13,7 @@ export async function postPreRegister({
 }: preRegisterFormType) {
   try {
     const response = await axios
-      .post(`${process.env.SERVER_URL}/survey`, {
+      .post(`${process.env.NEXT_PUBLIC_SERVER_URL}/survey`, {
         email,
         exchange,
         type,
