@@ -27,7 +27,7 @@ export function Alert({ alertStatus, setAlertStatus, time }: AlertPropsType) {
 
   return (
     <div
-      className={`alert-container fixed mx-auto ${
+      className={`w-full alert-container fixed mx-auto ${
         alertStatus.top ? alertStatus.top : 'top-5'
       } justify-center left-1/2 -translate-x-1/2 z-20  ${alertBoxClassName}`}
     >
@@ -44,8 +44,10 @@ export function Alert({ alertStatus, setAlertStatus, time }: AlertPropsType) {
             <></>
           )}
         </div>
-        <div className='alert-message pt-[2px] t-[16px] flex items-center'>
-          <span>{alertStatus.message}</span>
+        <div className='alert-message pt-[2px] flex items-center'>
+          <span className='text-[14px] lg:text-[16px]'>
+            {alertStatus.message}
+          </span>
         </div>
       </div>
     </div>
