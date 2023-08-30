@@ -13,6 +13,7 @@ import {
   Legend,
 } from 'chart.js';
 import type { ChartData, ChartOptions } from 'chart.js';
+import { Alert } from '../../components/atoms/alert';
 
 ChartJS.register(
   CategoryScale,
@@ -127,9 +128,9 @@ const FirstLandingPage = ({ setCurrentPage }: LandingPageProps) => {
   }, []);
 
   return (
-    <div className='w-full px-5 flex flex-col justify-start gap-[100px]'>
+    <div className='w-full px-5 flex flex-col justify-start gap-10 lg:gap-[100px]'>
       <ReactTyped
-        className='text-[32px] text-center font-bold'
+        className='text-[24px] lg:text-[32px] text-center font-bold'
         strings={[
           'Are you still not getting payback on exchange trading fees while trading crypto?',
         ]}
@@ -216,14 +217,14 @@ const SecondLandingPage = ({ setCurrentPage }: LandingPageProps) => {
       {currentSubPage === 1 && (
         <section className='w-full px-5 flex flex-col justify-start gap-10 py-10'>
           <ReactTyped
-            className='text-[32px] text-center font-bold'
+            className='text-[24px] lg:text-[32px] text-center font-bold'
             strings={[
               "Shall we find out how much money you've missed out on so far?",
             ]}
             typeSpeed={30}
           />
           <div
-            className={`flex flex-col justify-center items-center transition-opacity duration-500 p-[40px] border-2 border-borderColor rounded-xl ${
+            className={`flex flex-col justify-center items-center transition-opacity duration-500 p-5 lg:p-10 border-2 border-borderColor rounded-xl ${
               showButton ? 'opacity-100' : 'opacity-0'
             } gap-[60px] max-w-[1200px] mx-auto`}
           >
@@ -232,7 +233,7 @@ const SecondLandingPage = ({ setCurrentPage }: LandingPageProps) => {
                 <div className={`${questionStyle}`}>
                   1. Choose only one exchange that you frequently use!
                 </div>
-                <div className='exchange-list flex gap-2.5'>
+                <div className='exchange-list grid grid-cols-2 lg:flex gap-2.5'>
                   {exchangeList.map((el, idx) => (
                     <div
                       className={`p-2.5 border-[2px] rounded transition-border duration-500 ${
@@ -378,7 +379,7 @@ const SecondLandingPage = ({ setCurrentPage }: LandingPageProps) => {
 
       {currentSubPage === 2 && (
         <section className='w-full h-full flex flex-col justify-center items-center gap-10'>
-          <div className='w-full h-full text-[32px] text-center font-bold'>
+          <div className='w-full h-full text-[24px] lg:text-[32px] text-center font-bold'>
             Calculating the estimated payback amount through AI.
           </div>
           <div>
@@ -388,10 +389,10 @@ const SecondLandingPage = ({ setCurrentPage }: LandingPageProps) => {
       )}
 
       {currentSubPage === 3 && (
-        <div className='w-full h-full flex flex-col justify-center items-center gap-10 py-20'>
-          <div className='w-[1080px] text-[32px] text-center font-bold'>
+        <div className='w-full h-full flex flex-col justify-center items-center gap-10 py-20 px-5'>
+          <div className='max-w-[1080px] text-[24px] lg:text-[32px] text-center font-bold'>
             Based on a one-year period, you have missed out on approximately{' '}
-            <span className='text-mainColor text-[50px]'>
+            <span className='text-mainColor'>
               ${Math.floor(ExpectedPaybackCal(paybackFactor) * 365)}
             </span>{' '}
             that could have been paid back!
@@ -399,7 +400,7 @@ const SecondLandingPage = ({ setCurrentPage }: LandingPageProps) => {
           <ChartComponent
             payback={isFull ? ExpectedPaybackCal(paybackFactor) : 0}
           />
-          <div className='pt-10'>
+          <div className='lg:pt-10'>
             <MainButton
               name='Start Receiving Payback'
               width='w-[240px]'
@@ -456,11 +457,11 @@ const ChartComponent = ({ payback }: ChartComponentProps) => {
   }, []);
 
   return (
-    <div className='w-[800px] h-[500px] flex justify-center items-center'>
+    <div className='w-full h-[240px] lg:w-[800px] lg:h-[500px] flex justify-center items-center'>
       <Bar
         data={chartData}
         options={chartOptions}
-        style={{ width: '800px', height: '500px' }}
+        style={{ width: '100%', height: 'auto' }}
       />
     </div>
   );
@@ -468,23 +469,33 @@ const ChartComponent = ({ payback }: ChartComponentProps) => {
 
 const ThirdLandingPage = ({ setCurrentPage }: LandingPageProps) => {
   const { register, handleSubmit } = useForm<preRegisterFormType>();
-  const onSubmitHandle = (data: preRegisterFormType) => {
-    console.log(data);
-    postPreRegister(data);
-    // setCurrentPage(4)
-  };
+  const [alertStatus, setAlertStatus] = useState({
+    isOpen: false,
+    message: 'Please enter a valid email format.',
+    type: 'caution',
+  });
 
+  const onSubmitHandle = (data: preRegisterFormType) => {
+    if (!emailRegex.test(data.email)) {
+      setAlertStatus((alertStatus) => ({ ...alertStatus, isOpen: true }));
+      return;
+    }
+    postPreRegister(data);
+    setCurrentPage(4);
+  };
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
   const homeSectionStyle: string =
     'max-w-[1248px] mx-auto flex justify-center items-center';
 
   return (
     <>
+      <Alert alertStatus={alertStatus} setAlertStatus={setAlertStatus} />
       <section className={`${homeSectionStyle} flex-col py-10 px-5 mx-auto`}>
         <div className='section-title'>
-          <div className='text-[32px] max-w-[800px] font-bold text-center'>
+          <div className='text-[24px] lg:text-[32px] max-w-[800px] font-bold text-center'>
             Get back your crypto trading fees with Cryptoptima's Payback Service
           </div>
-          <div className='text-[16px] text-mainColor font-semibold pt-2.5 text-center'>
+          <div className='text-[12px] lg:text-[16px] text-mainColor font-semibold pt-2.5 text-center'>
             maximum trading fee discounts + up to 99% referral bonus payback
           </div>
         </div>
@@ -495,26 +506,28 @@ const ThirdLandingPage = ({ setCurrentPage }: LandingPageProps) => {
           </div>
           <form
             onSubmit={handleSubmit(onSubmitHandle)}
-            className='p-[40px] border-2 border-borderColor rounded-xl flex flex-col gap-5'
+            className='p-5 lg:p-10 border-2 border-borderColor rounded-xl flex flex-col gap-10'
           >
             <div className='email-input flex flex-col gap-2.5'>
-              <label htmlFor='email'>1. What is your email address?</label>
+              <label htmlFor='email' className='text-[14px] lg:text-[16px]'>
+                1. What is your email address?
+              </label>
               <input
                 type='text'
                 id='email'
-                className='border-[1px] border-borderColor rounded w-full h-[50px] p-2.5'
+                className='text-[14px] lg:text-[16px] border-[1px] border-borderColor rounded w-full h-[50px] p-2.5'
                 placeholder='cryptoptima@gmail.com'
                 {...register('email')}
               />
             </div>
             <div className='exchange-input flex flex-col gap-2.5'>
-              <label htmlFor='exchange'>
+              <label htmlFor='exchange' className='text-[14px] lg:text-[16px]'>
                 2. Which crypto exchanges do you primarily use?
               </label>
               <select
                 id='exchange'
                 defaultValue='none'
-                className='border-[1px] border-borderColor rounded w-[200px] h-[50px] p-2.5'
+                className='text-[14px] lg:text-[16px] border-[1px] border-borderColor rounded w-[200px] h-[50px] p-2.5'
                 {...register('exchange')}
               >
                 <option value='none' disabled>
@@ -543,7 +556,7 @@ const ThirdLandingPage = ({ setCurrentPage }: LandingPageProps) => {
               </select>
             </div>
             <div className='type-input flex flex-col gap-2.5'>
-              <label>
+              <label className='text-[14px] lg:text-[16px]'>
                 {`3. Do you mainly trade spot or derivatives(futures)?`}
               </label>
               <div className='flex gap-2.5'>
@@ -553,7 +566,9 @@ const ThirdLandingPage = ({ setCurrentPage }: LandingPageProps) => {
                   id='spot'
                   value='spot'
                 />
-                <label htmlFor='spot'>Spot</label>
+                <label htmlFor='spot' className='text-[14px] lg:text-[16px]'>
+                  Spot
+                </label>
 
                 <input
                   {...register('type')}
@@ -561,7 +576,12 @@ const ThirdLandingPage = ({ setCurrentPage }: LandingPageProps) => {
                   id='derivatives'
                   value='derivatives'
                 />
-                <label htmlFor='derivatives'>Derivatives</label>
+                <label
+                  htmlFor='derivatives'
+                  className='text-[14px] lg:text-[16px]'
+                >
+                  Derivatives
+                </label>
               </div>
             </div>
 
