@@ -1,7 +1,7 @@
 import { useEffect, Dispatch, SetStateAction } from 'react';
 import { BiBlock, BiHelpCircle } from 'react-icons/bi';
 
-interface AlertStatusType {
+export interface AlertStatusType {
   top?: string;
   isOpen: boolean;
   message: string;
