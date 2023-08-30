@@ -6,5 +6,3 @@ cd $REPOSITORY
 sudo yarn install
 
 sudo npx pm2 reload all
-
-yarn start
