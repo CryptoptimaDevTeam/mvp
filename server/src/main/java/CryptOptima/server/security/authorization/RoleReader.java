@@ -34,9 +34,8 @@ public class RoleReader {
             List<ConfigAttribute> configAttributes = new ArrayList<>();
             resource.getResourceRoleList().forEach(resourceRole -> {
                 configAttributes.add(new SecurityConfig(resourceRole.getRole().getRoleName()));
-                resourceMap.put(new AntPathRequestMatcher(resource.getResourceUrl()), configAttributes);
             });
-
+            resourceMap.put(new AntPathRequestMatcher(resource.getResourceUrl()), configAttributes);
         });
 
         this.resourceMap = resourceMap;
