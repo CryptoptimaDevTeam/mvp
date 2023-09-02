@@ -13,14 +13,8 @@ import CryptOptima.server.global.exception.BusinessLogicException;
 import CryptOptima.server.global.exception.ExceptionCode;
 import CryptOptima.server.security.authorization.RoleReader;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.ConfigAttribute;
-import org.springframework.security.access.SecurityConfig;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,21 +29,6 @@ public class ResourceServiceImpl implements ResourceService {
     private final ResourceMapper resourceMapper;
     private final RoleReader roleReader;
 
-    public void initResourceMap() {
-        LinkedHashMap<RequestMatcher, List<ConfigAttribute>> resourceMap = new LinkedHashMap<>();
-
-        resourceRepository.findAll().forEach(resource -> {
-            List<ConfigAttribute> configAttributes = new ArrayList<>();
-            resource.getResourceRoleList().forEach(resourceRole -> {
-                configAttributes.add(new SecurityConfig(resourceRole.getRole().getRoleName()));
-            });
-
-            resourceMap.put(new AntPathRequestMatcher(resource.getResourceUrl()), configAttributes);
-        });
-
-        roleReader.updateResourceMap(resourceMap);
-    }
-
     // 1. Resource 생성 & ResourceRole 생성
     @Override
     public void createResource(ResourceDto.Create dto) {
@@ -61,7 +40,7 @@ public class ResourceServiceImpl implements ResourceService {
                 resourceMapper.createResourceDtoToResourceList(dto, resource));
         resourceRepository.save(resource);
 
-        initResourceMap();
+        roleReader.updateResourceMap();
     }
 
     // 2. Resource 조회
@@ -85,16 +64,14 @@ public class ResourceServiceImpl implements ResourceService {
                 .build();
 
         resourceRoleRepository.save(resourceRole);
-        initResourceMap();
+        roleReader.updateResourceMap();
     }
 
     public void deleteResourceRole(Long resourceRoleId) {
         resourceRoleRepository.deleteById(resourceRoleId);
-        initResourceMap();
+        roleReader.updateResourceMap();
     }
-    /* TODO ResourceRole 개별 추가, 삭제 대신 Resource update 하나로 수정
-        - 개별 추가, 삭제 마다 Connection을 얻어와 연산을 수행하는 것 보다
-        - 연산을 모아서 처리한다면 성능 상 이점이 있지 않을까? */
+    // TODO ResourceRole 개별 추가, 삭제 대신 Resource update 하나로 수정
 
     private Resource findResourceById(Long resourceId) {
         return resourceRepository.findById(resourceId).orElseThrow(
@@ -111,8 +88,7 @@ public class ResourceServiceImpl implements ResourceService {
     // 4. Resource 삭제
     public void deleteResource(Long resourceId) {
         resourceRepository.deleteById(resourceId);
-        initResourceMap();
+        roleReader.updateResourceMap();
     }
-
 
 }

@@ -1,5 +1,6 @@
 package CryptOptima.server.security.configs;
 
+import CryptOptima.server.security.authorization.UrlFilterInvocationSecurityMetadataSource;
 import CryptOptima.server.security.filter.JwtVerificationFilter;
 import CryptOptima.server.security.filter.ManagerAuthenticationFilter;
 import CryptOptima.server.security.handler.ManagerAuthenticationFailureHandler;
@@ -9,28 +10,38 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.AccessDecisionManager;
+import org.springframework.security.access.AccessDecisionVoter;
+import org.springframework.security.access.vote.AffirmativeBased;
+import org.springframework.security.access.vote.RoleVoter;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
-
+import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    // spring security 초기화 시 AuthenticationManager를 초기화 하는 configuration 설정 클래스
     private final AuthenticationConfiguration authenticationConfiguration;
     private final ManagerAuthenticationSuccessHandler successHandler;
     private final ManagerAuthenticationFailureHandler failureHandler;
     private final JwtVerificationFilter jwtVerificationFilter;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+    private final FilterInvocationSecurityMetadataSource urlFilterInvocationSecurityMetadataSource;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -44,8 +55,8 @@ public class SecurityConfig {
                 .addFilterBefore(jwtVerificationFilter, UsernamePasswordAuthenticationFilter.class)
                 .oauth2Login().successHandler(oAuth2AuthenticationSuccessHandler)
                 .and()
-                .authorizeHttpRequests().anyRequest().permitAll();
-//                .authorizeRequests()
+                .addFilterBefore(customFilterSecurityInterceptor(), FilterSecurityInterceptor.class);
+
 //                    .antMatchers("/server/users/**").hasRole("USER")
 //                    .antMatchers("/server/managers/**").hasRole("MANAGER")
 //                .anyRequest().authenticated();
@@ -55,9 +66,14 @@ public class SecurityConfig {
     }
 
     @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() { // 정적 리소스 보안 필터 해제
-        return (web) -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+    public PasswordEncoder passwordEncoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+    } // 정적 리소스 보안 필터 해제
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
@@ -80,5 +96,25 @@ public class SecurityConfig {
         filter.setFilterProcessesUrl("/server/managers/login");
 
         return filter;
+    }
+
+    @Bean
+    public FilterSecurityInterceptor customFilterSecurityInterceptor() throws Exception {
+        FilterSecurityInterceptor filterSecurityInterceptor = new FilterSecurityInterceptor();
+        filterSecurityInterceptor.setSecurityMetadataSource(urlFilterInvocationSecurityMetadataSource);
+        filterSecurityInterceptor.setAccessDecisionManager(affirmativeBased());
+        filterSecurityInterceptor.setAuthenticationManager(authenticationConfiguration.getAuthenticationManager());
+
+        ((UrlFilterInvocationSecurityMetadataSource) urlFilterInvocationSecurityMetadataSource).initResourceMap();
+        return filterSecurityInterceptor;
+    }
+
+    private AccessDecisionManager affirmativeBased() {
+        AffirmativeBased affirmativeBased = new AffirmativeBased(getAccessDecisionVoters());
+        return affirmativeBased;
+    }
+
+    private List<AccessDecisionVoter<?>> getAccessDecisionVoters() {
+        return Arrays.asList(new RoleVoter());
     }
 }
