@@ -66,7 +66,6 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String url = request.getRequestURI();
         List<String> urls = List.of(
-                "/server",
                 "/login",
                 "/public",
                 "/oauth2/authorization"

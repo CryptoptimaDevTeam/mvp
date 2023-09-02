@@ -12,15 +12,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
-import org.springframework.security.access.vote.AffirmativeBased;
 import org.springframework.security.access.vote.RoleVoter;
+import org.springframework.security.access.vote.UnanimousBased;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -39,6 +41,8 @@ public class SecurityConfig {
     private final AuthenticationConfiguration authenticationConfiguration;
     private final ManagerAuthenticationSuccessHandler successHandler;
     private final ManagerAuthenticationFailureHandler failureHandler;
+    private final AccessDeniedHandler customAccessDeniedHandler;
+    private final AuthenticationEntryPoint customAuthenticationEntryPoint;
     private final JwtVerificationFilter jwtVerificationFilter;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final FilterInvocationSecurityMetadataSource urlFilterInvocationSecurityMetadataSource;
@@ -55,12 +59,10 @@ public class SecurityConfig {
                 .addFilterBefore(jwtVerificationFilter, UsernamePasswordAuthenticationFilter.class)
                 .oauth2Login().successHandler(oAuth2AuthenticationSuccessHandler)
                 .and()
-                .addFilterBefore(customFilterSecurityInterceptor(), FilterSecurityInterceptor.class);
-
-//                    .antMatchers("/server/users/**").hasRole("USER")
-//                    .antMatchers("/server/managers/**").hasRole("MANAGER")
-//                .anyRequest().authenticated();
-//         TODO oauth2Login() 적용 시 antMatcher 인식불가 해결
+                .addFilterBefore(customFilterSecurityInterceptor(), FilterSecurityInterceptor.class)
+                .exceptionHandling()
+                .accessDeniedHandler(customAccessDeniedHandler)
+                .authenticationEntryPoint(customAuthenticationEntryPoint);
 
         return http.build();
     }
@@ -102,16 +104,16 @@ public class SecurityConfig {
     public FilterSecurityInterceptor customFilterSecurityInterceptor() throws Exception {
         FilterSecurityInterceptor filterSecurityInterceptor = new FilterSecurityInterceptor();
         filterSecurityInterceptor.setSecurityMetadataSource(urlFilterInvocationSecurityMetadataSource);
-        filterSecurityInterceptor.setAccessDecisionManager(affirmativeBased());
+        filterSecurityInterceptor.setAccessDecisionManager(unanimousBased());
         filterSecurityInterceptor.setAuthenticationManager(authenticationConfiguration.getAuthenticationManager());
 
         ((UrlFilterInvocationSecurityMetadataSource) urlFilterInvocationSecurityMetadataSource).initResourceMap();
         return filterSecurityInterceptor;
     }
 
-    private AccessDecisionManager affirmativeBased() {
-        AffirmativeBased affirmativeBased = new AffirmativeBased(getAccessDecisionVoters());
-        return affirmativeBased;
+    private AccessDecisionManager unanimousBased() {
+        UnanimousBased unanimousBased = new UnanimousBased(getAccessDecisionVoters());
+        return unanimousBased;
     }
 
     private List<AccessDecisionVoter<?>> getAccessDecisionVoters() {

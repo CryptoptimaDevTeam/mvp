@@ -45,6 +45,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                             .username((String) attributes.get("name"))
                             .locale((String) attributes.get("locale"))
                             .status("ACTIVE")
+                            .paybackCumAmount("0")
+                            .paybackTotalRequestedAmount("0")
+                            .paybackFinishedAmount("0") // todo 칼럼 기본 값 설정
                             .build()
             );
         }
