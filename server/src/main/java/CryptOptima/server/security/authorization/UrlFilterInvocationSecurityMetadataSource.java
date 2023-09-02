@@ -19,11 +19,13 @@ public class UrlFilterInvocationSecurityMetadataSource implements FilterInvocati
     // 요청에 해당하는 권한 목록을 반환한다.
     @Override
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
-        HttpServletRequest curRequest = ((FilterInvocation) object).getHttpRequest();
+        HttpServletRequest curRequest = ((FilterInvocation) object).getRequest();
 
         for(Map.Entry<RequestMatcher, List<ConfigAttribute>> entry : roleReader.getResourceMap().entrySet()) {
             RequestMatcher matcher = entry.getKey();
-            if(matcher.matches(curRequest)) return entry.getValue();
+            if(matcher.matches(curRequest)) {
+                return entry.getValue();
+            }
         }
 
         return null;
