@@ -1,6 +1,6 @@
 package CryptOptima.server.security.jwt;
 
-import CryptOptima.server.domain.manager.Manager;
+import CryptOptima.server.domain.manager.entity.Manager;
 import CryptOptima.server.domain.user.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;

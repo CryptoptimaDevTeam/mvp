@@ -1,5 +1,7 @@
-package CryptOptima.server.domain.manager;
+package CryptOptima.server.domain.manager.controller;
 
+import CryptOptima.server.domain.manager.dto.ManagerDto;
+import CryptOptima.server.domain.manager.service.ManagerService;
 import CryptOptima.server.security.dto.LoginDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

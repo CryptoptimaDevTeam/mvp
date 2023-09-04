@@ -1,4 +1,4 @@
-package CryptOptima.server.domain.manager;
+package CryptOptima.server.domain.manager.dto;
 
 import lombok.*;
 
@@ -6,7 +6,9 @@ public class ManagerDto {
 
     @Getter
     @Builder
-    static class Create {
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Create {
         private String accountId;
         private String password;
         private String managerName;
@@ -16,7 +18,9 @@ public class ManagerDto {
 
     @Getter
     @Builder
-    static class Update {
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Update {
         private String password;
         private String managerName;
         private String managerGrade;
@@ -26,6 +30,8 @@ public class ManagerDto {
     @Getter
     @Setter
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     static class Response {
         private Long managerId;
         private String managerName;

@@ -1,8 +1,7 @@
-package CryptOptima.server.domain.manager;
+package CryptOptima.server.domain.manager.dto;
 
+import CryptOptima.server.domain.manager.entity.Manager;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class ManagerMapper {

@@ -1,4 +1,4 @@
-package CryptOptima.server.domain.manager;
+package CryptOptima.server.domain.manager.entity;
 
 import CryptOptima.server.domain.BaseTimeEntity;
 import lombok.*;
