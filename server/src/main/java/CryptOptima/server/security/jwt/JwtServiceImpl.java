@@ -1,6 +1,6 @@
 package CryptOptima.server.security.jwt;
 
-import CryptOptima.server.domain.manager.ManagerRepository;
+import CryptOptima.server.domain.manager.repository.ManagerRepository;
 import CryptOptima.server.domain.user.repository.UserRepository;
 import CryptOptima.server.global.exception.BusinessLogicException;
 import CryptOptima.server.global.exception.ExceptionCode;

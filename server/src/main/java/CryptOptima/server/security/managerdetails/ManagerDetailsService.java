@@ -1,7 +1,7 @@
 package CryptOptima.server.security.managerdetails;
 
-import CryptOptima.server.domain.manager.Manager;
-import CryptOptima.server.domain.manager.ManagerRepository;
+import CryptOptima.server.domain.manager.entity.Manager;
+import CryptOptima.server.domain.manager.repository.ManagerRepository;
 import CryptOptima.server.security.utils.CustomAuthorityUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

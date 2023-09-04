@@ -1,5 +1,6 @@
-package CryptOptima.server.domain.manager;
+package CryptOptima.server.domain.manager.repository;
 
+import CryptOptima.server.domain.manager.entity.Manager;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
