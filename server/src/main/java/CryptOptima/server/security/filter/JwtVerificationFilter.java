@@ -1,7 +1,7 @@
 package CryptOptima.server.security.filter;
 
-import CryptOptima.server.domain.manager.Manager;
-import CryptOptima.server.domain.manager.ManagerRepository;
+import CryptOptima.server.domain.manager.entity.Manager;
+import CryptOptima.server.domain.manager.repository.ManagerRepository;
 import CryptOptima.server.domain.user.entity.User;
 import CryptOptima.server.domain.user.repository.UserRepository;
 import CryptOptima.server.global.exception.BusinessLogicException;
@@ -66,10 +66,11 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String url = request.getRequestURI();
         List<String> urls = List.of(
-                "/login",
-                "/public",
+                "/server/public",
+                "/server/managers/login",
+                "/server/users/login",
                 "/oauth2/authorization"
-//                "/alerts"
+//                "/login",
         );
 
         for(String s : urls) {

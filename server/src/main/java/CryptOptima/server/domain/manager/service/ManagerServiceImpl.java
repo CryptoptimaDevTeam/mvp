@@ -1,5 +1,9 @@
-package CryptOptima.server.domain.manager;
+package CryptOptima.server.domain.manager.service;
 
+import CryptOptima.server.domain.manager.entity.Manager;
+import CryptOptima.server.domain.manager.repository.ManagerRepository;
+import CryptOptima.server.domain.manager.dto.ManagerDto;
+import CryptOptima.server.domain.manager.dto.ManagerMapper;
 import CryptOptima.server.global.exception.BusinessLogicException;
 import CryptOptima.server.global.exception.ExceptionCode;
 import CryptOptima.server.global.utils.CustomBeanUtils;
@@ -13,7 +17,7 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ManagerServiceImpl implements ManagerService{
+public class ManagerServiceImpl implements ManagerService {
 
     private final CustomBeanUtils<Manager> beanUtils;
     private final ManagerRepository managerRepository;

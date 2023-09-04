@@ -1,4 +1,6 @@
-package CryptOptima.server.domain.manager;
+package CryptOptima.server.domain.manager.service;
+
+import CryptOptima.server.domain.manager.dto.ManagerDto;
 
 public interface ManagerService {
     // MNG_ACCOUNT02 :: 관리자 계정 추가

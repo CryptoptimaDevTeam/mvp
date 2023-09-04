@@ -1,6 +1,6 @@
 package CryptOptima.server.security.handler;
 
-import CryptOptima.server.domain.manager.Manager;
+import CryptOptima.server.domain.manager.entity.Manager;
 import CryptOptima.server.security.jwt.JwtService;
 import CryptOptima.server.security.jwt.JwtTokenizer;
 import lombok.RequiredArgsConstructor;

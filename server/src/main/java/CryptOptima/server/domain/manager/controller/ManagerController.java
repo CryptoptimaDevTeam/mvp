@@ -1,11 +1,15 @@
-package CryptOptima.server.domain.manager;
+package CryptOptima.server.domain.manager.controller;
 
+import CryptOptima.server.domain.manager.dto.ManagerDto;
+import CryptOptima.server.domain.manager.service.ManagerService;
 import CryptOptima.server.security.dto.LoginDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 @RequiredArgsConstructor
@@ -22,7 +26,7 @@ public class ManagerController {
 
     // MNG_ACCOUNT02 :: 관리자 계정 추가
     @PostMapping
-    public ResponseEntity createManager(@RequestBody ManagerDto.Create managerDto) {
+    public ResponseEntity createManager(@RequestBody @Valid ManagerDto.Create managerDto) {
         managerService.createManager(managerDto);
         return new ResponseEntity(HttpStatus.CREATED);
     }
