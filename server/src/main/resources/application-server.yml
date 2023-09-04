@@ -7,7 +7,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ENC(Hjw62kH9gONiTofwncLNBhoFcbsruk/vA0gLeLrEzIWshO0UepsInOwoRpclfIkLssKxvmGeO2gyyD/e/dHWyTDeqzVTxHZWszilMI5A0hkHxB/JJnprO4IvPAxIDPVPnn+wKB11hWib7DiwM5jxfHe+S9bTCk37Rn+xwDTTHL9YGgdxePdAFg==)
     username: ENC(yZJyWJKk2dEesymwREbn09M870O68mcP)
-    password: ENC(CSt9SM04Qs505A0e7wQ2MndRHFUMEJNI)
+    password: ENC(pup2HdrADfQMH6GRwQlzbMmspdwQaA/d)
 
   jpa:
     database: mysql
@@ -50,4 +50,4 @@ jwt:
 
 env:
   ip:
-    token: be1662914887a8
+    token: ENC(ICBt/GnwAh6m2spapT/l4t5fTJdH4bnk)
