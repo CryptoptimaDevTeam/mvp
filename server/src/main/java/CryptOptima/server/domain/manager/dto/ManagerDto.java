@@ -9,6 +9,7 @@ public class ManagerDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Create {
+
         private String accountId;
         private String password;
         private String managerName;
