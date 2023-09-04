@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/server/admin/resources")
+@RequestMapping("/server/managers/resources")
 @RequiredArgsConstructor
 public class ResourceController {
 
