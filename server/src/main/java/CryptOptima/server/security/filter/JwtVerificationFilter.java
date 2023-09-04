@@ -68,9 +68,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         List<String> urls = List.of(
                 "/server/public",
                 "/server/managers/login",
-                "/server/users/login",
                 "/oauth2/authorization"
-//                "/login",
         );
 
         for(String s : urls) {

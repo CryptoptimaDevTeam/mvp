@@ -9,8 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/server/managers")
@@ -26,7 +24,7 @@ public class ManagerController {
 
     // MNG_ACCOUNT02 :: 관리자 계정 추가
     @PostMapping
-    public ResponseEntity createManager(@RequestBody @Valid ManagerDto.Create managerDto) {
+    public ResponseEntity createManager(@RequestBody ManagerDto.Create managerDto) {
         managerService.createManager(managerDto);
         return new ResponseEntity(HttpStatus.CREATED);
     }
