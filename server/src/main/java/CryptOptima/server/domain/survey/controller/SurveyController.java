@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.validation.Valid;
+
 @Controller
 @RequestMapping("/server")
 @RequiredArgsConstructor
@@ -19,13 +21,13 @@ public class SurveyController {
     private final SurveyService surveyService;
 
     @PostMapping("/public/survey")
-    public ResponseEntity createSurvey(@RequestBody SurveyDto.Create surveyCreateDto) {
+    public ResponseEntity createSurvey(@RequestBody @Valid SurveyDto.Create surveyCreateDto) {
 
         return new ResponseEntity(surveyService.createSurvey(surveyCreateDto), HttpStatus.OK);
     }
 
     @GetMapping("/managers/survey/groups") // TODO 필터링 조건을 RequestParam 으로 받을지, DTO로 받을지
-    public ResponseEntity getSurveyGroups(@RequestBody SurveyDto.GroupCondition groupCond) {
+    public ResponseEntity getSurveyGroups(@RequestBody @Valid SurveyDto.GroupCondition groupCond) {
         SurveyDto.GroupResponse response = SurveyDto.GroupResponse.builder()
                 .groupCondition(groupCond) // group by 그룹핑 조건
                 .groupList(surveyService.getGroupResponses(groupCond)) // group 별 해당 사용자 카운트 리스트
@@ -35,7 +37,7 @@ public class SurveyController {
     }
 
     @GetMapping("/managers/survey")
-    public ResponseEntity getSurveysWhere(@RequestBody SurveyDto.SelectCondition selectCond) {
+    public ResponseEntity getSurveysWhere(@RequestBody @Valid SurveyDto.SelectCondition selectCond) {
 
         SurveyDto.SelectResponse response = SurveyDto.SelectResponse.builder()
                 .selectCondition(selectCond)

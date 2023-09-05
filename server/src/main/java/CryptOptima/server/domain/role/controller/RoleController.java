@@ -8,6 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+
 @Controller
 @RequestMapping("/server/managers/roles")
 @RequiredArgsConstructor
@@ -16,14 +19,14 @@ public class RoleController {
     private final RoleService roleService;
 
     @PostMapping
-    public ResponseEntity createRole(@RequestBody RoleDto.Create createRoleDto) {
+    public ResponseEntity createRole(@RequestBody @Valid RoleDto.Create createRoleDto) {
         roleService.createRole(createRoleDto);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @PatchMapping("/{role-id}")
-    public ResponseEntity updateRole(@PathVariable("role-id") Long roleId,
-                                     RoleDto.Update updateRoleDto) {
+    public ResponseEntity updateRole(@PathVariable("role-id") @Min(1) Long roleId,
+                                     @RequestBody @Valid RoleDto.Update updateRoleDto) {
         roleService.updateRole(roleId, updateRoleDto);
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -34,7 +37,7 @@ public class RoleController {
     }
 
     @DeleteMapping("/{role-id}")
-    public ResponseEntity deleteRole(@PathVariable("role-id") Long roleId) {
+    public ResponseEntity deleteRole(@PathVariable("role-id") @Min(1) Long roleId) {
         roleService.deleteRole(roleId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }

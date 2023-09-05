@@ -2,6 +2,9 @@ package CryptOptima.server.domain.role.dto;
 
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+
 public class RoleDto {
 
     @Builder
@@ -10,6 +13,8 @@ public class RoleDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Create {
+        @NotBlank
+        @Pattern(regexp = "^ROLE_",message = "Please enter a valid format of permissions.")
         private String roleName;
     }
 
@@ -19,7 +24,7 @@ public class RoleDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Update {
-//        private Long roleId;
+        @Pattern(regexp = "^ROLE_",message = "Please enter a valid format of permissions.")
         private String roleName;
     }
 

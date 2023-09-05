@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @Controller
@@ -27,10 +29,11 @@ public class DepositController {
      *  TODO startDate, endDate defaultValue 정하기
      */
 
+    // Todo 날짜 유효성 검증
     @GetMapping("/server/users/{user-id}/deposits")
     public ResponseEntity getUserDeposits(@PathVariable("user-id") Long userId,
-                                      @RequestParam(required = false, value = "exchangeId") Long exchangeId,
-                                      @RequestParam(required = false, value = "coinId") Long coinId,
+                                      @RequestParam(required = false, value = "exchangeId") @Min(1) Long exchangeId,
+                                      @RequestParam(required = false, value = "coinId") @Min(1) Long coinId,
                                       @RequestParam(required = false, value = "startDate", defaultValue = "") String startDate,
                                       @RequestParam(required = false, value = "endDate", defaultValue = "") String endDate) {
         List<DepositDto.UserDeposit> response= depositService.getUserDeposits(userId, exchangeId, coinId, startDate, endDate);
@@ -38,9 +41,9 @@ public class DepositController {
     }
 
     @GetMapping("/server/managers/deposits")
-    public ResponseEntity getMngDeposits(@RequestParam(required = false, value = "userId") Long userId,
-                                      @RequestParam(required = false, value = "exchangeId") Long exchangeId,
-                                      @RequestParam(required = false, value = "coinId") Long coinId,
+    public ResponseEntity getMngDeposits(@RequestParam(required = false, value = "userId") @Min(1) Long userId,
+                                      @RequestParam(required = false, value = "exchangeId") @Min(1) Long exchangeId,
+                                      @RequestParam(required = false, value = "coinId") @Min(1) Long coinId,
                                       @RequestParam(required = false, value = "startDate", defaultValue = "") String startDate,
                                       @RequestParam(required = false, value = "endDate", defaultValue = "") String endDate) {
         List<DepositDto.MngDeposit> response= depositService.getMngDeposits(userId, exchangeId, coinId, startDate, endDate);
@@ -51,7 +54,7 @@ public class DepositController {
      *  MNG_DEPOSIT03 :: 페이백 입금 등록
      */
     @PostMapping("/server/managers/deposits")
-    public ResponseEntity createDeposit(@RequestBody DepositDto.Create depositDto) {
+    public ResponseEntity createDeposit(@RequestBody @Valid DepositDto.Create depositDto) {
         DepositDto.MngDeposit response = depositService.createDeposit(depositDto);
         return new ResponseEntity(response, HttpStatus.CREATED);
     }

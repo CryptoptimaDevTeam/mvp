@@ -2,6 +2,10 @@ package CryptOptima.server.domain.survey.dto;
 
 import lombok.*;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 public class SurveyDto {
@@ -11,10 +15,17 @@ public class SurveyDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Create {
+        @Email(message = "Please type email address in a valid format.")
+        @NotBlank
         private String email;
+        @NotBlank
         private String exchange;
+        @NotBlank
+        @Pattern(regexp = "spot|derivatives", message = "Please enter either spot or derivatives")
         private String type;
     }
+
+    // Todo True or False 유효성 검증
 
     @Builder
     @Getter
@@ -66,8 +77,10 @@ public class SurveyDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class SelectCondition { // where절 조건
+        @Size(min = 2, max = 2, message = "Country code cannot be longer than 2 characters.")
         private String nation;
         private String exchange;
+        @Pattern(regexp = "spot|derivatives", message = "Please enter either spot or derivatives")
         private String type;
     }
 

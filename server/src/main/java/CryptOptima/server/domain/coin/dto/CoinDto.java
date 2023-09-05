@@ -2,6 +2,9 @@ package CryptOptima.server.domain.coin.dto;
 
 import lombok.*;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+
 public class CoinDto {
 
     @Getter
@@ -9,8 +12,11 @@ public class CoinDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Create {
-        private String coinName;
+        @Min(0)
+        @NotBlank
         private String price;
+        @NotBlank
+        private String coinName;
     }
 
     @Getter
@@ -18,8 +24,9 @@ public class CoinDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Update {
-        private String coinName;
+        @Min(0)
         private String price;
+        private String coinName;
     }
 
     @Getter
