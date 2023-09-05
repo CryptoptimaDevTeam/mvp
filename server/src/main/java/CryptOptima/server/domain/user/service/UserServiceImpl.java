@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDto.Response> getUsers(int page, int size) {
         List<User> users = userRepository.findAll(
-                PageRequest.of(page,size, Sort.by("userId").descending())
+                PageRequest.of(page - 1, size, Sort.by("userId").descending())
         ).getContent();
         return userMapper.usersToUserResponseDtos(users);
     }

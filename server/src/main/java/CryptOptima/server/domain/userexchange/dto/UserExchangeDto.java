@@ -2,11 +2,16 @@ package CryptOptima.server.domain.userexchange.dto;
 
 import lombok.*;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+
 public class UserExchangeDto {
     @Getter
     @Builder
     public static class Create {
+        @Min(1)
         private Long exchangeId;
+        @NotBlank
         private String uid;
     }
 

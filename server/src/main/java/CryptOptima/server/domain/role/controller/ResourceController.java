@@ -9,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+
 @Controller
 @RequestMapping("/server/managers/resources")
 @RequiredArgsConstructor
@@ -17,13 +20,13 @@ public class ResourceController {
     private final ResourceService resourceService;
 
     @PostMapping
-    public ResponseEntity createResource(@RequestBody ResourceDto.Create createResourceDto) {
+    public ResponseEntity createResource(@RequestBody @Valid ResourceDto.Create createResourceDto) {
         resourceService.createResource(createResourceDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/{resource-id}")
-    public ResponseEntity getResource(@PathVariable(value = "resource-id") Long resourceId) {
+    public ResponseEntity getResource(@PathVariable(value = "resource-id") @Min(1) Long resourceId) {
 
         return new ResponseEntity(resourceService.getResource(resourceId), HttpStatus.OK);
     }
@@ -35,19 +38,19 @@ public class ResourceController {
     }
 
     @PostMapping("/roles")
-    public ResponseEntity createResourceRole(@RequestBody ResourceRoleDto.Create createResourceRoleDto) {
+    public ResponseEntity createResourceRole(@RequestBody @Valid ResourceRoleDto.Create createResourceRoleDto) {
         resourceService.createResourceRole(createResourceRoleDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/roles/{resource-role-id}")
-    public ResponseEntity deleteResourceRole(@PathVariable("resource-role-id") Long resourceRoleId) {
+    public ResponseEntity deleteResourceRole(@PathVariable("resource-role-id") @Min(1) Long resourceRoleId) {
         resourceService.deleteResourceRole(resourceRoleId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/{resource-id}")
-    public ResponseEntity deleteResource(@PathVariable("resource-id") Long resourceId) {
+    public ResponseEntity deleteResource(@PathVariable("resource-id") @Min(1) Long resourceId) {
         resourceService.deleteResource(resourceId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }

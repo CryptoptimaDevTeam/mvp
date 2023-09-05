@@ -2,6 +2,9 @@ package CryptOptima.server.domain.deposit.dto;
 
 import lombok.*;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+
 public class DepositDto {
 
     @Getter
@@ -9,9 +12,17 @@ public class DepositDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Create {
+        @Min(1)
+        @NotBlank
         private Long exchangeId;
+        @Min(1)
+        @NotBlank
         private Long userId;
+        @Min(1)
+        @NotBlank
         private Long coinId;
+        @Min(0)
+        @NotBlank
         private String depositAmount;
     }
 

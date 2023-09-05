@@ -2,6 +2,11 @@ package CryptOptima.server.domain.withdrawal.dto;
 
 import CryptOptima.server.domain.withdrawal.entity.WithdrawalRecord;
 import lombok.*;
+import org.springframework.security.core.parameters.P;
+
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 public class WithdrawalDto {
 
@@ -10,7 +15,10 @@ public class WithdrawalDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Create {
+        @Min(1)
+        @NotBlank
         private Long exchangeId;
+        @NotBlank
         private String reqAmount; // usdt
     }
 
@@ -19,6 +27,9 @@ public class WithdrawalDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class UpdateStatus {
+        @Pattern(regexp = "REQUESTED|PENDING|COMPLETE|FAILED|CANCELED",
+                message = "Please enter a valid format of status.")
+        @NotBlank
         private String status;
     }
 
@@ -27,6 +38,7 @@ public class WithdrawalDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class UpdateTxid {
+        @NotBlank
         private String txid;
     }
 

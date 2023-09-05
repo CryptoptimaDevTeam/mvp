@@ -2,6 +2,9 @@ package CryptOptima.server.domain.role.dto;
 
 import lombok.*;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+
 public class ResourceRoleDto {
 
     @Builder
@@ -10,7 +13,11 @@ public class ResourceRoleDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Create {
+        @Min(1)
+        @NotBlank
         private Long resourceId;
+        @Min(1)
+        @NotBlank
         private Long roleId;
     }
 

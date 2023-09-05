@@ -2,6 +2,10 @@ package CryptOptima.server.domain.user.dto;
 
 import lombok.*;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+
 public class UserDto {
 
     @Getter
@@ -9,6 +13,8 @@ public class UserDto {
     @NoArgsConstructor
     @AllArgsConstructor
     static class Create {
+        @Email
+        @NotBlank
         private String accountId;
         private String status;
     }
@@ -18,6 +24,8 @@ public class UserDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Update {
+        @NotBlank
+        @Pattern(regexp = "ACTIVE|QUIT|BANNED", message = "Please enter a valid format of status.")
         private String status;
     }
 
