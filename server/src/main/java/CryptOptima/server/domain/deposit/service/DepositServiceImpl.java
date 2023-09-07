@@ -9,10 +9,13 @@ import CryptOptima.server.domain.deposit.repository.QDepositRepository;
 import CryptOptima.server.domain.user.repository.QUserRepository;
 
 import CryptOptima.server.global.event.PushAlertEvent;
+import CryptOptima.server.global.utils.DateTimeUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -46,25 +49,23 @@ public class DepositServiceImpl implements DepositService{
 
     @Override
     public List<DepositDto.UserDeposit> getUserDeposits(Long userId, Long exchangeId, Long coinId, String startDate, String endDate, Integer size, Long ltDepositId) {
-        if(coinId==null && exchangeId==null) return qDepositRepository.findUserDepositsByUserIdAndDate(userId);
-        else if(coinId==null) return qDepositRepository.findUserDepositsByUserIdAndExchangeIdAndDate(userId,exchangeId);
-        else if(exchangeId==null) return qDepositRepository.findUserDepositsByUserIdAndCoinIdAndDate(userId,coinId);
-        else return qDepositRepository.findUserDepositsByUserIdAndExchangeIdAndCoinIdAndDate(userId,exchangeId,coinId);
+        return qDepositRepository.findUserDeposits(userId, exchangeId, coinId,
+                getLocalDateTime(startDate, "start"), getLocalDateTime(endDate, "end"), size, ltDepositId);
     }
 
     @Override
     public List<DepositDto.MngDeposit> getMngDeposits(Long userId, Long exchangeId, Long coinId, String startDate, String endDate, Integer size, Long ltDepositId) {
-        if(userId!=null) {
-            if (coinId == null && exchangeId == null) return qDepositRepository.findDepositsByUserIdAndDate(userId);
-            else if (coinId == null) return qDepositRepository.findDepositsByUserIdAndExchangeIdAndDate(userId, exchangeId);
-            else if (exchangeId == null) return qDepositRepository.findDepositsByUserIdAndCoinIdAndDate(userId, coinId);
-            else return qDepositRepository.findDepositsByUserIdAndExchangeIdAndCoinIdAndDate(userId, exchangeId, coinId);
-        }
-        else {
-            if (coinId == null && exchangeId == null) return qDepositRepository.findDepositsByDate();
-            else if (coinId == null) return qDepositRepository.findDepositsByExchangeIdAndDate(exchangeId);
-            else if (exchangeId == null) return qDepositRepository.findDepositsByCoinIdAndDate(coinId);
-            else return qDepositRepository.findDepositsByExchangeIdAndCoinIdAndDate(exchangeId, coinId);
-        }
+        return qDepositRepository.findMngDeposits(userId, exchangeId, coinId,
+                getLocalDateTime(startDate, "start"), getLocalDateTime(endDate, "end"), size, ltDepositId);
     }
+
+    private LocalDateTime getLocalDateTime(String date, String type) {
+        LocalDateTime localDateTime = DateTimeUtils.parseLocalDateTime(date);
+
+        if(type.equals("start")) {
+            return localDateTime == null ? LocalDateTime.now().minusDays(10) : localDateTime.with(LocalTime.MIN);
+        }
+        return localDateTime == null ? LocalDateTime.now() : localDateTime.with(LocalDateTime.MAX);
+    }
+
 }

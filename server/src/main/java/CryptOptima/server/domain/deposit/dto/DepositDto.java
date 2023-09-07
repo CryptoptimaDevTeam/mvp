@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class DepositDto {
 
@@ -13,13 +14,13 @@ public class DepositDto {
     @NoArgsConstructor
     public static class Create {
         @Min(1)
-        @NotBlank
+        @NotNull
         private Long exchangeId;
         @Min(1)
-        @NotBlank
+        @NotNull
         private Long userId;
         @Min(1)
-        @NotBlank
+        @NotNull
         private Long coinId;
         @Min(0)
         @NotBlank
