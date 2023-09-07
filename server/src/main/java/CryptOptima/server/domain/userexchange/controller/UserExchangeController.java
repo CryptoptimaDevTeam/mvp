@@ -6,12 +6,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.util.List;
 
+@Validated
 @Controller
 @RequestMapping("/server")
 @RequiredArgsConstructor
@@ -32,8 +34,8 @@ public class UserExchangeController {
     // UID02 :: UID 조회
     @GetMapping("/public/userexchanges")
     public ResponseEntity getUserExchanges(@RequestParam("size") @Min(1) int size,
-                                           @RequestParam(value = "userId", required = false, defaultValue = "0") Long userId,
-                                           @RequestParam(value = "exchangeId", required = false, defaultValue = "0") Long exchangeId,
+                                           @RequestParam(value = "userId", required = false, defaultValue = "0") @Min(1) Long userId,
+                                           @RequestParam(value = "exchangeId", required = false, defaultValue = "0") @Min(1) Long exchangeId,
                                            @RequestParam("ltUserExchangeId") @Min(1) Long lastUserExchangeId) {
         List<UserExchangeDto.Response> response;
         if(userId==0 && exchangeId==0) response = userExchangeService.getUserExchanges(size, lastUserExchangeId);

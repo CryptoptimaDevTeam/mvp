@@ -7,12 +7,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.util.List;
 
+@Validated
 @Controller
 @RequestMapping("/server")
 @RequiredArgsConstructor
@@ -21,7 +23,7 @@ public class UserController {
     private final UserService userService;
 
     @PatchMapping("/users/{user-id}")
-    public ResponseEntity updateUser(@PathVariable("user-id") Long userId,
+    public ResponseEntity updateUser(@PathVariable("user-id") @Min(1) Long userId,
                                      @RequestBody @Valid UserDto.Update userDto) {
 
         userService.updateUser(userDto, userId);
@@ -29,7 +31,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{user-id}")
-    public ResponseEntity getUser(@PathVariable("user-id") Long userId) {
+    public ResponseEntity getUser(@PathVariable("user-id") @Min(1) Long userId) {
 
         UserDto.Response response = userService.getUser(userId);
         return new ResponseEntity(response, HttpStatus.OK);
