@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -13,6 +14,7 @@ import javax.validation.constraints.Min;
 import java.util.List;
 import java.util.Map;
 
+@Validated
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/server")
@@ -29,7 +31,7 @@ public class CoinController {
 
     // MNG_UPDATE01 :: 주요 코인의 시세를 업데이트 한다.
     @PatchMapping("/managers/crypto/{coin-id}")
-    public ResponseEntity updateCoin(@PathVariable("coin-id") Long coinId,
+    public ResponseEntity updateCoin(@PathVariable("coin-id") @Min(1) Long coinId,
                                      @RequestBody @Valid CoinDto.Update coinDto) {
         coinService.updateCoin(coinDto, coinId);
         return new ResponseEntity(HttpStatus.OK);
