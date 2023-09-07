@@ -8,6 +8,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.validation.ConstraintViolationException;
+
 @RestControllerAdvice
 public class GlobalExceptionAdvice {
     @ExceptionHandler(BusinessLogicException.class)
@@ -27,4 +29,11 @@ public class GlobalExceptionAdvice {
         ErrorResponse.Validation response = ErrorResponse.of(e);
         return new ResponseEntity(response, HttpStatus.valueOf(response.getStatus()));
     }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity handleException(ConstraintViolationException e) {
+        ErrorResponse.Validation response = ErrorResponse.of(e);
+        return new ResponseEntity(response, HttpStatus.valueOf(response.getStatus()));
+    }
+
 }

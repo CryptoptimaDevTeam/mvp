@@ -4,6 +4,7 @@ import lombok.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,6 +57,20 @@ public class ErrorResponse {
                                 fieldError -> FieldError.builder()
                                         .field(fieldError.getField())
                                         .error(fieldError.getDefaultMessage())
+                                        .build()
+                        ).collect(Collectors.toList())
+                ).build();
+    }
+
+    public static ErrorResponse.Validation of(ConstraintViolationException e) {
+        return Validation.builder()
+                .status(HttpStatus.BAD_REQUEST.value())
+                .message("The value you entered is not valid.")
+                .fieldErrors(
+                        e.getConstraintViolations().stream().map(
+                                constraintViolation -> FieldError.builder()
+                                        .field(constraintViolation.getPropertyPath().toString())
+                                        .error(constraintViolation.getMessage())
                                         .build()
                         ).collect(Collectors.toList())
                 ).build();

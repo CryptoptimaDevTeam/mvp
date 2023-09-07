@@ -54,7 +54,7 @@ public class WithdrawalServiceImpl implements WithdrawalService{
     }
 
     // TODO SortType & ASC/DESC 추가하기
-    public List<WithdrawalDto.UserWithdrawal> getUserWithdrawals(Long userId, Long exchangeId, String status/*, String startDate, String endDate*/) {
+    public List<WithdrawalDto.UserWithdrawal> getUserWithdrawals(Long userId, Long exchangeId, String status, String startDate, String endDate, int size, Long ltWithdrawalId) {
         if(exchangeId==null) {
             if(status==null) return qWithdrawalRepository.findUserWithdrawalsByUserIdAndDate(userId/*, startDate, endDate*/);
             else return qWithdrawalRepository.findUserWithdrawalsByUserIdAndStatusAndDate(userId,status/*, startDate, endDate*/);
@@ -66,7 +66,7 @@ public class WithdrawalServiceImpl implements WithdrawalService{
     }
 
     // userId, exchangeId, status, date를 기준으로 withdrawal을 조회한다.
-    public List<WithdrawalDto.MngWithdrawal> getMngWithdrawals(Long userId, Long exchangeId, String status/*, String startDate, String endDate*/) {
+    public List<WithdrawalDto.MngWithdrawal> getMngWithdrawals(Long userId, Long exchangeId, String status, String startDate, String endDate, int size, Long ltWithdrawalId) {
         if(userId==null) {
             if(exchangeId==null && status==null) return qWithdrawalRepository.findMngWithdrawalsByDate(/*startDate, endDate*/);
             else if(exchangeId==null) return qWithdrawalRepository.findMngWithdrawalsByStatusAndDate(status/*, startDate, endDate*/);

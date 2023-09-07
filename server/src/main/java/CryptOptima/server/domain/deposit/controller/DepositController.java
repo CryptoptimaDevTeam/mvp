@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 @Validated
@@ -33,22 +34,28 @@ public class DepositController {
 
     // Todo 날짜 유효성 검증
     @GetMapping("/server/users/{user-id}/deposits")
-    public ResponseEntity getUserDeposits(@PathVariable("user-id") Long userId,
-                                      @RequestParam(required = false, value = "exchangeId") @Min(1) Long exchangeId,
-                                      @RequestParam(required = false, value = "coinId") @Min(1) Long coinId,
-                                      @RequestParam(required = false, value = "startDate", defaultValue = "") String startDate,
-                                      @RequestParam(required = false, value = "endDate", defaultValue = "") String endDate) {
-        List<DepositDto.UserDeposit> response= depositService.getUserDeposits(userId, exchangeId, coinId, startDate, endDate);
+    public ResponseEntity getUserDeposits(@PathVariable("user-id") @Min(1) Long userId,
+                                          @RequestParam(required = false, value = "exchangeId") @Min(1) Long exchangeId,
+                                          @RequestParam(required = false, value = "coinId") @Min(1) Long coinId,
+                                          @RequestParam(required = false, value = "startDate") @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "please enter valid date format.") String startDate,
+                                          @RequestParam(required = false, value = "endDate") @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "please enter valid date format.") String endDate,
+                                          @RequestParam(required = false, value = "size", defaultValue = "10") @Min(1) Integer size,
+                                          @RequestParam @Min(0) Long ltDepositId) {
+
+        List<DepositDto.UserDeposit> response= depositService.getUserDeposits(userId, exchangeId, coinId, startDate, endDate, size, ltDepositId);
         return new ResponseEntity(response,HttpStatus.OK);
     }
 
     @GetMapping("/server/managers/deposits")
     public ResponseEntity getMngDeposits(@RequestParam(required = false, value = "userId") @Min(1) Long userId,
-                                      @RequestParam(required = false, value = "exchangeId") @Min(1) Long exchangeId,
-                                      @RequestParam(required = false, value = "coinId") @Min(1) Long coinId,
-                                      @RequestParam(required = false, value = "startDate", defaultValue = "") String startDate,
-                                      @RequestParam(required = false, value = "endDate", defaultValue = "") String endDate) {
-        List<DepositDto.MngDeposit> response= depositService.getMngDeposits(userId, exchangeId, coinId, startDate, endDate);
+                                         @RequestParam(required = false, value = "exchangeId") @Min(1) Long exchangeId,
+                                         @RequestParam(required = false, value = "coinId") @Min(1) Long coinId,
+                                         @RequestParam(required = false, value = "startDate") @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "please enter valid date format.") String startDate,
+                                         @RequestParam(required = false, value = "endDate") @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "please enter valid date format.") String endDate,
+                                         @RequestParam(required = false, value = "size") @Min(1) Integer size,
+                                         @RequestParam @Min(0) Long ltDepositId) {
+
+        List<DepositDto.MngDeposit> response= depositService.getMngDeposits(userId, exchangeId, coinId, startDate, endDate, size, ltDepositId);
         return new ResponseEntity(response,HttpStatus.OK);
     }
 
