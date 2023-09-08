@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class ExchangeDto {
     @Getter
@@ -15,13 +16,11 @@ public class ExchangeDto {
         @NotBlank
         private String exchangeName;
         @Min(0)
-        @NotBlank
+        @NotNull
         private int exchangePossibleUserCount;
-        @Min(0)
-        @NotBlank
+        @NotNull
         private Float exchangePaybackRate;
-        @Min(0)
-        @NotBlank
+        @NotNull
         private Float exchangeFeeDiscountRate;
     }
     @Getter
@@ -32,9 +31,7 @@ public class ExchangeDto {
         private String exchangeName;
         @Min(0)
         private int exchangePossibleUserCount;
-        @Min(0)
         private Float exchangePaybackRate;
-        @Min(0)
         private Float exchangeFeeDiscountRate;
     }
     @Getter
