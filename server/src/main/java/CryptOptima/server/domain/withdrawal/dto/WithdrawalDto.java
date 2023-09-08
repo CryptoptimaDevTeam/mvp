@@ -2,10 +2,10 @@ package CryptOptima.server.domain.withdrawal.dto;
 
 import CryptOptima.server.domain.withdrawal.entity.WithdrawalRecord;
 import lombok.*;
-import org.springframework.security.core.parameters.P;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 public class WithdrawalDto {
@@ -16,7 +16,7 @@ public class WithdrawalDto {
     @NoArgsConstructor
     public static class Create {
         @Min(1)
-        @NotBlank
+        @NotNull
         private Long exchangeId;
         @NotBlank
         private String reqAmount; // usdt

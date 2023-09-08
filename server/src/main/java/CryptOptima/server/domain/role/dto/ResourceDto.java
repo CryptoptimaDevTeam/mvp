@@ -4,11 +4,11 @@ import lombok.*;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public class ResourceDto {
-
-    // Todo List 유효성 검증
 
     @Builder
     @Getter
@@ -19,9 +19,9 @@ public class ResourceDto {
         @NotBlank
         private String url;
         @Min(1)
-        @NotBlank
+        @NotNull
         private int order;
-        @NotBlank
+        @NotEmpty
         private List<Long> roleIds;
     }
 
