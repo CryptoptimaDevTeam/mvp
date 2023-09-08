@@ -59,8 +59,8 @@ public class WithdrawalController {
                                              @RequestParam(required = false, value = "status") String status,
                                              @RequestParam(required = false, value = "startDate") @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "please enter valid date format.") String startDate,
                                              @RequestParam(required = false, value = "endDate") @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "please enter valid date format.") String endDate,
-                                             @RequestParam(required = false, value = "size") @Min(1) Integer size,
-                                             @RequestParam @Min(0) Long ltWithdrawalId) {
+                                             @RequestParam(required = false, value = "size", defaultValue = "10") @Min(1) Integer size,
+                                             @RequestParam(required = false, value = "ltWithdrawalId") @Min(0) Long ltWithdrawalId) {
 
         List<WithdrawalDto.UserWithdrawal> response = withdrawalService.getUserWithdrawals(userId,exchangeId,status, startDate, endDate, size, ltWithdrawalId);
         return new ResponseEntity(response, HttpStatus.OK);
@@ -73,8 +73,8 @@ public class WithdrawalController {
                                             @RequestParam(required = false, value = "status") String status,
                                             @RequestParam(required = false, value = "startDate") @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "please enter valid date format.") String startDate,
                                             @RequestParam(required = false, value = "endDate") @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "please enter valid date format.") String endDate,
-                                            @RequestParam(required = false, value = "size") @Min(1) Integer size,
-                                            @RequestParam @Min(0) Long ltWithdrawalId) {
+                                            @RequestParam(required = false, value = "size", defaultValue = "10") @Min(1) Integer size,
+                                            @RequestParam(required = false, value = "ltWithdrawalId") @Min(1) Long ltWithdrawalId) {
 
         List<WithdrawalDto.MngWithdrawal> response = withdrawalService.getMngWithdrawals(userId, exchangeId, status, startDate, endDate, size, ltWithdrawalId);
         return new ResponseEntity(response, HttpStatus.OK);

@@ -38,7 +38,7 @@ public class DepositController {
                                           @RequestParam(required = false, value = "startDate") @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "please enter valid date format.") String startDate,
                                           @RequestParam(required = false, value = "endDate") @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "please enter valid date format.") String endDate,
                                           @RequestParam(required = false, value = "size", defaultValue = "10") @Min(1) Integer size,
-                                          @RequestParam(required = false, value = "ltDepositId", defaultValue = "0") @Min(0) Long ltDepositId) {
+                                          @RequestParam(required = false, value = "ltDepositId") @Min(0) Long ltDepositId) {
 
         List<DepositDto.UserDeposit> response= depositService.getUserDeposits(userId, exchangeId, coinId, startDate, endDate, size, ltDepositId);
         return new ResponseEntity(response,HttpStatus.OK);
@@ -51,7 +51,7 @@ public class DepositController {
                                          @RequestParam(required = false, value = "startDate") @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "please enter valid date format.") String startDate,
                                          @RequestParam(required = false, value = "endDate") @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "please enter valid date format.") String endDate,
                                          @RequestParam(required = false, value = "size", defaultValue = "10") @Min(1) Integer size,
-                                         @RequestParam(required = false, value = "ltDepositId", defaultValue = "0") @Min(0) Long ltDepositId) {
+                                         @RequestParam(required = false, value = "ltDepositId") @Min(0) Long ltDepositId) {
 
         List<DepositDto.MngDeposit> response= depositService.getMngDeposits(userId, exchangeId, coinId, startDate, endDate, size, ltDepositId);
         return new ResponseEntity(response,HttpStatus.OK);

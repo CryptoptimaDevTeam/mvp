@@ -9,6 +9,7 @@ import CryptOptima.server.domain.withdrawal.repository.WithdrawalRepository;
 import CryptOptima.server.global.event.PushAlertEvent;
 import CryptOptima.server.global.exception.BusinessLogicException;
 import CryptOptima.server.global.exception.ExceptionCode;
+import CryptOptima.server.global.utils.DateTimeUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -44,45 +45,33 @@ public class WithdrawalServiceImpl implements WithdrawalService{
     @Override
     public void updateWithdrawalStatus(String withdrawalStatus, Long withdrawalId) {
         WithdrawalRecord withdrawal = findWithdrawalByWithdrawalId(withdrawalId);
-        withdrawal.changeWithdrawalStatus(WithdrawalRecord.Status.valueOf(withdrawalStatus)); // dirty-check
+        withdrawal.changeWithdrawalStatus(WithdrawalRecord.Status.valueOf(withdrawalStatus));
+
+        // todo 이벤트리스너 퍼블리싱
     }
 
     @Override
     public void updateWithdrawalTxid(String txid, Long withdrawalId) {
         WithdrawalRecord withdrawal = findWithdrawalByWithdrawalId(withdrawalId);
-        withdrawal.changeTxid(txid); // dirty-check
+        withdrawal.changeTxid(txid);
+
+        // todo 이벤트리스너 퍼블리싱
     }
 
-    // TODO SortType & ASC/DESC 추가하기
     public List<WithdrawalDto.UserWithdrawal> getUserWithdrawals(Long userId, Long exchangeId, String status, String startDate, String endDate, int size, Long ltWithdrawalId) {
-        if(exchangeId==null) {
-            if(status==null) return qWithdrawalRepository.findUserWithdrawalsByUserIdAndDate(userId/*, startDate, endDate*/);
-            else return qWithdrawalRepository.findUserWithdrawalsByUserIdAndStatusAndDate(userId,status/*, startDate, endDate*/);
-        }
-        else {
-            if(status==null) return qWithdrawalRepository.findUserWithdrawalsByUserIdAndExchangeIdAndDate(userId,exchangeId/*, startDate, endDate*/);
-            return qWithdrawalRepository.findUserWithdrawalsByUserIdAndExchangeIdAndStatusAndDate(userId, exchangeId, status/*,startDate, endDate*/);
-        }
+        return qWithdrawalRepository.findUserWithdrawals(userId, exchangeId, status,
+                DateTimeUtils.parseLocalDateTime(startDate, "start"), DateTimeUtils.parseLocalDateTime(endDate, "end"), size, ltWithdrawalId);
     }
 
     // userId, exchangeId, status, date를 기준으로 withdrawal을 조회한다.
     public List<WithdrawalDto.MngWithdrawal> getMngWithdrawals(Long userId, Long exchangeId, String status, String startDate, String endDate, int size, Long ltWithdrawalId) {
-        if(userId==null) {
-            if(exchangeId==null && status==null) return qWithdrawalRepository.findMngWithdrawalsByDate(/*startDate, endDate*/);
-            else if(exchangeId==null) return qWithdrawalRepository.findMngWithdrawalsByStatusAndDate(status/*, startDate, endDate*/);
-            else if(status==null) return qWithdrawalRepository.findMngWithdrawalsByExchangeIdAndDate(exchangeId/*, startDate, endDate*/);
-            else return qWithdrawalRepository.findMngWithdrawalsByExchangeIdAndStatusAndDate(exchangeId, status/*, startDate, endDate*/);
-        }
-        else {
-            if (exchangeId==null && status==null) return qWithdrawalRepository.findMngWithdrawalsByUserIdAndDate(userId/*, startDate, endDate*/);
-            else if(exchangeId==null) return qWithdrawalRepository.findMngWithdrawalsByUserIdAndStatusAndDate(userId, status/*, startDate, endDate*/);
-            else if(status==null) return qWithdrawalRepository.findMngWithdrawalsByUserIdAndExchangeIdAndDate(userId, exchangeId/*, startDate, endDate*/);
-            else return qWithdrawalRepository.findMngWithdrawalsByUserIdAndExchangeIdAndStatusAndDate(userId,exchangeId,status/*, startDate, endDate*/);
-        }
+        return qWithdrawalRepository.findMngWithdrawals(userId, exchangeId, status,
+                DateTimeUtils.parseLocalDateTime(startDate, "start"), DateTimeUtils.parseLocalDateTime(endDate, "end"), size, ltWithdrawalId);
     }
 
     private WithdrawalRecord findWithdrawalByWithdrawalId(Long withdrawalId) {
         return withdrawalRepository.findById(withdrawalId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.WITHDRAWAL_NOT_FOUND));
     }
+
 }

@@ -50,22 +50,12 @@ public class DepositServiceImpl implements DepositService{
     @Override
     public List<DepositDto.UserDeposit> getUserDeposits(Long userId, Long exchangeId, Long coinId, String startDate, String endDate, Integer size, Long ltDepositId) {
         return qDepositRepository.findUserDeposits(userId, exchangeId, coinId,
-                getLocalDateTime(startDate, "start"), getLocalDateTime(endDate, "end"), size, ltDepositId);
+                DateTimeUtils.parseLocalDateTime(startDate, "start"), DateTimeUtils.parseLocalDateTime(endDate, "end"), size, ltDepositId);
     }
 
     @Override
     public List<DepositDto.MngDeposit> getMngDeposits(Long userId, Long exchangeId, Long coinId, String startDate, String endDate, Integer size, Long ltDepositId) {
         return qDepositRepository.findMngDeposits(userId, exchangeId, coinId,
-                getLocalDateTime(startDate, "start"), getLocalDateTime(endDate, "end"), size, ltDepositId);
+                DateTimeUtils.parseLocalDateTime(startDate, "start"), DateTimeUtils.parseLocalDateTime(endDate, "end"), size, ltDepositId);
     }
-
-    private LocalDateTime getLocalDateTime(String date, String type) {
-        LocalDateTime localDateTime = DateTimeUtils.parseLocalDateTime(date);
-
-        if(type.equals("start")) {
-            return localDateTime == null ? LocalDateTime.now().minusDays(10) : localDateTime.with(LocalTime.MIN);
-        }
-        return localDateTime == null ? LocalDateTime.now() : localDateTime.with(LocalDateTime.MAX);
-    }
-
 }
