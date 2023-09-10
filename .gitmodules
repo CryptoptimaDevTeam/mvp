@@ -1,0 +1,3 @@
+[submodule "server/env"]
+	path = server/env
+	url = git@github.com:CryptoptimaDevTeam/env.git
