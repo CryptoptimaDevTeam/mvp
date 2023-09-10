@@ -5,12 +5,7 @@ import CryptOptima.server.domain.exchange.entity.Exchange;
 import CryptOptima.server.domain.user.entity.User;
 import lombok.*;
 
-import javax.persistence.*;
-
-/**
- * UserExchange
- * 사용자가 당사의 referral code로 등록한 거래소 엔티티
- */
+import jakarta.persistence.*;
 
 //TODO createdAt 칼럼만 남기기
 @Entity

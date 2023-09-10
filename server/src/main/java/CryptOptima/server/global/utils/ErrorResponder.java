@@ -4,7 +4,7 @@ import CryptOptima.server.global.exception.ErrorResponse;
 import com.google.gson.Gson;
 import org.springframework.http.MediaType;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 // controller 범위 밖 filter chain에서 발생하는 exception에 대해 적용

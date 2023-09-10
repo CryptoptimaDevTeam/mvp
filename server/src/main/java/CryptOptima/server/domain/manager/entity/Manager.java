@@ -3,7 +3,8 @@ package CryptOptima.server.domain.manager.entity;
 import CryptOptima.server.domain.BaseTimeEntity;
 import lombok.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 

@@ -12,7 +12,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,6 +34,7 @@ public class QWithdrawalRepository {
             "DATE_FORMAT({0},{1})", withdrawalRecord.createdAt, ConstantImpl.create("%Y-%m-%d %T")
     );
 
+    // Todo Entity 반환 & Mapper 전환
     public List<WithdrawalDto.UserWithdrawal> findUserWithdrawals(
             Long userId, Long exchangeId, String status, LocalDateTime startDate, LocalDateTime endDate, int size, Long ltWithdrawalId) {
 

@@ -13,15 +13,11 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * User
- * Google, Facebook, Twitter 로그인 user 엔티티
- */
 @Entity(name = "User")
 @DynamicInsert
 @Builder

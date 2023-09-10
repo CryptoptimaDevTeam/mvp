@@ -5,7 +5,7 @@ import CryptOptima.server.domain.user.entity.User;
 import CryptOptima.server.global.event.AlertEvent;
 import lombok.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Getter
