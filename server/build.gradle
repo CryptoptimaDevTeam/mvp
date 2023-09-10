@@ -80,3 +80,9 @@ compileJava{
 clean {
 	delete file(querydslSrcDir)
 }
+
+task copyEnv(type: Copy) {
+	from './env'
+	include "*.yml"
+	into 'src/main/resources'
+}
