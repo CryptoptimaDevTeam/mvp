@@ -5,13 +5,8 @@ import CryptOptima.server.domain.user.entity.User;
 import CryptOptima.server.global.event.AlertEvent;
 import lombok.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
-
-/**
- * DepositRecord
- * 거래소로부터 당사 계좌로 들어온 referral fee 입금 Entity
- */
 
 @Entity
 @Getter

@@ -1,6 +1,6 @@
 package CryptOptima.server.domain.role.entity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 public class GradeRole {

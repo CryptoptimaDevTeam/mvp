@@ -3,7 +3,7 @@ package CryptOptima.server.domain.coin.entity;
 import CryptOptima.server.domain.BaseTimeEntity;
 import lombok.*;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Getter
