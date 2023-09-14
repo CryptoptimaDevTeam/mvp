@@ -30,13 +30,12 @@ jobs:
         java-version: '17'
         distribution: 'adopt'
 
-    # jasypt 암호화 패스워드를 secrets에서 가져와 대체함
-    - name: Complete yaml
-      uses: microsoft/variable-substitution@v1
+    # submodule 사용
+    - name: checkout submodule
+      uses: actions/checkout@v3
       with:
-        files: ./server/src/main/resources/application-server.yml
-      env:
-        jasypt.encryptor.key: ${{ secrets.JASYPT_KEY }}
+        token: ${{ secrets.SUB_MODULE }}
+        submodules: true
     
     - name: Make gradlew executable
       run: chmod +x ./gradlew
