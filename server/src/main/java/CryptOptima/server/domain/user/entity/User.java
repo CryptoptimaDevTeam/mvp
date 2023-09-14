@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity(name = "User")
+@Entity(name = "Users")
 @DynamicInsert
 @Builder
 @Getter
