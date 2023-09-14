@@ -46,9 +46,6 @@ dependencies {
 	// json to object parsing
 	implementation 'com.google.code.gson:gson:2.9.0'
 
-	// jasypt Encryptor
-	implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4'
-
 	// QueryDSL
 	implementation 'com.querydsl:querydsl-core:5.0.0'
 	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
