@@ -6,10 +6,10 @@ files:
     overwrite: yes
 
 permissions:
-  - object: /
+  - object: /home/ubuntu/server
     pattern: "**"
-    owner: ubuntu
-    group: ubuntu
+    owner: root
+    group: root
 
 hooks:
   ApplicationStart:
