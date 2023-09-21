@@ -1,6 +1,3 @@
 #!/bin/bash
-cd /home/ubuntu/server/scripts
-
-echo "> docker-compose up"    >> /home/ubuntu/server/deploy.log
-
-sudo docker-compose up
+cd /home/ubuntu/server
+sudo docker compose up -d
