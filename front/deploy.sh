@@ -1,8 +1,4 @@
 #!/bin/bash
-REPOSITORY=/home/ubuntu/deploy
-
+REPOSITORY=/home/ubuntu/client
 cd $REPOSITORY
-
-sudo yarn install
-
-sudo npx pm2 reload all
+sudo docker compose up -d
