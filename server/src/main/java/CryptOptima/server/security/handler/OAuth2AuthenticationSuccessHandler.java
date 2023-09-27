@@ -4,6 +4,7 @@ import CryptOptima.server.domain.user.entity.User;
 import CryptOptima.server.domain.user.repository.UserRepository;
 import CryptOptima.server.global.exception.BusinessLogicException;
 import CryptOptima.server.global.exception.ExceptionCode;
+import CryptOptima.server.global.mail.MailService;
 import CryptOptima.server.security.jwt.JwtService;
 import CryptOptima.server.security.jwt.JwtTokenizer;
 import CryptOptima.server.security.utils.OAuth2AttributeUtils;
@@ -26,6 +27,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     private final UserRepository userRepository;
     private final JwtService jwtService;
+    private final MailService mailService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -50,6 +52,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                             .paybackFinishedAmount("0") // todo 칼럼 기본 값 설정
                             .build()
             );
+
+            mailService.sendWelcomeMail(user);
         }
 
         // AT, RT를 발급한다.
