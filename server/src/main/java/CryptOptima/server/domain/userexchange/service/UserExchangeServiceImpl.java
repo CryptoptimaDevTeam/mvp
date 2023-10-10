@@ -11,6 +11,7 @@ import CryptOptima.server.domain.userexchange.repository.QUserExchangeRepository
 import CryptOptima.server.domain.userexchange.repository.UserExchangeRepository;
 import CryptOptima.server.global.exception.BusinessLogicException;
 import CryptOptima.server.global.exception.ExceptionCode;
+import CryptOptima.server.global.mail.MailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,7 @@ public class UserExchangeServiceImpl implements UserExchangeService {
     private final UserExchangeMapper userExchangeMapper;
     private final UserExchangeRepository userExchangeRepository;
     private final QUserExchangeRepository qUserExchangeRepository;
+    private final MailService mailService;
 
     @Override
     @Transactional
@@ -72,5 +74,17 @@ public class UserExchangeServiceImpl implements UserExchangeService {
     public UserExchangeDto.Response getUserExchangeByUserIdAndExchangeId(Long userId, Long exchangeId) {
         UserExchange userExchange = qUserExchangeRepository.findUserExchangeByUserIdAndExchangeId(userId, exchangeId);
         return userExchangeMapper.userExchangeToUserExchangeResponseDto(userExchange);
+    public void changeUserExchangeStatus(Long userExchangeId, boolean status) {
+        UserExchange userExchange = userExchangeRepository.findById(userExchangeId).orElseThrow(
+                () -> new BusinessLogicException(ExceptionCode.USER_EXCHANGE_NOT_FOUND)
+        );
+
+        if(status) {
+            userExchange.changeStatus(UserExchange.Status.CONFIRMED);
+        }
+        else userExchange.changeStatus(UserExchange.Status.FAILED);
+
+        String subject = (status) ? "[Cryptoptima] Your UID registration confirmed!" : "[Cryptoptima] Your UID registration failed.";
+        mailService.sendUidConfirmationMail(userExchange, subject);
     }
 }

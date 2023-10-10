@@ -10,4 +10,5 @@ public interface UserExchangeService {
     void createUserExchange(Long userId, UserExchangeDto.Create userExchangeDto);
     List<UserExchangeDto.Response> getUserExchanges(int size, Long userId, Long exchangeId, Long lastUserExchangeId);
     UserExchangeDto.Response getUserExchangeByUserIdAndExchangeId(Long userId, Long exchangeId);
+    void changeUserExchangeStatus(Long userExchangeId, boolean status);
 }
