@@ -36,10 +36,10 @@ public class UserExchangeServiceImpl implements UserExchangeService {
         User findUser = userRepository.findById(userId).orElseThrow(
                 () -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
         Exchange findExchange = exchangeRepository.findById(userExchangeDto.getExchangeId()).orElseThrow(
-                ()-> new BusinessLogicException(ExceptionCode.EXCHANGE_NOT_FOUND));
+                () -> new BusinessLogicException(ExceptionCode.EXCHANGE_NOT_FOUND));
         Long referralUserId = userExchangeDto.getReferralCode() == null ?
                 0L : userRepository.findByReferralCode(userExchangeDto.getReferralCode()).orElseThrow(
-                        () -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND)
+                () -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND)
         ).getUserId();
 
         UserExchange userExchange = userExchangeMapper.createUserExchangeDtoToUserExchange(userExchangeDto);
@@ -51,22 +51,8 @@ public class UserExchangeServiceImpl implements UserExchangeService {
     }
 
     @Override
-    public List<UserExchangeDto.Response> getUserExchanges(int size, Long lastUserExchangeId) {
-        List<UserExchange> userExchanges = qUserExchangeRepository.findAllUserExchanges(size, lastUserExchangeId);
-        return userExchangeMapper.userExchangesToUserExchangeDtos(userExchanges);
-    }
-
-    // 사용자 id로 조회
-    @Override
-    public List<UserExchangeDto.Response> getUserExchangesByUserId(int size, Long userId, Long lastUserExchangeId) {
-        List<UserExchange> userExchanges = qUserExchangeRepository.findUserExchangesByUserId(size, userId, lastUserExchangeId);
-        return userExchangeMapper.userExchangesToUserExchangeDtos(userExchanges);
-    }
-
-    // 거래소 id로 조회
-    @Override
-    public List<UserExchangeDto.Response> getUserExchangesByExchangeId(int size, Long exchangeId, Long lastUserExchangeId) {
-        List<UserExchange> userExchanges = qUserExchangeRepository.findUserExchangesByExchangeId(size, exchangeId, lastUserExchangeId);
+    public List<UserExchangeDto.Response> getUserExchanges(int size, Long userId, Long exchangeId, Long lastUserExchangeId) {
+        List<UserExchange> userExchanges = qUserExchangeRepository.findUserExchanges(size, userId, exchangeId, lastUserExchangeId);
         return userExchangeMapper.userExchangesToUserExchangeDtos(userExchanges);
     }
 
@@ -74,6 +60,8 @@ public class UserExchangeServiceImpl implements UserExchangeService {
     public UserExchangeDto.Response getUserExchangeByUserIdAndExchangeId(Long userId, Long exchangeId) {
         UserExchange userExchange = qUserExchangeRepository.findUserExchangeByUserIdAndExchangeId(userId, exchangeId);
         return userExchangeMapper.userExchangeToUserExchangeResponseDto(userExchange);
+    }
+
     public void changeUserExchangeStatus(Long userExchangeId, boolean status) {
         UserExchange userExchange = userExchangeRepository.findById(userExchangeId).orElseThrow(
                 () -> new BusinessLogicException(ExceptionCode.USER_EXCHANGE_NOT_FOUND)

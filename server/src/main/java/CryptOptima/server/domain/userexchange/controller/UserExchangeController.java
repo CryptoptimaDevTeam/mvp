@@ -29,20 +29,16 @@ public class UserExchangeController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    // Todo if-else문 개선
     // UID02 :: UID 조회
     @GetMapping("/public/userexchanges")
     public ResponseEntity getUserExchanges(@RequestParam("size") @Min(1) int size,
-                                           @RequestParam(value = "userId", required = false, defaultValue = "0") @Min(1) Long userId,
-                                           @RequestParam(value = "exchangeId", required = false, defaultValue = "0") @Min(1) Long exchangeId,
+                                           @RequestParam(value = "userId", required = false) @Min(1) Long userId, // todo 없으면 null?
+                                           @RequestParam(value = "exchangeId", required = false) @Min(1) Long exchangeId,
                                            @RequestParam("ltUserExchangeId") @Min(1) Long lastUserExchangeId) {
         List<UserExchangeDto.Response> response;
-        if(userId==0 && exchangeId==0) response = userExchangeService.getUserExchanges(size, lastUserExchangeId);
-        else if(userId!=0 && exchangeId==0) response = userExchangeService.getUserExchangesByUserId(size, userId, lastUserExchangeId);
-        else if(userId==0 && exchangeId!=0) response = userExchangeService.getUserExchangesByExchangeId(size, exchangeId, lastUserExchangeId);
-        else {
-            return new ResponseEntity(userExchangeService.getUserExchangeByUserIdAndExchangeId(userId, exchangeId),HttpStatus.OK);
-        }
+        response = userExchangeService.getUserExchanges(size, userId, exchangeId, lastUserExchangeId);
+        if (userId != null && exchangeId != null) response.add(userExchangeService.getUserExchangeByUserIdAndExchangeId(userId, exchangeId));
+
         return new ResponseEntity(response, HttpStatus.OK);
     }
 
