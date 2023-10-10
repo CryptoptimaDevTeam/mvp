@@ -20,6 +20,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Random;
 
 @Component
 @RequiredArgsConstructor
@@ -28,6 +29,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private final UserRepository userRepository;
     private final JwtService jwtService;
     private final MailService mailService;
+    private final String charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -50,6 +52,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                             .paybackCumAmount("0")
                             .paybackTotalRequestedAmount("0")
                             .paybackFinishedAmount("0") // todo 칼럼 기본 값 설정
+                            .referralCode(getReferralCode(6)) // todo 레퍼럴 코드 길이 설정
                             .build()
             );
 
@@ -70,5 +73,25 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 .toUriString();
 
         getRedirectStrategy().sendRedirect(request,response,uri);
+    }
+
+    private String getReferralCode(int length) {
+        Random random = new Random();
+
+        while(true) {
+            StringBuilder sb = new StringBuilder(length);
+
+            for (int i = 0; i < length; i++) {
+                int randomIndex = random.nextInt(charset.length());
+                char randomChar = charset.charAt(randomIndex);
+                sb.append(randomChar);
+            }
+
+            String referralCode = sb.toString(); // 랜덤 코드 발급
+
+            if(!userRepository.findByReferralCode(referralCode).isPresent()) {
+                return referralCode;
+            }
+        } // 랜덤 코드 중복 X라면 종료
     }
 }

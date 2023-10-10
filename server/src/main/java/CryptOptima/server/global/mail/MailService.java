@@ -22,6 +22,7 @@ public class MailService {
     public void sendWelcomeMail(User user) {
         Map<String, Object> map = new HashMap<>();
         map.put("username", user.getUsername());
+        map.put("referralCode", user.getReferralCode());
 
         Context context = new Context();
         context.setVariables(map);
