@@ -10,7 +10,6 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -40,7 +39,7 @@ public class MailService {
 
     }
 
-    public void sendPromotionMail(List<User> users) {
+    public void sendReferralPromotionMail(User user) {
 
     }
 
@@ -56,6 +55,5 @@ public class MailService {
         String html = templateEngine.process("uid-confirmation", context);
         mailHandler.sendMail(subject, userExchange.getUser().getAccountId(), html);
     }
-
 
 }
