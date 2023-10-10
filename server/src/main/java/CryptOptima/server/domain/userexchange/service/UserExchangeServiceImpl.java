@@ -79,12 +79,21 @@ public class UserExchangeServiceImpl implements UserExchangeService {
                 () -> new BusinessLogicException(ExceptionCode.USER_EXCHANGE_NOT_FOUND)
         );
 
-        if(status) {
+        if (status) {
             userExchange.changeStatus(UserExchange.Status.CONFIRMED);
+            verifyReferralCount(userExchange.getReferralUserId());
+        } else {
+            userExchange.changeStatus(UserExchange.Status.FAILED);
         }
-        else userExchange.changeStatus(UserExchange.Status.FAILED);
 
         String subject = (status) ? "[Cryptoptima] Your UID registration confirmed!" : "[Cryptoptima] Your UID registration failed.";
         mailService.sendUidConfirmationMail(userExchange, subject);
+    }
+
+    private void verifyReferralCount(Long referralUserId) {
+        if (userExchangeRepository.findUserExchangesByReferralUserIdAndStatus(referralUserId, UserExchange.Status.CONFIRMED).size() >= 10) {
+            mailService.sendReferralPromotionMail(userRepository.findById(referralUserId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND)));
+            // todo 혜택 제공 레퍼럴 횟수 지정 & 회원 등급 조정
+        }
     }
 }
