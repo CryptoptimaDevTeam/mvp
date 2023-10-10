@@ -11,6 +11,7 @@ public class UserExchangeMapper {
     public UserExchange createUserExchangeDtoToUserExchange(UserExchangeDto.Create userExchangeDto) {
         return UserExchange.builder()
                 .uid(userExchangeDto.getUid())
+                .status(UserExchange.Status.PENDING)
                 .build();
     }
 

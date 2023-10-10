@@ -32,4 +32,19 @@ public class UserExchange extends BaseTimeEntity {
     // 입금 관리 페이지에서 사용됨 -> uid를 통해 userId를 알아냄, userId에 입금액을 USDT로 환산해 depositRecord를 DB에 저장함.
     @Column(unique = true, nullable = false)
     private String uid;
+
+    @Setter
+    @Column
+    private Long referralUserId;
+
+    @Enumerated(EnumType.STRING)
+    private Status status; // 기본 pending true오면 confirmed
+
+    public enum Status {
+        PENDING, FAILED, CONFIRMED
+    }
+
+    public void changeStatus(Status status) {
+        this.status = status;
+    }
 }
