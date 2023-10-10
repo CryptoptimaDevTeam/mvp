@@ -17,28 +17,10 @@ public class QUserExchangeRepository {
     private final JPAQueryFactory jpaQueryFactory;
     private final EntityManager em;
 
-    public List<UserExchange> findAllUserExchanges(int size, Long lastUserExchangeId) {
+    public List<UserExchange> findUserExchanges(int size, Long userId, Long exchangeId, Long lastUserExchangeId) {
         return jpaQueryFactory
                 .selectFrom(userExchange)
-                .where(ltUserExchangeId(lastUserExchangeId))
-                .orderBy(userExchange.userExchangeId.desc())
-                .limit(size)
-                .fetch();
-    }
-
-    public List<UserExchange> findUserExchangesByUserId(int size, Long userId, Long lastUserExchangeId) {
-        return jpaQueryFactory
-                .selectFrom(userExchange)
-                .where(ltUserExchangeId(lastUserExchangeId).and(userExchange.user.userId.eq(userId)))
-                .orderBy(userExchange.userExchangeId.desc())
-                .limit(size)
-                .fetch();
-    }
-
-    public List<UserExchange> findUserExchangesByExchangeId(int size, Long exchangeId, Long lastUserExchangeId) {
-        return jpaQueryFactory
-                .selectFrom(userExchange)
-                .where(ltUserExchangeId(lastUserExchangeId).and(userExchange.exchange.exchangeId.eq(exchangeId)))
+                .where(ltUserExchangeId(lastUserExchangeId).and(userIdEq(userId)).and(exchangeIdEq(exchangeId)))
                 .orderBy(userExchange.userExchangeId.desc())
                 .limit(size)
                 .fetch();
@@ -51,11 +33,16 @@ public class QUserExchangeRepository {
                 .fetchOne();
     }
 
-    // TODO JOIN을 이용한 필요 칼럼만 뽑아오기
-
     private BooleanExpression ltUserExchangeId(Long lastUserExchangeId) {
         return lastUserExchangeId==null ? null : userExchange.userExchangeId.lt(lastUserExchangeId);
     }
 
+    private BooleanExpression userIdEq(Long userId) {
+        return userId != null ? userExchange.user.userId.eq(userId) : null;
+    }
+
+    private BooleanExpression exchangeIdEq(Long exchangeId) {
+        return exchangeId != null ? userExchange.exchange.exchangeId.eq(exchangeId) : null;
+    }
 }
 
