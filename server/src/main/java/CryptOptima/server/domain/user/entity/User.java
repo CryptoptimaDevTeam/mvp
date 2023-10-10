@@ -45,6 +45,9 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private String locale;
 
+    @Column(nullable = false, unique = true)
+    private String referralCode;
+
     @OneToMany(mappedBy = "user")
     private List<UserExchange> userExchangeList = new ArrayList<>();
 
@@ -128,4 +131,5 @@ public class User extends BaseTimeEntity {
         this.status = status;
     }
     // 사용자의 접속 ip주소 리스트를 넣어두기 -> 추후 사용자 분석 데이터로 활용
+
 }
