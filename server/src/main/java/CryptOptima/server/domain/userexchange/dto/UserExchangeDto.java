@@ -9,16 +9,21 @@ import jakarta.validation.constraints.NotNull;
 public class UserExchangeDto {
     @Getter
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Create {
         @Min(1)
         @NotNull
         private Long exchangeId;
         @NotBlank
         private String uid;
+        private String referralCode;
     }
 
     @Getter
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Update {
         private Long exchangeId;
         private String uid;
@@ -27,6 +32,7 @@ public class UserExchangeDto {
     @Getter
     @Setter
     @Builder
+    @AllArgsConstructor
     public static class Response {
         private Long userExchangeId;
         private Long userId;

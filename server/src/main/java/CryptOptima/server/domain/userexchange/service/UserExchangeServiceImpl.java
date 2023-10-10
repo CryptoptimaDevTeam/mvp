@@ -35,10 +35,15 @@ public class UserExchangeServiceImpl implements UserExchangeService {
                 () -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
         Exchange findExchange = exchangeRepository.findById(userExchangeDto.getExchangeId()).orElseThrow(
                 ()-> new BusinessLogicException(ExceptionCode.EXCHANGE_NOT_FOUND));
+        Long referralUserId = userExchangeDto.getReferralCode() == null ?
+                0L : userRepository.findByReferralCode(userExchangeDto.getReferralCode()).orElseThrow(
+                        () -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND)
+        ).getUserId();
 
         UserExchange userExchange = userExchangeMapper.createUserExchangeDtoToUserExchange(userExchangeDto);
         userExchange.setUser(findUser);
         userExchange.setExchange(findExchange);
+        userExchange.setReferralUserId(referralUserId);
 
         userExchangeRepository.save(userExchange);
     }
