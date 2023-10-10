@@ -2,6 +2,7 @@ package CryptOptima.server.global.mail;
 
 import CryptOptima.server.domain.deposit.entity.DepositRecord;
 import CryptOptima.server.domain.user.entity.User;
+import CryptOptima.server.domain.userexchange.entity.UserExchange;
 import CryptOptima.server.domain.withdrawal.entity.WithdrawalRecord;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,4 +43,19 @@ public class MailService {
     public void sendPromotionMail(List<User> users) {
 
     }
+
+    public void sendUidConfirmationMail(UserExchange userExchange, String subject) {
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("username", userExchange.getUser().getUsername());
+        map.put("userExchange", userExchange);
+
+        Context context = new Context();
+        context.setVariables(map);
+
+        String html = templateEngine.process("uid-confirmation", context);
+        mailHandler.sendMail(subject, userExchange.getUser().getAccountId(), html);
+    }
+
+
 }

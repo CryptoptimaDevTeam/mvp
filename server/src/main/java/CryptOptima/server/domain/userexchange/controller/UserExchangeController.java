@@ -5,7 +5,6 @@ import CryptOptima.server.domain.userexchange.service.UserExchangeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +13,7 @@ import jakarta.validation.constraints.Min;
 import java.util.List;
 
 @Validated
-@Controller
+@RestController
 @RequestMapping("/server")
 @RequiredArgsConstructor
 public class UserExchangeController {
@@ -47,4 +46,9 @@ public class UserExchangeController {
         return new ResponseEntity(response, HttpStatus.OK);
     }
 
+    @GetMapping("/public/userexchanges/{userexchange-id}")
+    public void changeUserExchangeStatus(@PathVariable("userexchange-id") Long userExchangeId,
+                                         @RequestParam(value="status") boolean status) {
+        userExchangeService.changeUserExchangeStatus(userExchangeId, status);
+    }
 }
