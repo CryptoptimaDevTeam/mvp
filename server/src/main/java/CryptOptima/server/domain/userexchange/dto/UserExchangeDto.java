@@ -33,12 +33,25 @@ public class UserExchangeDto {
     @Setter
     @Builder
     @AllArgsConstructor
-    public static class Response {
+    public static class ManagerResponse {
         private Long userExchangeId;
         private Long userId;
         private String userName;
         private Long exchangeId;
         private String exchangeName;
         private String uid;
+        private String status;
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    public static class UserResponse {
+        private Long userExchangeId;
+        private Long exchangeId;
+        private String exchangeName;
+        private String uid;
+        private String status;
     }
 }
