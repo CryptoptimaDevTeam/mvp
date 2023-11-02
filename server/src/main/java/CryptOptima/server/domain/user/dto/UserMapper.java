@@ -1,6 +1,5 @@
 package CryptOptima.server.domain.user.dto;
 
-import CryptOptima.server.domain.user.dto.UserDto;
 import CryptOptima.server.domain.user.entity.User;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +21,7 @@ public class UserMapper {
                 .username(user.getUsername())
                 .accountId(user.getAccountId())
                 .status(user.getStatus())
+                .referralCode(user.getReferralCode())
                 .paybackCumAmount(user.getPaybackCumAmount())
                 .paybackFinishedAmount(user.getPaybackFinishedAmount())
                 .paybackTotalRequestedAmount(user.getPaybackTotalRequestedAmount())

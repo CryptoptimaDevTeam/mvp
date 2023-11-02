@@ -37,6 +37,7 @@ public class UserDto {
         private String accountId;
         private String sns;
         private String username;
+        private String referralCode;
         private String status;
         private String paybackCumAmount;
         private String paybackFinishedAmount;

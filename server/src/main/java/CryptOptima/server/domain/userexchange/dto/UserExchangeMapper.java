@@ -15,20 +15,37 @@ public class UserExchangeMapper {
                 .build();
     }
 
-    public UserExchangeDto.Response userExchangeToUserExchangeResponseDto(UserExchange userExchange) {
-        return UserExchangeDto.Response.builder()
+    public UserExchangeDto.ManagerResponse userExchangeToManagerResponseDto(UserExchange userExchange) {
+        return UserExchangeDto.ManagerResponse.builder()
                 .userExchangeId(userExchange.getUserExchangeId())
                 .userId(userExchange.getUser().getUserId())
                 .userName(userExchange.getUser().getAccountId())
                 .exchangeId(userExchange.getExchange().getExchangeId())
                 .exchangeName(userExchange.getExchange().getExchangeName())
                 .uid(userExchange.getUid())
+                .status(userExchange.getStatus().toString())
                 .build();
     }
 
-    public List<UserExchangeDto.Response> userExchangesToUserExchangeDtos(List<UserExchange> userExchanges) {
+    public List<UserExchangeDto.ManagerResponse> userExchangesToManagerResponseDtos(List<UserExchange> userExchanges) {
         return userExchanges.stream().map(
-                userExchange -> userExchangeToUserExchangeResponseDto(userExchange)
+                userExchange -> userExchangeToManagerResponseDto(userExchange)
+        ).collect(Collectors.toList());
+    }
+
+    public UserExchangeDto.UserResponse userExchangeToUserResponseDto(UserExchange userExchange) {
+        return UserExchangeDto.UserResponse.builder()
+                .userExchangeId(userExchange.getUserExchangeId())
+                .exchangeId(userExchange.getExchange().getExchangeId())
+                .exchangeName(userExchange.getExchange().getExchangeName())
+                .uid(userExchange.getUid())
+                .status(userExchange.getStatus().toString())
+                .build();
+    }
+
+    public List<UserExchangeDto.UserResponse> userExchangesToUserResponseDtos(List<UserExchange> userExchanges) {
+        return userExchanges.stream().map(
+                userExchange -> userExchangeToUserResponseDto(userExchange)
         ).collect(Collectors.toList());
     }
 }

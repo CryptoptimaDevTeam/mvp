@@ -8,7 +8,9 @@ import java.util.List;
 public interface UserExchangeService {
     // UID01 :: UID 등록
     void createUserExchange(Long userId, UserExchangeDto.Create userExchangeDto);
-    List<UserExchangeDto.Response> getUserExchanges(int size, Long userId, Long exchangeId, Long lastUserExchangeId);
-    UserExchangeDto.Response getUserExchangeByUserIdAndExchangeId(Long userId, Long exchangeId);
+    List<UserExchangeDto.ManagerResponse> getUserExchanges(int size, Long userId, Long exchangeId, Long lastUserExchangeId, String uid);
+    UserExchangeDto.ManagerResponse getUserExchangeByUserExchangeId(Long userExchangeId);
+    List<UserExchangeDto.UserResponse> getUserExchanges(int size, Long userId, Long lastUserExchangeId);
+    UserExchangeDto.UserResponse getUserExchangeByUserExchangeId(Long userId, Long userExchangeId);
     void changeUserExchangeStatus(Long userExchangeId, boolean status);
 }

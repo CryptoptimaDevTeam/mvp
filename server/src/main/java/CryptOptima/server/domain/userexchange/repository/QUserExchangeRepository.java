@@ -17,10 +17,13 @@ public class QUserExchangeRepository {
     private final JPAQueryFactory jpaQueryFactory;
     private final EntityManager em;
 
-    public List<UserExchange> findUserExchanges(int size, Long userId, Long exchangeId, Long lastUserExchangeId) {
+    public List<UserExchange> findUserExchanges(int size, Long userId, Long exchangeId, Long lastUserExchangeId, String uid) {
         return jpaQueryFactory
                 .selectFrom(userExchange)
-                .where(ltUserExchangeId(lastUserExchangeId).and(userIdEq(userId)).and(exchangeIdEq(exchangeId)))
+                .where(ltUserExchangeId(lastUserExchangeId)
+                        .and(userIdEq(userId))
+                        .and(exchangeIdEq(exchangeId))
+                        .and(uidEq(uid)))
                 .orderBy(userExchange.userExchangeId.desc())
                 .limit(size)
                 .fetch();
@@ -43,6 +46,10 @@ public class QUserExchangeRepository {
 
     private BooleanExpression exchangeIdEq(Long exchangeId) {
         return exchangeId != null ? userExchange.exchange.exchangeId.eq(exchangeId) : null;
+    }
+
+    private BooleanExpression uidEq(String uid) {
+        return uid != null ? userExchange.uid.eq(uid) : null;
     }
 }
 
